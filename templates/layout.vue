@@ -61,7 +61,7 @@
   </q-layout>
 </template>
 
-<script>
+<script type="text/ecamscript6">
 export default {
   data () {
     return {}
@@ -69,5 +69,5 @@ export default {
 }
 </script>
 
-<style>
+<style lang="stylus" scoped>
 </style>
