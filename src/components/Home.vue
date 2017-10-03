@@ -4,37 +4,64 @@
     view="lHh Lpr fff"
     :left-class="{'bg-grey-2': true}"
   >
+    <!-- 头部nav start -->
+    <q-toolbar slot="header" color="secondary">
+      <q-btn
+        flat
+        v-if="isMenu"
+        @click="$refs.layout.toggleLeft()"
+      >
+        <q-icon name="menu" />
+      </q-btn>
+      <q-toolbar-title class="text-center">
+        企业起名核名系统
+      </q-toolbar-title>
+    </q-toolbar>
+    <!-- 头部nav end -->
+    <!-- 左侧菜单栏 start-->
     <div slot="left" v-if="isMenu">
       <q-list no-border link inset-delimiter>
-        <q-list-header>企大师项目</q-list-header>
-        <q-item>
-          <q-item-side icon="supervisor account" />
-          <q-item-main label="公司起名系统" sublabel="企大师为你智能推荐名字" />
-        </q-item>
-        <q-item>
-          <q-item-side icon="playlist add check" />
-          <q-item-main label="公司核名系统" sublabel="公司名字工商查名 3秒出结果" />
-        </q-item>
-        <q-item>
-          <q-item-side icon="settings input component" />
-          <q-item-main label="经营范围智能生成！" sublabel="经营范围智能生成！" />
-        </q-item>
-        <q-item>
-          <q-item-side icon="file download" />
-          <q-item-main label="工商材料下载" sublabel="工商材料下载" />
-        </q-item>
+        <q-list-header>企大师项目</q-list-header> 
+        <q-side-link item to="/homeList">
+          <q-item>
+            <q-item-side icon="account" />
+            <q-item-main label="首页" sublabel="企大师为你智能推荐名字" />
+          </q-item>
+        </q-side-link>
+        <q-side-link item to="/giveName">
+          <q-item>
+            <q-item-side icon="supervisor account" />
+            <q-item-main label="公司起名系统" sublabel="企大师为你智能推荐名字" />
+          </q-item>
+        </q-side-link>
+        <q-side-link item to="/checkName">
+          <q-item>
+            <q-item-side icon="playlist add check" />
+            <q-item-main label="公司核名系统" sublabel="公司名字工商查名 3秒出结果" />
+          </q-item>
+        </q-side-link>
+        <q-side-link item to="/manageRange">
+          <q-item>
+            <q-item-side icon="settings input component" />
+            <q-item-main label="经营范围智能生成！" sublabel="经营范围智能生成！" />
+          </q-item>
+        </q-side-link>
+        <q-side-link item to="/download">
+          <q-item>
+            <q-item-side icon="file download" />
+            <q-item-main label="工商材料下载" sublabel="工商材料下载" />
+          </q-item>
+        </q-side-link>
       </q-list>
     </div>
+    <!-- 左侧菜单栏 end-->
     <!-- 展示的内容 -->
     <router-view />
   </q-layout>
 </template>
 
-<script type="text/ecamscript6">
+<script>
 import {
-  dom,
-  event,
-  openURL,
   QLayout,
   QToolbar,
   QToolbarTitle,
@@ -45,6 +72,7 @@ import {
   QItem,
   QItemSide,
   QItemMain,
+  QSideLink,
   QCard,
   QCardTitle,
   QCardMedia,
@@ -66,6 +94,7 @@ export default {
     QItem,
     QItemSide,
     QItemMain,
+    QSideLink,
     QCard,
     QCardTitle,
     QCardMedia,
@@ -75,14 +104,14 @@ export default {
   },
   data () {
     return {
-       isMenu:true
+      isMenu: true
     }
   },
-  computed: {
-    
-  },
   methods: {
-
+    goPage (to) {
+      this.$router.push({ path: to, name: to })
+      this.$refs.layout.hideLeft()
+    }
   },
   mounted () {
     this.$nextTick(() => {

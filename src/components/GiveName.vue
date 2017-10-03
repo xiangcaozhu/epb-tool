@@ -1,18 +1,5 @@
 <template>
   <div>
-    <q-toolbar slot="header" color="secondary">
-      <q-btn
-        flat
-        v-if="isMenu"
-        @click="$refs.layout.toggleLeft()"
-      >
-        <q-icon name="menu" />
-      </q-btn>
-
-      <q-toolbar-title class="text-center">
-        企业起名核名系统
-      </q-toolbar-title>
-    </q-toolbar>
     起名系统
   </div>
 </template>
@@ -81,10 +68,5 @@ export default {
 </script>
 
 <style lang="stylus">
-  .layout-aside-left{
-    width:260px;
-  }
-  .q-item-side{
-    width:20px;
-  }
+
 </style>
