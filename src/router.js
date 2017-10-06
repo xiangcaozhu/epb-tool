@@ -3,9 +3,9 @@ import VueRouter from 'vue-router'
 
 Vue.use(VueRouter)
 
-function load (component) {
-  // '@' is aliased to src/components
-  return () => import(`@/${component}.vue`)
+function load (views) {
+  // '@' is aliased to src/views
+  return () => import(`@/${views}.vue`)
 }
 
 export default new VueRouter({
@@ -20,9 +20,47 @@ export default new VueRouter({
    * If switching back to default "hash" mode, don't forget to set the
    * build publicPath back to '' so Cordova builds work again.
    */
-  routes: [
-    { path: '/', component: load('Home'), children: [ { path: '/', redirect: '/homeList' }, { path: '/homeList', name: 'homeList', component: load('HomeList') }, { path: 'giveName', name: 'giveName', component: load('GiveName') }, { path: 'checkName', name: 'checkName', component: load('CheckName') }, { path: 'manageRange', name: 'manageRange', component: load('ManageRange') }, { path: 'download', name: 'download', component: load('Download') } ] },
-    // Always leave this last one
-    { path: '*', component: load('Error404') } // Not found
-  ]
-})
+  routes: [{
+    path: '/',
+    component: load('Home'),
+    children: [{
+      path: '/',
+      redirect: '/homeList'
+    },
+    {
+      path: '/homeList',
+      name: 'homeList',
+      component: load('HomeList')
+    },
+    {
+      path: 'giveName',
+      name: 'giveName',
+      component: load('GiveName')
+    },
+    {
+      path: 'giveNameList',
+      name: 'giveNameList',
+      component: load('GiveNameList')
+    },
+    {
+      path: 'checkName',
+      name: 'checkName',
+      component: load('CheckName')
+    },
+    {
+      path: 'manageRange',
+      name: 'manageRange',
+      component: load('ManageRange')
+    },
+    {
+      path: 'download',
+      name: 'download',
+      component: load('Download')
+    }]
+  },
+  // Always leave this last one
+  {
+    path: '*',
+    component: load('Error404')
+  } // Not found
+  ]})
