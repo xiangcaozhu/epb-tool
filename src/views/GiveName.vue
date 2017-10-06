@@ -37,7 +37,7 @@ import {
   Dialog,
   Toast,
   QToolbar,
-  QToolbarTitle,
+  QToolbarTitle
 } from 'quasar'
 // 导出常用的数据对象
 import localData from 'static/localData'
@@ -50,7 +50,7 @@ export default {
     QSelect,
     QField,
     QToolbar,
-    QToolbarTitle,
+    QToolbarTitle
   },
   data () {
     return {
