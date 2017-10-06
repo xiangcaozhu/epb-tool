@@ -61,7 +61,7 @@
   </q-layout>
 </template>
 
-<script type="text/ecamscript6">
+<script>
 export default {
   data () {
     return {}
