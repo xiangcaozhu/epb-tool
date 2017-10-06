@@ -8,7 +8,7 @@
           <span slot="subtitle">{{item.subName}}</span>
         </q-card-title>
       </q-card-media>
-      <q-card-actions class="q-card-actions-horiz row justify-around">
+      <q-card-actions class="q-card-actions-horiz row justify-between">
           <span class="row items-center">已起名<strong class="text-red">{{item.count}}</strong>次</span>
           <q-btn @click.native="goPage(item.to)" :color="item.color">{{item.link}}</q-btn> 
       </q-card-actions>

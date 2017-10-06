@@ -16,6 +16,12 @@
       <q-toolbar-title class="text-center">
         企业起名核名系统
       </q-toolbar-title>
+      <q-btn
+        flat
+        @click=""
+      >
+        <q-icon name="account circle"/>
+      </q-btn>
     </q-toolbar>
     <!-- 头部nav end -->
     <!-- 左侧菜单栏 start-->
@@ -24,7 +30,7 @@
         <q-list-header>企大师项目</q-list-header> 
         <q-side-link item to="/homeList">
           <q-item>
-            <q-item-side icon="account" />
+            <q-item-side icon="home" />
             <q-item-main label="首页" sublabel="企大师为你智能推荐名字" />
           </q-item>
         </q-side-link>
