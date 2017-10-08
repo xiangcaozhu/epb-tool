@@ -29,6 +29,11 @@ import 'quasar-extras/material-icons'
 // window.addEventListener('load', function () {
 //   FastClick.attach(document.body)
 // }, true)
+const { Platform } = require('quasar')
+if (DEV) { // this block will automatically disappear on production builds
+  Platform.has.popstate = false
+}
+
 Quasar.start(() => {
   /* eslint-disable no-new */
   new Vue({
