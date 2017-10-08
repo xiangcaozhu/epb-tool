@@ -81,10 +81,6 @@ export default {
     label: '苏州'
   },
   {
-    code: '350100',
-    label: '福州'
-  },
-  {
     code: '330200',
     label: '宁波'
   },
@@ -119,10 +115,6 @@ export default {
   {
     code: '440400',
     label: '珠海'
-  },
-  {
-    code: '320500',
-    label: '苏州'
   },
   {
     code: '350500',
@@ -165,19 +157,19 @@ export default {
     label: '哈尔'
   }],
   industrys: [{
-    class: '科技类',
-    industry: ['网络科技', '电子商务', '信息技术', '游戏', '电子', '软件', '新材料', '生物科技', '教育科技']
+    type: '科技类',
+    industry: [{label: '网络科技'}, {label: '电子商务'}, {label: '信息技术'}, {label: '游戏'}, {label: '电子'}, {label: '软件'}, {label: '新材料'}, {label: '生物科技'}, {label: '教育科技'}]
   },
   {
-    class: '许可类',
-    industry: ['投资管理', '金融', '资产', '商业保理', '融资租赁', '医疗器械', '人力资源', '食品', '劳务派遣']
+    type: '许可类',
+    industry: [{label: '投资管理'}, {label: '金融'}, {label: '资产'}, {label: '商业保理'}, {label: '融资租赁'}, {label: '医疗器械'}, {label: '人力资源'}, {label: '食品'}, {label: '劳务派遣'}]
   },
   {
-    class: '服务类',
-    industry: ['广告', '文化传播', '建筑装潢', '设计', '美容美发', '房地产中介', '物业管理', '商务咨询', '企业管理']
+    type: '服务类',
+    industry: [{label: '广告'}, {label: '文化传播'}, {label: '建筑装潢'}, {label: '设计'}, {label: '美容美发'}, {label: '房地产中介'}, {label: '物业管理'}, {label: '商务咨询'}, {label: '企业管理'}]
   },
   {
-    class: '其  他',
-    industry: ['贸易', '实业', '制造', '服饰', '化妆品', '工程', '农业', '餐饮管理', '物流']
+    type: '其  他',
+    industry: [{label: '贸易'}, {label: '实业'}, {label: '制造'}, {label: '服饰'}, {label: '化妆品'}, {label: '工程'}, {label: '农业'}, {label: '餐饮管理'}, {label: '物流'}]
   }]
 }

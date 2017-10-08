@@ -1,11 +1,11 @@
 <template>
   <q-layout
     ref="layout"
-    view="lHh Lpr fff"
+    view="lHh Lpr fFf"
     :left-class="{'bg-grey-2': true}"
   >
     <!-- 头部nav start -->
-    <q-toolbar slot="header" color="secondary">
+    <q-toolbar v-show="getHas.header" slot="header" color="primary">
       <q-btn
         flat
         v-if="isMenu"
@@ -13,12 +13,15 @@
       >
         <q-icon name="menu" />
       </q-btn>
-      <q-toolbar-title class="text-center">
-        企业起名核名系统
+      <q-toolbar-title>
+        {{getHeadBar.title}}
+        <span v-if="getHeadBar.subTitle" slot="subtitle">
+          {{getHeadBar.subTitle}}
+        </span>
       </q-toolbar-title>
       <q-btn
         flat
-        @click=""
+        @click="loginModal(true)"
       >
         <q-icon name="account circle"/>
       </q-btn>
@@ -60,6 +63,12 @@
         </q-side-link>
       </q-list>
     </div>
+    <q-toolbar v-show="getHas.footer" slot="footer">
+      <q-toolbar-title>
+        Footer
+      </q-toolbar-title>
+    </q-toolbar>
+    <login></login>
     <!-- 左侧菜单栏 end-->
     <!-- 展示的内容 -->
     <router-view />
@@ -86,7 +95,8 @@ import {
   QCardSeparator,
   QCardMain
 } from 'quasar'
-
+import { mapGetters, mapMutations } from 'vuex'
+import Login from '%/Login'
 export default {
   name: 'index',
   components: {
@@ -106,14 +116,22 @@ export default {
     QCardMedia,
     QCardActions,
     QCardSeparator,
-    QCardMain
+    QCardMain,
+    Login
   },
   data () {
     return {
       isMenu: true
     }
   },
+  computed: {
+    ...mapGetters([
+      'getHeadBar',
+      'getHas'
+    ])
+  },
   methods: {
+    ...mapMutations(['loginModal']),
     goPage (to) {
       this.$router.push({ path: to, name: to })
       this.$refs.layout.hideLeft()
@@ -128,7 +146,7 @@ export default {
 }
 </script>
 
-<style lang="stylus">
+<style lang="stylus" scoped>
   .layout-aside-left{
     width:260px;
   }

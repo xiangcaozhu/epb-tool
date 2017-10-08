@@ -7,6 +7,7 @@ module.exports = {
     src: path.resolve(__dirname, '../src'),
     assets: path.resolve(__dirname, '../src/assets'),
     static: path.resolve(__dirname, '../src/statics'),
+    store: path.resolve(__dirname, '../src/store'),
     '%': path.resolve(__dirname, '../src/components'),
     '@': path.resolve(__dirname, '../src/views'),
     api: path.resolve(__dirname, '../src/api'),
