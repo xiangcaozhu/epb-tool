@@ -115,7 +115,7 @@ export default {
         Toast.create('行业是必选项！')
         return
       }
-      if (!Cookies.get('m')) {
+      if (Cookies.get('m')) {
         let _this = this
         Dialog.create({
           title: '提示：',

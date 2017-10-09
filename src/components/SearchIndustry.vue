@@ -81,7 +81,8 @@ export default {
         type: '',
         industry: ''
       },
-      industrys: localData.industrys
+      industrys: localData.industrys,
+      industrysAll: localData.industrysAll
     }
   },
   computed: {
@@ -106,7 +107,7 @@ export default {
     },
     queryIndustryItem (items, done) {
       setTimeout(() => {
-        done(filter(items, {field: 'label', list: localData.industrys}))
+        done(filter(items, {field: 'label', list: this.industrysAll}))
       }, 1000)
     },
     selectedIndustryItem (item) {

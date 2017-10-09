@@ -76,7 +76,8 @@ export default {
         label: '',
         code: ''
       },
-      hotCity: localData.hotCity
+      hotCity: localData.hotCity,
+      cityAll: localData.cityAll
     }
   },
   computed: {
@@ -101,7 +102,7 @@ export default {
     },
     queryCityItem (items, done) {
       setTimeout(() => {
-        done(filter(items, {field: 'label', list: localData.hotCity}))
+        done(filter(items, {field: 'label', list: this.cityAll}))
       }, 1000)
     },
     selectedCityItem (item) {
