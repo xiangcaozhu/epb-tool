@@ -20,7 +20,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="(item, index) in tableData" >
+          <tr v-for="(item, index) in tableData" @click="checkNameSubmit(item.city, item.name, item.industry, item.type)">
             <td class="text-left">{{item.city}} <span class="company-name">{{item.name}}</span> {{item.industry}} {{item.type}}</td>
             <td class="text-right"><span class="pass-rate" :class="{'hight':item.rate=='高', 'middle':item.rate=='中', 'low':item.rate=='低'}">{{item.rate}}</span></td>
           </tr>
@@ -77,6 +77,14 @@ export default {
             this.tableData = res.data.data
           }
         })
+    },
+    checkNameSubmit (city, name, industry, type) {
+      this.$router.push({path: '/checkName', name: 'checkName', query: { city: city, name: name, industry: industry, from: type }})
+      // api.getCompanyDetail(city, name, industry, type).then(res => {
+      //   if (res.data.code === 0) {
+      //     console.log(res.data.data)
+      //   }
+      // })
     }
   },
   mounted () {
