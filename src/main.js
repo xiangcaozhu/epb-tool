@@ -15,7 +15,7 @@ import Quasar from 'quasar'
 import router from './router'
 import store from 'store/index'
 import Vuelidate from 'vuelidate'
-// import FastClick from 'fastclick'
+
 Vue.config.productionTip = false
 Vue.use(Quasar) // Install Quasar Framework
 Vue.use(Vuelidate)
@@ -26,9 +26,7 @@ import 'quasar-extras/material-icons'
 // import 'quasar-extras/ionicons'
 // import 'quasar-extras/fontawesome'
 // import 'quasar-extras/animate'
-// window.addEventListener('load', function () {
-//   FastClick.attach(document.body)
-// }, true)
+
 const { Platform } = require('quasar')
 if (DEV) { // this block will automatically disappear on production builds
   Platform.has.popstate = false

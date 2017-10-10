@@ -1,7 +1,7 @@
 
 // 配置api请求地址
 const API_CONFIG = {
-  host: 'http://rapapi.org/mockjsdata/26848/',
+  host: 'http://rapapi.org/mockjsdata/26848',
   // host: 'http://10.0.90.104:8080',
   // host: '',
   IP: ''
