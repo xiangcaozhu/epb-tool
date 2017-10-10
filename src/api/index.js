@@ -1,4 +1,6 @@
 import axios from 'axios'
+// import Vue from 'vue'
+import qs from 'qs'
 import {
   loginResource,
   companyNameResource,
@@ -12,14 +14,54 @@ import {
   materialIdDownResource
 } from 'api/resource'
 
+// import { Cookies } from 'quasar'
+
+// axios.defaults.withCredentials = true
+axios.defaults.timeout = 5000
+
+// request拦截器
+// axios.interceptors.request.use(
+//   config => {
+//     const token = Cookies.get('m')
+//     config.data = JSON.stringify(config.data)
+//     config.headers = {
+//       'Content-Type': 'application/x-www-form-urlencoded'
+//     }
+//     if (token) {
+//       config.headers = {
+//         'Content-Type': 'application/x-www-form-urlencoded',
+//         'Authorization': token
+//       }
+//     }
+//     return config
+//   },
+//   err => {
+//     return Promise.reject(err)
+//   }
+// )
+
+// response拦截器
+// axios.interceptors.response.use(
+//   response => {
+//     if (response.data.errCode === 2) {
+//       Vue.$router.push({
+//         path: '/login',
+//         query: { redirect: Vue.$router.currentRoute.fullPath }
+//       })
+//       return response
+//     }
+//   },
+//   err => {
+//     return Promise.reject(err)
+//   }
+// )
+
 export default {
   // 手机号登陆
   login (mobile) {
-    return axios.post(loginResource, {
-      params: {
-        mobile
-      }
-    })
+    return axios.post(loginResource, qs.stringify({
+      mobile
+    }))
   },
   // 公司起名
   getCompanyName (city, industry) {

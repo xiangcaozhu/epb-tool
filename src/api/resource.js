@@ -6,23 +6,23 @@ const apiResource = {
   // 登录：手机号登陆
   login: '/login',
   // 公司相关接口：公司起名
-  companyName: 'company/name',
+  companyName: '/company/name',
   // 公司相关接口：公司详情/公司核名
-  companyDetail: 'company/detail',
+  companyDetail: '/company/detail',
   // 公司相关接口：公司经营范围
-  companyScope: 'company/scope',
+  companyScope: '/company/scope',
   // 公司相关接口：公司工商信息
-  companyIdBiz: 'company',
+  companyIdBiz: '/company',
   // 工商材料相关接口：工商材料获取全部列表
-  materialAll: 'material/all',
+  materialAll: '/material/all',
   // 工商材料相关接口：根据类型获取列表
-  materialIndus: 'material/indus',
+  materialIndus: '/material/indus',
   // 工商材料相关接口：根据子分类获取列表
-  materialClassify: 'material/classify',
+  materialClassify: '/material/classify',
   // 工商材料相关接口：获取工商材料详情
-  materialIdMsg: 'material',
+  materialIdMsg: '/material',
   // 工商材料相关接口：下载工商材料
-  materialIdDown: 'material'
+  materialIdDown: '/material'
 }
 
 // 导出相关请求地址

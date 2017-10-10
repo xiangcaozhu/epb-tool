@@ -28,7 +28,6 @@
             登录
             </q-btn>
           </div>
-          
         </div>
       </q-modal-layout>
     </q-modal>
@@ -94,6 +93,7 @@ export default {
         return
       }
       api.login(this.mobile).then(res => {
+        console.log(res)
         if (res.data.code === 0) {
           Toast.create('登陆成功！马上去查询试试')
           this.loginModal(false)

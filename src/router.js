@@ -48,6 +48,11 @@ export default new VueRouter({
       component: load('CheckName')
     },
     {
+      path: 'checkNameResult',
+      name: 'checkNameResult',
+      component: load('CheckNameResult')
+    },
+    {
       path: 'manageRange',
       name: 'manageRange',
       component: load('ManageRange')

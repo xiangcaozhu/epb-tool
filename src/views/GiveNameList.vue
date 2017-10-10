@@ -2,31 +2,43 @@
   <div>
       <div class="row tab ">
         <div class="col-4 item">
-            <q-btn flat icon-right="keyboard arrow down">{{formData.city}}</q-btn>
+            <q-btn @click="searchCityModal(true)" flat icon-right="keyboard arrow down">{{formData.city}}</q-btn>
         </div>
         <div class="col-4 item">
-            <q-btn flat icon-right="keyboard arrow down">{{formData.industry}}</q-btn>
+            <q-btn @click="searchIndustryModal(true)" flat icon-right="keyboard arrow down">{{formData.industry}}</q-btn>
         </div>
         <div class="col-4 item">
-            <q-btn class="tab-submit" color="primary" small>推荐名称</q-btn>
+            <q-btn @click="giveNameSubmit" class="tab-submit" color="primary" small>推荐名称</q-btn>
         </div>
-    </div>
-    <div class="table-wrap">
-      <table class="q-table striped-odd">
-        <thead>
-          <tr>
-            <th class="text-left">推荐公司名字</th>
-            <th class="text-right">通过率</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="(item, index) in tableData" @click="checkNameSubmit(item.city, item.name, item.industry, item.type)">
-            <td class="text-left">{{item.city}} <span class="company-name">{{item.name}}</span> {{item.industry}} {{item.type}}</td>
-            <td class="text-right"><span class="pass-rate" :class="{'hight':item.rate=='高', 'middle':item.rate=='中', 'low':item.rate=='低'}">{{item.rate}}</span></td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
+      </div>
+      <div class="table-wrap">
+        <table class="q-table striped-odd">
+          <thead>
+            <tr>
+              <th class="text-left">推荐公司名字</th>
+              <th class="text-right">通过率</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="(item, index) in tableData" @click="checkNameResult(item.city, item.name, item.industry, item.type)">
+              <td class="text-left">{{item.city}} <span class="company-name">{{item.name}}</span> {{item.industry}} {{item.type}}</td>
+              <td class="text-right"><span class="pass-rate" :class="{'hight':item.rate=='高', 'middle':item.rate=='中', 'low':item.rate=='低'}">{{item.rate}}</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="exchange-wrap">
+        <p class="tips">点击公司名称，查看核名结果！</p>
+        <q-btn loader color="orange" v-model="progress" @click="giveNameNews">
+          换一批
+          <span slot="loading">
+            <q-spinner-mat  class="on-left" slot="loading" color="primary" :size="30" />
+            努力加载中...
+          </span>
+        </q-btn>
+      </div>
+      <search-city @getSelectedCity="getSelectedCity"></search-city>
+      <search-industry @getSelectedIndustry="getSelectedIndustry"></search-industry>
   </div>
 </template>
 
@@ -36,11 +48,15 @@ import {
   QBtn,
   QIcon,
   QSelect,
-  QField
+  QField,
+  QSpinnerMat
 } from 'quasar'
 // 导出常用的数据对象
 import localData from 'static/localData'
+import SearchCity from '%/SearchCity'
+import SearchIndustry from '%/SearchIndustry'
 import api from 'api/index'
+import { mapMutations } from 'vuex'
 export default {
   name: 'giveName',
   components: {
@@ -48,10 +64,14 @@ export default {
     QBtn,
     QIcon,
     QSelect,
-    QField
+    QField,
+    QSpinnerMat,
+    SearchCity,
+    SearchIndustry
   },
   data () {
     return {
+      progress: false,
       isMenu: true,
       formData: {
         city: this.$route.query.city,
@@ -63,28 +83,47 @@ export default {
     }
   },
   created () {
-    console.log(this.formData.city)
-    console.log(this.formData.industry)
+    // 初始化根据query,加载api
     this.giveNameSubmit()
   },
   methods: {
+    ...mapMutations([
+      'searchCityModal',
+      'searchIndustryModal'
+    ]),
+    getSelectedCity (query) {
+      this.formData.city = query.label
+    },
+    getSelectedIndustry (query) {
+      this.formData.industry = query.industry
+    },
     // 如果没有登录跳转到登陆页，如果已经登录，可以查询数据
     giveNameSubmit () {
       api.getCompanyName(this.formData.city, this.formData.industry)
         .then(res => {
           if (res.data.code === 0) {
-            console.log(res.data.data)
             this.tableData = res.data.data
           }
         })
     },
-    checkNameSubmit (city, name, industry, type) {
-      this.$router.push({path: '/checkName', name: 'checkName', query: { city: city, name: name, industry: industry, from: type }})
+    checkNameResult (city, name, industry, type) {
+      this.$router.push({path: '/checkNameResult', name: 'checkNameResult', query: { city: city, name: name, industry: industry, from: type }})
       // api.getCompanyDetail(city, name, industry, type).then(res => {
       //   if (res.data.code === 0) {
       //     console.log(res.data.data)
       //   }
       // })
+    },
+    giveNameNews () {
+      api.getCompanyName(this.formData.city, this.formData.industry)
+        .then(res => {
+          if (res.data.code === 0) {
+            setTimeout(() => {
+              this.progress = false
+            }, 500)
+            this.tableData = res.data.data
+          }
+        })
     }
   },
   mounted () {
@@ -137,4 +176,11 @@ export default {
         background-color:#f00;    
   .company-name
     color:#f00;
+  .exchange-wrap
+    padding:10px;
+    button
+      width:100%;
+    .tips
+      color:orange;
+      text-align:center;
 </style>
