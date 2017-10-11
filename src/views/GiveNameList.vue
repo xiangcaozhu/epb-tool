@@ -2,10 +2,10 @@
   <div>
       <div class="row tab ">
         <div class="col-4 item">
-            <q-btn @click="searchCityModal(true)" flat icon-right="keyboard arrow down">{{formData.city}}</q-btn>
+            <q-btn @click="searchCityModal(true)" flat>{{formData.city}}<q-icon size="14px" class="text-grey-6" name="arrow drop down"/></q-btn>
         </div>
         <div class="col-4 item">
-            <q-btn @click="searchIndustryModal(true)" flat icon-right="keyboard arrow down">{{formData.industry}}</q-btn>
+            <q-btn @click="searchIndustryModal(true)" flat >{{formData.industry}}<q-icon size="14px" class="text-grey-6" name="arrow drop down"/></q-btn>
         </div>
         <div class="col-4 item">
             <q-btn @click="giveNameSubmit" class="tab-submit" color="primary" small>推荐名称</q-btn>

@@ -17,7 +17,7 @@ import {
 // import { Cookies } from 'quasar'
 
 // axios.defaults.withCredentials = true
-axios.defaults.timeout = 5000
+axios.defaults.timeout = 10000
 
 // request拦截器
 // axios.interceptors.request.use(
@@ -73,7 +73,7 @@ export default {
     })
   },
   // 公司详情/公司核名
-  getCompanyDetail (name, city, industry, from) {
+  getCompanyDetail (city, name, industry, from) {
     return axios.get(companyDetailResource, {
       params: {
         name,

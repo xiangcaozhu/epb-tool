@@ -2,22 +2,17 @@
   <div>
       <div class="row tab ">
         <div class="col item">
-            <q-btn @click="searchCityModal(true)" flat icon-right="keyboard arrow down">{{formData.city}}</q-btn>
+            <q-btn @click="searchCityModal(true)" flat >{{formData.city}}<q-icon size="14px" class="text-grey-6" name="arrow drop down"/></q-btn>
+
         </div>
         <div class="col item">
             <q-btn @click="inputCompanyName" flat >{{formData.name}}</q-btn>
         </div>
         <div class="col item">
-            <q-btn @click="searchIndustryModal(true)" flat icon-right="keyboard arrow down">{{formData.industry}}</q-btn>
+            <q-btn @click="searchIndustryModal(true)" flat >{{formData.industry}}<q-icon size="14px" class="text-grey-6" name="arrow drop down"/></q-btn>
         </div>
         <div class="col item">
-            <q-dialog-select
-              v-model="formData.from"
-              :options="fromOptions"
-              ok-label="确定"
-              cancel-label="取消"
-              title="公司类型选择"
-            />
+            <q-btn @click="inputCompanyFrom" flat >{{formData.from}}<q-icon size="14px" class="text-grey-6" name="arrow drop down"/></q-btn>
         </div>
         <div class="col item">
             <q-btn @click="checkNameSubmit" class="tab-submit" color="primary" small>核名</q-btn>
@@ -30,66 +25,55 @@
           <div class="col-4 line" :class="{'middle':resultData.content.lastIndexOf('中')!==-1}">中</div>
           <div class="col-4" :class="{'low':resultData.content.lastIndexOf('低')!==-1}">低</div>
         </div>
-        <div class="suggest">
-          {{resultData.content}},通过概率{{resultData.passRate}}%
+        <div class="suggest" v-if="resultData.prohibitWordsResult">
+          <q-card>
+            <q-card-title>
+              {{resultData.content}},通过概率{{resultData.passRate}}%
+              <!-- {{resultData.approximateCompanyFourResult.title}} -->
+              <span slot="subtitle">
+                <q-rating
+                  v-model="rate"
+                  :max="10"
+                />
+              </span>
+            </q-card-title>
+          </q-card>
         </div>
-      </div>
+      </div>  
       <div class="detail-wrap" >
         <q-tabs v-model="tabsModel" inverted>
           <q-tab name="prohibitWordsResult" label="敏感词分析" slot="title" />
           <q-tab name="approximateCompanyFourResult" label="相似公司分析" slot="title" />
           <q-tab name="companyTrademarkResultPO" label="相似商标分析" slot="title" />
-          <q-tab-pane name="prohibitWordsResult" v-if="resultData.prohibitWordsResult">
-              <q-infinite-scroll :handler="refresher">
-                <q-card inline v-for="(list, index) in resultData.prohibitWordsResult.hmbSolrWords" class="caption" :key="index">
-                  <q-card-title>
-                    {{list.title}}
-                    <span slot="subtitle">相似度{{list.similar}}/通过率{{list.passRate}}%</span>
-                    <div slot="right" class="row items-center">
-                      <q-chip small square color="secondary" class="shadow-1">
-                        {{ index + 1 }}
-                      </q-chip>
-                    </div>
-                  </q-card-title>
-                  <q-card-separator />
-                  <q-card-main>
-                    <p class="text-faded">{{list.content}}</p>
-                    <p>{{list.name}}</p>
-                    <p>{{list.product}}</p>
-                    <p>{{list.productWords}}</p>
-                    <p>{{list.owner}} </p>
-                    <p>{{list.banClass}} </p>
-                    <p>{{list.banType}}</p>
-                    <p>{{list.province}} </p>
-                    <p>{{list.type}} </p>
-                  </q-card-main>
-                </q-card>
-                <div class="row justify-center" style="margin-bottom: 50px;">
-                  <q-spinner-dots slot="message" :size="40" />
-                </div>
-              </q-infinite-scroll> 
+          <q-tab-pane name="prohibitWordsResult">
+              <div class="yes" v-if="resultData.prohibitWordsResult">
+                 <q-card inline v-for="(list, index) in resultData.prohibitWordsResult.hmbSolrWords" class="caption" :key="index">
+                    <q-card-title>
+                      {{list.title}}
+                      <span slot="subtitle">相似度{{list.similar}}/通过率{{list.passRate}}%</span>
+                      <div slot="right" class="row items-center">
+                        <q-chip small square color="secondary" class="shadow-1">
+                          {{ index + 1 }}
+                        </q-chip>
+                      </div>
+                    </q-card-title>
+                    <q-card-separator />
+                    <q-card-main>
+                      <p class="text-faded" v-html="list.content"></p>
+                    </q-card-main>
+                  </q-card>
+              </div>
+              <div v-else class="row justify-center no">
+                <p class="col-12 text-grey-4" style="text-align:center;"><q-icon name="filter none" size="50px"/></p>
+                <p class="col-12 filter none text-grey-4" style="text-align:center;">恭喜您，暂无敏感词分析,请查阅其他分析</p>
+              </div>
           </q-tab-pane>
-          <q-tab-pane name="approximateCompanyFourResult" v-if="resultData.approximateCompanyFourResult">
-              <q-card>
-                <q-card-title>
-                  {{resultData.approximateCompanyFourResult.title}}
-                  <span slot="subtitle">
-                    <q-rating
-                      v-model="rate"
-                      :max="10"
-                    />
-                  </span>
-                </q-card-title>
-                <q-card-separator />
-                <q-card-main>
-                  {{resultData.approximateCompanyFourResult.suggest}}
-                </q-card-main>
-              </q-card>
-              <q-infinite-scroll :handler="refresher">
+          <q-tab-pane name="approximateCompanyFourResult" >
+              <q-infinite-scroll :handler="refresher" v-if="resultData.approximateCompanyFourResult">
                 <q-card inline v-for="(list, index) in resultData.approximateCompanyFourResult.list" :key="index">
                   <q-card-title>
                     {{list.companyName}}
-                    <span slot="subtitle">{{list.title}}</span>
+                    <span slot="subtitle">{{list.searchType}}</span>
                     <div slot="right" class="row items-center">
                       <q-chip small square color="secondary" class="shadow-1">
                         {{ index + 1 }}
@@ -100,21 +84,25 @@
                   </q-card-title>
                   <q-card-separator />
                   <q-card-main>
-                    <p class="text-faded">{{list.searchType}}</p>
-                    <p class="text-faded">{{list.detail}}</p>
+                  <p>{{list.passRate}}</p>
+                    <div class="row">
+                      <p class="col-8 text-faded" style="font-size:12px;text-align:left;">{{list.title}}</p>
+                      <p class="col-4 text-faded" style="font-size:12px;text-align:right;">相似度{{list.similar}}%</p>
+                    </div>
+                    <p class="text-faded" v-html="list.detail"></p>
                   </q-card-main>
-                  
-                    <p></p>
-                    <p>{{list.passRate}}</p>
-                    <p></p>
                 </q-card>
                 <div class="row justify-center" style="margin-bottom: 50px;">
                   <q-spinner-dots slot="message" :size="40" />
                 </div>
               </q-infinite-scroll>
+              <div v-else class="row justify-center no">
+                <p class="col-12 text-grey-4" style="text-align:center;"><q-icon name="filter none" size="50px"/></p>
+                <p class="col-12 filter none text-grey-4" style="text-align:center;">暂无相似公司分析</p>
+              </div>
           </q-tab-pane>
-          <q-tab-pane name="companyTrademarkResultPO" v-if="resultData.companyTrademarkResultPO">
-              <q-infinite-scroll :handler="refresher">
+          <q-tab-pane name="companyTrademarkResultPO" >
+              <q-infinite-scroll :handler="refresher" v-if="resultData.companyTrademarkResultPO">
                 <q-card inline v-for="(list, index) in resultData.companyTrademarkResultPO.trademarkPOs" class="caption" :key="index">
                   <q-card-title>
                     {{list.title}}
@@ -127,13 +115,17 @@
                   </q-card-title>
                   <q-card-separator />
                   <q-card-main>
-                    <p class="text-faded">{{list.content}}</p>
+                    <p class="text-faded" v-html="list.content"></p>
                   </q-card-main>
                 </q-card>
                 <div class="row justify-center" style="margin-bottom: 50px;">
                   <q-spinner-dots slot="message" :size="40" />
                 </div>
-              </q-infinite-scroll>          
+              </q-infinite-scroll> 
+              <div v-else class="row justify-center no">
+                <p class="col-12 text-grey-4" style="text-align:center;"><q-icon name="filter none" size="50px"/></p>
+                <p class="col-12 filter none text-grey-4" style="text-align:center;">暂无相似品牌商标分析</p>
+              </div>         
           </q-tab-pane>
         </q-tabs>
       </div>
@@ -210,16 +202,17 @@ export default {
         from: this.$route.query.type || '有限公司'
       },
       select: '',
-      fromOptions: [{
-        label: '有限公司',
-        value: '有限公司'
-      },
-      {
-        label: '合伙公司',
-        value: '合伙公司'
-      }],
       resultData: {
-        content: ''
+        content: '',
+        prohibitWordsResult: {
+          hmbSolrWords: []
+        },
+        approximateCompanyFourResult: {
+          list: []
+        },
+        companyTrademarkResultPO: {
+          trademarkPOs: []
+        }
       },
       items: [{}, {}, {}, {}, {}],
       tabsModel: 'prohibitWordsResult',
@@ -238,7 +231,7 @@ export default {
   },
   computed: {
     rate () {
-      return Math.floor(this.resultData.approximateCompanyFourResult.passRate / 10)
+      return Math.floor(this.resultData.passRate / 10)
     }
   },
   methods: {
@@ -285,6 +278,31 @@ export default {
         ]
       })
     },
+    inputCompanyFrom () {
+      let _this = this
+      Dialog.create({
+        title: '选择公司类型',
+        form: {
+          option: {
+            type: 'radio',
+            model: 'opt1',
+            items: [
+              {label: '有限公司', value: '有限公司', color: 'secondary'},
+              {label: '合伙企业', value: '合伙企业'}
+            ]
+          }
+        },
+        buttons: [
+          '取消',
+          {
+            label: '确认',
+            handler (value) {
+              _this.formData.from = value.option
+            }
+          }
+        ]
+      })
+    },
     // 如果没有登录跳转到登陆页，如果已经登录，可以查询数据
     checkNameSubmit () {
       api.getCompanyDetail(this.formData.city, this.formData.name, this.formData.industry, this.formData.from)
@@ -310,9 +328,10 @@ export default {
       border-right:1px solid #dedede;
     .item:last-child
       border-right:none;
+    
     button
       display:block
-      padding:0 5px;
+      padding:0 2px;
       margin:0 auto;
       text-align:center;
       .on-right

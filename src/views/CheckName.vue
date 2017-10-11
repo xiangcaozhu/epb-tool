@@ -3,17 +3,23 @@
     <!-- 起名查询 start -->
     <div class="query-warp bg-light-blue-9">
       <div class="query-header">
-        <h2 class="title">公司起名系统</h2>
-        <p class="des">只推荐工商通过率高的好名字</p>
+        <h2 class="title">公司核名系统</h2>
+        <p class="des">公司名字预查名，提升工商注册通过率</p>
       </div>
       <form class="query-form">
         <div class="form-wrap">
-          <q-input v-model="formData.city" @click="searchCityInput(true)" float-label="城市" :error="$v.formData.city.$error" placeholder=" 如：厦门" readonly
-          />
+          <q-input v-model="formData.city" @click="searchCityInput(true)" float-label="城市" :error="$v.formData.city.$error" placeholder=" 如：厦门" readonly/>
+          <q-input v-model="formData.name" float-label="字号" :error="$v.formData.name.$error" placeholder=" 如：酷泰"/>
           <q-input v-model="formData.industry" @click.native="searchIndustryInput(true)" float-label="行业" :error="$v.formData.industry.$error" placeholder=" 如：网络科技" readonly/>
+          <q-select
+            radio
+            float-label="类型"
+            v-model="formData.from"
+            :options="fromOptions"
+          />
         </div>
-        <q-btn big color="orange"  @click="giveNameSubmit" >
-          推荐名字
+        <q-btn big color="orange"  @click="checkNameSubmit" >
+          核一下
         </q-btn>
       </form>
     </div>
@@ -63,14 +69,28 @@ export default {
       isMenu: true,
       formData: {
         city: '',
-        industry: ''
-      }
+        industry: '',
+        name: '',
+        from: '有限公司'
+      },
+      fromOptions: [
+        {
+          label: '有限公司',
+          value: '有限公司'
+        },
+        {
+          label: '合伙企业',
+          value: '合伙企业'
+        }
+      ]
     }
   },
   validations: {
     formData: {
       city: { required },
-      industry: { required }
+      industry: { required },
+      name: { required },
+      from: { required }
     }
   },
   computed: {
@@ -104,14 +124,22 @@ export default {
       this.searchIndustryModal(true)
     },
     // 如果没有登录跳转到登陆页，如果已经登录，可以查询数据
-    giveNameSubmit () {
+    checkNameSubmit () {
       this.$v.formData.city.$touch()
       this.$v.formData.industry.$touch()
+      this.$v.formData.name.$touch()
+      this.$v.formData.from.$touch()
       if (this.$v.formData.city.$error) {
         Toast.create('城市是必选项！')
         return
+      } else if (this.$v.formData.name.$error) {
+        Toast.create('企业字号是必选项！')
+        return
       } else if (this.$v.formData.industry.$error) {
         Toast.create('行业是必选项！')
+        return
+      } else if (this.$v.formData.from.$error) {
+        Toast.create('公司类型是必选项！')
         return
       }
       if (!Cookies.get('m')) {
@@ -137,7 +165,7 @@ export default {
         })
         return
       }
-      this.$router.push({ path: '/giveNameList', name: 'giveNameList', query: {city: this.formData.city, industry: this.formData.industry} })
+      this.$router.push({ path: '/checkNameResult', name: 'checkNameResult', query: {city: this.formData.city, name: this.formData.name, industry: this.formData.industry, from: this.formData.from} })
     }
   },
   mounted () {

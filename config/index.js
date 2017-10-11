@@ -44,19 +44,19 @@ module.exports = {
     // to "false", otherwise you can set it to "true" to always
     // have only the messages regarding your last (re)compilation.
     clearConsoleOnRebuild: false,
-
+ 
     // Proxy your API if using any.
     // Also see /build/script.dev.js and search for "proxy api requests"
     // https://github.com/chimurai/http-proxy-middleware
-    proxyTable:
+    proxyTable: {
        // proxy all requests starting with /api
-      '/api': {
-        target: 'http://10.0.100.119:8080/qidashi-boot/api',
+      '/qidashi-boot': {
+        target: 'http://10.0.100.119:8080/qidashi-boot',
         changeOrigin: true,
         pathRewrite: {
-          '^/api': ''
+          '^/qidashi-boot': ''
         }
-      }
+      } 
     }
   }
 }
