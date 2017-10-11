@@ -58,6 +58,16 @@ export default new VueRouter({
       component: load('ManageRange')
     },
     {
+      path: 'manageRangeList',
+      name: 'manageRangeList',
+      component: load('ManageRangeList')
+    },
+    {
+      path: 'manageRangeDetail/:id',
+      name: 'manageRangeDetail',
+      component: load('ManageRangeDetail')
+    },
+    {
       path: 'download',
       name: 'download',
       component: load('Download')

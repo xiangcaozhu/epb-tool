@@ -1,8 +1,8 @@
 
 // 配置api请求地址
 const API_CONFIG = {
-  host: '/qidashi-boot',
-  // host: 'http://10.0.90.104:8080',
+  // host: '/qidashi-boot',
+  host: 'http://rapapi.org/mockjsdata/26848',
   // host: '',
   IP: ''
 }
