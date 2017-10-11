@@ -35,53 +35,105 @@
         </div>
       </div>
       <div class="detail-wrap" >
-        <q-tabs v-model="tabsModel">
+        <q-tabs v-model="tabsModel" inverted>
           <q-tab name="prohibitWordsResult" label="敏感词分析" slot="title" />
           <q-tab name="approximateCompanyFourResult" label="相似公司分析" slot="title" />
           <q-tab name="companyTrademarkResultPO" label="相似商标分析" slot="title" />
           <q-tab-pane name="prohibitWordsResult" v-if="resultData.prohibitWordsResult">
-              <div class="proh">
-                <span>{{resultData.prohibitWordsResult.passRate}}</span>
-              </div>
-              <div class="proh-list" v-for="(list, index) in resultData.prohibitWordsResult.hmbSolrWords" :key="index">
-                {{list.id}} <br>
-                {{list.title}} <br>
-                {{list.content}} <br>
-                {{list.name}} <br>
-                {{list.product}} <br>
-                {{list.productWords}} <br>
-                {{list.owner}} <br>
-                {{list.banClass}} <br>
-                {{list.banType}} <br>
-                {{list.province}} <br>
-                {{list.type}} <br>
-              </div>
+              <q-infinite-scroll :handler="refresher">
+                <q-card inline v-for="(list, index) in resultData.prohibitWordsResult.hmbSolrWords" class="caption" :key="index">
+                  <q-card-title>
+                    {{list.title}}
+                    <span slot="subtitle">相似度{{list.similar}}/通过率{{list.passRate}}%</span>
+                    <div slot="right" class="row items-center">
+                      <q-chip small square color="secondary" class="shadow-1">
+                        {{ index + 1 }}
+                      </q-chip>
+                    </div>
+                  </q-card-title>
+                  <q-card-separator />
+                  <q-card-main>
+                    <p class="text-faded">{{list.content}}</p>
+                    <p>{{list.name}}</p>
+                    <p>{{list.product}}</p>
+                    <p>{{list.productWords}}</p>
+                    <p>{{list.owner}} </p>
+                    <p>{{list.banClass}} </p>
+                    <p>{{list.banType}}</p>
+                    <p>{{list.province}} </p>
+                    <p>{{list.type}} </p>
+                  </q-card-main>
+                </q-card>
+                <div class="row justify-center" style="margin-bottom: 50px;">
+                  <q-spinner-dots slot="message" :size="40" />
+                </div>
+              </q-infinite-scroll> 
           </q-tab-pane>
           <q-tab-pane name="approximateCompanyFourResult" v-if="resultData.approximateCompanyFourResult">
-              <div class="appro">
-                {{resultData.approximateCompanyFourResult.title}}
-                {{resultData.approximateCompanyFourResult.suggest}}
-                {{resultData.approximateCompanyFourResult.passRate}}
-              </div>
-              <div class="appro-list" v-for="(list, index) in resultData.approximateCompanyFourResult.list">
-                {{list.title}}
-                {{list.companyName}}
-                {{list.detail}}
-                {{list.searchType}}
-                {{list.similar}}
-                {{list.warnWords}}
-              </div>
+              <q-card>
+                <q-card-title>
+                  {{resultData.approximateCompanyFourResult.title}}
+                  <span slot="subtitle">
+                    <q-rating
+                      v-model="rate"
+                      :max="10"
+                    />
+                  </span>
+                </q-card-title>
+                <q-card-separator />
+                <q-card-main>
+                  {{resultData.approximateCompanyFourResult.suggest}}
+                </q-card-main>
+              </q-card>
+              <q-infinite-scroll :handler="refresher">
+                <q-card inline v-for="(list, index) in resultData.approximateCompanyFourResult.list" :key="index">
+                  <q-card-title>
+                    {{list.companyName}}
+                    <span slot="subtitle">{{list.title}}</span>
+                    <div slot="right" class="row items-center">
+                      <q-chip small square color="secondary" class="shadow-1">
+                        {{ index + 1 }}
+                      </q-chip>
+                      <!-- {{list.similar}} -->
+                      <!-- {{list.warnWords}} -->
+                    </div>
+                  </q-card-title>
+                  <q-card-separator />
+                  <q-card-main>
+                    <p class="text-faded">{{list.searchType}}</p>
+                    <p class="text-faded">{{list.detail}}</p>
+                  </q-card-main>
+                  
+                    <p></p>
+                    <p>{{list.passRate}}</p>
+                    <p></p>
+                </q-card>
+                <div class="row justify-center" style="margin-bottom: 50px;">
+                  <q-spinner-dots slot="message" :size="40" />
+                </div>
+              </q-infinite-scroll>
           </q-tab-pane>
           <q-tab-pane name="companyTrademarkResultPO" v-if="resultData.companyTrademarkResultPO">
-              <div class="company">
-                {{resultData.companyTrademarkResultPO.passRate}}
-              </div>
-              <div class="company-list" v-for="(list, index) in resultData.companyTrademarkResultPO.trademarkPOs">
-                {{list.title}}
-                {{list.content}}
-                {{list.passRate}}
-                {{list.similar}}
-              </div>
+              <q-infinite-scroll :handler="refresher">
+                <q-card inline v-for="(list, index) in resultData.companyTrademarkResultPO.trademarkPOs" class="caption" :key="index">
+                  <q-card-title>
+                    {{list.title}}
+                    <span slot="subtitle">相似度{{list.similar}}/通过率{{list.passRate}}%</span>
+                    <div slot="right" class="row items-center">
+                      <q-chip small square color="secondary" class="shadow-1">
+                        {{ index + 1 }}
+                      </q-chip>
+                    </div>
+                  </q-card-title>
+                  <q-card-separator />
+                  <q-card-main>
+                    <p class="text-faded">{{list.content}}</p>
+                  </q-card-main>
+                </q-card>
+                <div class="row justify-center" style="margin-bottom: 50px;">
+                  <q-spinner-dots slot="message" :size="40" />
+                </div>
+              </q-infinite-scroll>          
           </q-tab-pane>
         </q-tabs>
       </div>
@@ -102,7 +154,17 @@ import {
   Dialog,
   QTabs,
   QTab,
-  QTabPane
+  QTabPane,
+  QInfiniteScroll,
+  QSpinnerDots,
+  QChip,
+  QCard,
+  QCardTitle,
+  QCardMedia,
+  QCardActions,
+  QCardSeparator,
+  QCardMain,
+  QRating
 } from 'quasar'
 // 导出常用的数据对象
 import localData from 'static/localData'
@@ -125,7 +187,17 @@ export default {
     QDialogSelect,
     QTabs,
     QTab,
-    QTabPane
+    QTabPane,
+    QInfiniteScroll,
+    QSpinnerDots,
+    QChip,
+    QCard,
+    QCardTitle,
+    QCardMedia,
+    QCardActions,
+    QCardSeparator,
+    QCardMain,
+    QRating
   },
   data () {
     return {
@@ -149,6 +221,7 @@ export default {
       resultData: {
         content: ''
       },
+      items: [{}, {}, {}, {}, {}],
       tabsModel: 'prohibitWordsResult',
       tabsOptions: [
         {label: 'Tab 1', value: 'xtab-1'},
@@ -163,11 +236,26 @@ export default {
     // 初始化根据query,加载api
     this.checkNameSubmit()
   },
+  computed: {
+    rate () {
+      return Math.floor(this.resultData.approximateCompanyFourResult.passRate / 10)
+    }
+  },
   methods: {
     ...mapMutations([
       'searchCityModal',
       'searchIndustryModal'
     ]),
+    refresher (index, done) {
+      setTimeout(() => {
+        let items = []
+        for (let i = 0; i < 7; i++) {
+          items.push({})
+        }
+        this.items = this.items.concat(items)
+        done()
+      }, 2500)
+    },
     getSelectedCity (query) {
       this.formData.city = query.label
     },
