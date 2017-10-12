@@ -7,13 +7,17 @@
           <q-btn flat @click="loginModal(false)">
             <q-icon name="keyboard_arrow_left" />
           </q-btn>
-          <q-toolbar-title>
+          <q-toolbar-title v-if="!getSignUp">
             登录
+          </q-toolbar-title v-else>
+          <q-toolbar-title>
+            账号信息
           </q-toolbar-title>
         </q-toolbar>
         <div class="layout-padding">
-          <h1 class="login-title">免注册登陆</h1>
-          <div class="login-wrap">
+          <h1 v-if="!getSignUp" class="login-title">免注册登陆</h1>
+          <h1 v-else class="login-title">您的登录账号为</h1>
+          <div v-if="!getSignUp" class="login-wrap">
             <div class="form-wrap">
               <q-field
                 icon="stay primary portrait"
@@ -26,6 +30,12 @@
             </div>
             <q-btn @click="loginSubmit()" color="primary" big>
             登录
+            </q-btn>
+          </div>
+          <div v-else class="has-login">
+            <p class="has-mobile">{{getAccount.mobile}}</p>
+            <q-btn @click="loginOut()" color="primary" big>
+            退出
             </q-btn>
           </div>
         </div>
@@ -78,11 +88,14 @@ export default {
   },
   computed: {
     ...mapGetters([
-      'getLogin'
+      'getLogin',
+      'getAccount',
+      'isLoading',
+      'getSignUp'
     ])
   },
   methods: {
-    ...mapMutations(['loginModal']),
+    ...mapMutations(['loginModal', 'isSignUp', 'saveAccount']),
     loginSubmit () {
       this.$v.mobile.$touch()
       if (!this.$v.mobile.required) {
@@ -96,11 +109,17 @@ export default {
         console.log(res)
         if (res.data.code === 0) {
           Toast.create('登陆成功！马上去查询试试')
+          this.saveAccount({mobile: this.mobile})
+          this.isSignUp(true)
           this.loginModal(false)
         } else {
           Toast.create('登陆失败！')
         }
       })
+    },
+    loginOut () {
+      this.isSignUp(false)
+      this.loginModal(false)
     }
   }
 }
@@ -116,7 +135,7 @@ export default {
     text-align:center;
     font-weight:bold;
     margin:40px auto;
-  .login-wrap
+  .login-wrap,.has-login
     margin:10px;
     padding:10px;
     .form-wrap
@@ -126,5 +145,10 @@ export default {
     button
       width: 100%;
       margin-top:20px;
+    .has-mobile
+      text-align:center;
+      font-size:30px;
+      font-weight:bold;
+      color:orange;
 </style>
 

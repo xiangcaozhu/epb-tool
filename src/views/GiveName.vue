@@ -26,7 +26,6 @@
 
 <script>
 import {
-  Cookies,
   QInput,
   QBtn,
   QIcon,
@@ -60,7 +59,6 @@ export default {
   },
   data () {
     return {
-      isMenu: true,
       formData: {
         city: '',
         industry: ''
@@ -76,14 +74,18 @@ export default {
   computed: {
     ...mapGetters([
       'getSearchCity',
-      'getSearchIndustry'
+      'getSearchIndustry',
+      'getSignUp',
+      'getHas',
+      'getLoading'
     ])
   },
   methods: {
     ...mapMutations([
       'searchCityModal',
       'searchIndustryModal',
-      'loginModal'
+      'loginModal',
+      'headBar'
     ]),
     getSelectedCity (query) {
       this.formData.city = query.label
@@ -114,7 +116,7 @@ export default {
         Toast.create('行业是必选项！')
         return
       }
-      if (!Cookies.get('m')) {
+      if (!this.getSignUp) {
         let _this = this
         Dialog.create({
           title: '提示：',
@@ -139,6 +141,12 @@ export default {
       }
       this.$router.push({ path: '/giveNameList', name: 'giveNameList', query: {city: this.formData.city, industry: this.formData.industry} })
     }
+  },
+  created () {
+    this.headBar({
+      title: '一品标局',
+      subTitle: '公司起名系统'
+    })
   },
   mounted () {
     this.$nextTick(() => {

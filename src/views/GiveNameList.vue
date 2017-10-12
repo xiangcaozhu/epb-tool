@@ -56,9 +56,9 @@ import localData from 'static/localData'
 import SearchCity from '%/SearchCity'
 import SearchIndustry from '%/SearchIndustry'
 import api from 'api/index'
-import { mapMutations } from 'vuex'
+import { mapGetters, mapMutations } from 'vuex'
 export default {
-  name: 'giveName',
+  name: 'giveNameList',
   components: {
     QInput,
     QBtn,
@@ -72,7 +72,6 @@ export default {
   data () {
     return {
       progress: false,
-      isMenu: true,
       formData: {
         city: this.$route.query.city,
         industry: this.$route.query.industry
@@ -85,11 +84,19 @@ export default {
   created () {
     // 初始化根据query,加载api
     this.giveNameSubmit()
+    this.headBar({
+      title: '公司起名系统',
+      subTitle: '推荐列表'
+    })
+  },
+  computed: {
+    ...mapGetters(['isLoading'])
   },
   methods: {
     ...mapMutations([
       'searchCityModal',
-      'searchIndustryModal'
+      'searchIndustryModal',
+      'headBar'
     ]),
     getSelectedCity (query) {
       this.formData.city = query.label

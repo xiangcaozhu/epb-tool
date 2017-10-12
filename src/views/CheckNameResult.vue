@@ -46,7 +46,7 @@
           <q-tab name="approximateCompanyFourResult" label="相似公司分析" slot="title" />
           <q-tab name="companyTrademarkResultPO" label="相似商标分析" slot="title" />
           <q-tab-pane name="prohibitWordsResult">
-              <div class="yes" v-if="resultData.prohibitWordsResult">
+              <div class="yes" v-if="resultData.prohibitWordsResult.hmbSolrWords">
                  <q-card inline v-for="(list, index) in resultData.prohibitWordsResult.hmbSolrWords" class="caption" :key="index">
                     <q-card-title>
                       {{list.title}}
@@ -69,8 +69,8 @@
               </div>
           </q-tab-pane>
           <q-tab-pane name="approximateCompanyFourResult" >
-              <q-infinite-scroll :handler="refresher" v-if="resultData.approximateCompanyFourResult">
-                <q-card inline v-for="(list, index) in resultData.approximateCompanyFourResult.list" :key="index">
+              <q-infinite-scroll :handler="loadMore" v-if="approList">
+                <q-card inline v-for="(list, index) in approList" :key="index">
                   <q-card-title>
                     {{list.companyName}}
                     <span slot="subtitle">{{list.searchType}}</span>
@@ -102,7 +102,7 @@
               </div>
           </q-tab-pane>
           <q-tab-pane name="companyTrademarkResultPO" >
-              <q-infinite-scroll :handler="refresher" v-if="resultData.companyTrademarkResultPO">
+              <q-infinite-scroll :handler="loadMore" v-if="resultData.companyTrademarkResultPO">
                 <q-card inline v-for="(list, index) in resultData.companyTrademarkResultPO.trademarkPOs" class="caption" :key="index">
                   <q-card-title>
                     {{list.title}}
@@ -166,7 +166,7 @@ import api from 'api/index'
 import { mapMutations } from 'vuex'
 
 export default {
-  name: 'giveName',
+  name: 'checkNameResult',
   components: {
     QInput,
     QBtn,
@@ -193,8 +193,6 @@ export default {
   },
   data () {
     return {
-      progress: false,
-      isMenu: true,
       formData: {
         city: this.$route.query.city || '',
         industry: this.$route.query.industry || '',
@@ -214,15 +212,14 @@ export default {
           trademarkPOs: []
         }
       },
-      items: [{}, {}, {}, {}, {}],
+      approList: [],
+      trademarkPOs: [],
       tabsModel: 'prohibitWordsResult',
-      tabsOptions: [
-        {label: 'Tab 1', value: 'xtab-1'},
-        {label: 'Tab 2', value: 'xtab-2'},
-        {label: 'Tab 3', value: 'xtab-3'}
-      ],
       hotCity: localData.hotCity,
-      industrys: localData.industrys
+      industrys: localData.industrys,
+      start: 0,
+      count: 5,
+      index: 0
     }
   },
   created () {
@@ -239,15 +236,27 @@ export default {
       'searchCityModal',
       'searchIndustryModal'
     ]),
-    refresher (index, done) {
-      setTimeout(() => {
-        let items = []
-        for (let i = 0; i < 7; i++) {
-          items.push({})
-        }
-        this.items = this.items.concat(items)
-        done()
-      }, 2500)
+    loadMore (index, done) {
+      if (this.resultData.approximateCompanyFourResult.list) {
+        setTimeout(() => {
+          let items = []
+          let start = this.count*this.index,
+              end = start+this.count, 
+              maxEnd =this.resultData.approximateCompanyFourResult.list.length-end<this.count?this.resultData.approximateCompanyFourResult.list.length:end
+          console.log(start)
+          console.log(end)
+          console.log( maxEnd)
+          for (; start < maxEnd;start++) {
+            items.push(this.resultData.approximateCompanyFourResult.list[start])
+          }
+          if (this.approList.length >= this.resultData.approximateCompanyFourResult.list.length) {
+            return false
+          }
+          this.index++
+          this.approList = this.approList.concat(items)
+          done()
+        }, 2500)
+      }
     },
     getSelectedCity (query) {
       this.formData.city = query.label
