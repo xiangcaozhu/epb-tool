@@ -8,32 +8,20 @@
             <q-btn @click="searchIndustryModal(true)" flat >{{formData.industry}}<q-icon size="14px" class="text-grey-6" name="arrow drop down"/></q-btn>
         </div>
         <div class="col-4 item">
-            <q-btn @click="getManageRangeDetail" class="tab-submit" color="primary" small>一键生成</q-btn>
+            <q-btn @click="getManageRangeList" class="tab-submit" color="primary" small>一键生成</q-btn>
         </div>
       </div>
       <div class="table-wrap">
-        <table class="q-table  flipped bordered">
-          <thead>
-            <tr>
-              <th class="text-left">公 司 名 ：</th>
-              <th class="text-right">注册地址：</th>
-              <th class="text-right">法人姓名：</th>
-              <th class="text-right">注册资本：</th>
-              <th class="text-right">经营范围：</th>
-            </tr>
-          </thead>
+        <table class="q-table bordered striped-odd">
           <tbody>
-            <tr>
-             <td>{{detailData.name}}</td>
-             <td>{{detailData.addr}}</td>
-             <td>{{detailData.legal}}</td>
-             <td>{{detailData.capital}}</td>
-             <td>{{detailData.scope}}</td>
-            </tr>
+            <tr><th class="text-left">公 司 名 ：</th><td>{{detailData.name}}</td></tr>
+            <tr><th class="text-right">注册地址：</th><td>{{detailData.addr}}</td></tr>
+            <tr><th class="text-right">法人姓名：</th><td>{{detailData.legal}}</td></tr>
+            <tr><th class="text-right">注册资本：</th><td>{{detailData.capital}}</td></tr>
+            <tr><th class="text-right">经营范围：</th><td>{{detailData.scope}}</td></tr>
           </tbody>
         </table>
       </div>
-
       <search-city @getSelectedCity="getSelectedCity"></search-city>
       <search-industry @getSelectedIndustry="getSelectedIndustry"></search-industry>
   </div>
@@ -114,6 +102,9 @@ export default {
           this.detailData = res.data.data
         }
       })
+    },
+    getManageRangeList () {
+      this.$router.push({path: '/manageRangeList', query: {city: this.formData.city, industry: this.formData.industry}})
     }
   },
   mounted () {
@@ -150,19 +141,10 @@ export default {
       tr
         width: 100%;
       th
+        width:110px;
         display:table-cell;
         color:#666;
-        height:50px;
         vertical-align:middle;
       td,th
-        text-align:left;       
-  .company-name
-    color:#f00;
-  .exchange-wrap
-    padding:50px 10px;
-    button
-      width:100%;
-    .tips
-      color:orange;
-      text-align:center;
+        text-align:left;
 </style>

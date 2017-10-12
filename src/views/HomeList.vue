@@ -55,7 +55,7 @@ export default {
         {name: '公司起名系统', subName: '企大师为您智能推荐名字', src: require('assets/parallax2.63cd0bb.jpg'), count: 2345, color: 'primary', link: '我要起名', to: 'giveName'},
         {name: '公司核名系统', subName: '公司名字工商查名 3秒出结果', src: require('assets/parallax2.63cd0bb.jpg'), count: 10238385, color: 'secondary', link: '我要核名', to: 'checkName'},
         {name: '经营范围智能生成', subName: '经营范围智能生成', src: require('assets/parallax2.63cd0bb.jpg'), count: 2345, color: 'info', link: '我要生成', to: 'manageRange'},
-        {name: '工商材料下载', subName: '工商材料下载', src: require('assets/parallax2.63cd0bb.jpg'), count: 233445, color: 'positive', link: '我要下载', to: 'download'}
+        {name: '工商材料下载', subName: '工商材料下载', src: require('assets/parallax2.63cd0bb.jpg'), count: 233445, color: 'positive', link: '我要下载', to: 'materialList'}
       ]
     }
   },

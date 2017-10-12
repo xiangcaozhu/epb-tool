@@ -328,10 +328,9 @@ export default {
       border-right:1px solid #dedede;
     .item:last-child
       border-right:none;
-    
     button
       display:block
-      padding:0 2px;
+      padding:0;
       margin:0 auto;
       text-align:center;
       .on-right

@@ -17,7 +17,7 @@ import {
 // import { Cookies } from 'quasar'
 
 // axios.defaults.withCredentials = true
-axios.defaults.timeout = 10000
+axios.defaults.timeout = 20000
 
 // request拦截器
 // axios.interceptors.request.use(

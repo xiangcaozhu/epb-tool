@@ -55,7 +55,7 @@
             <q-item-main label="经营范围智能生成！" sublabel="经营范围智能生成！" />
           </q-item>
         </q-side-link>
-        <q-side-link item to="/download">
+        <q-side-link item to="/materialList">
           <q-item>
             <q-item-side icon="file download" />
             <q-item-main label="工商材料下载" sublabel="工商材料下载" />

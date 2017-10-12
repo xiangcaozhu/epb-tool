@@ -11,37 +11,7 @@
             <q-btn @click="manageRangeSubmit" class="tab-submit" color="primary" small>一键生成</q-btn>
         </div>
       </div>
-      <div class="list-wrap">
-        <q-card color="" v-for="(item, index) in listData" :key="index" >
-          <q-card-title>
-            <q-chip tag square color="orange">
-              推荐{{index+1}}
-            </q-chip>
-            <q-chip class="btn-copy" :data-clipboard-text="item.scope" slot="right" icon="content copy" color="grey">
-              复制
-            </q-chip>
-            <q-icon  />
-          </q-card-title>
-          <q-card-main>
-            <h6>经验范围：</h6>
-            <p class="text-fade">{{item.scope}}</p>
-          </q-card-main>
-          <q-card-separator />
-          <q-card-main>
-            参考公司：
-            <router-link :to="{ name: 'manageRangeDetail', params: { id: item.id }, query: {city: formData.city, industry: formData.industry}}">{{item.name}}</router-link>
-          </q-card-main>
-        </q-card>
-      </div>
-      <div class="exchange-wrap">
-        <q-btn big icon="autorenew" loader color="orange" v-model="progress" @click="manageRangeNews">
-          换一批
-          <span slot="loading">
-            <q-spinner-mat  class="on-left" slot="loading" color="white" :size="30" />
-            努力加载中...
-          </span>
-        </q-btn>
-      </div>
+      <router-view />
       <search-city @getSelectedCity="getSelectedCity"></search-city>
       <search-industry @getSelectedIndustry="getSelectedIndustry"></search-industry>
   </div>
@@ -49,7 +19,6 @@
 
 <script>
 import {
-  Toast,
   QInput,
   QBtn,
   QIcon,
@@ -69,7 +38,6 @@ import localData from 'static/localData'
 import SearchCity from '%/SearchCity'
 import SearchIndustry from '%/SearchIndustry'
 import api from 'api/index'
-import Clipboard from 'clipboard'
 import { mapMutations } from 'vuex'
 export default {
   name: 'manageRange',
@@ -126,29 +94,9 @@ export default {
             this.listData = res.data.data
           }
         })
-    },
-    manageRangeNews () {
-      api.getCompanyScope(this.formData.city, this.formData.industry)
-        .then(res => {
-          if (res.data.code === 0) {
-            setTimeout(() => {
-              this.progress = false
-            }, 500)
-            this.listData = res.data.data
-          }
-        })
     }
   },
   mounted () {
-    let clipboard = new Clipboard('.btn-copy')
-    clipboard.on('success', (e) => {
-      Toast.create('复制到剪切板，您可以粘贴到任何地方！')
-      e.clearSelection()
-    })
-    clipboard.on('error', (e) => {
-      Toast.create('复制失败，您的浏览器不支持！')
-      e.clearSelection()
-    })
     this.$nextTick(() => {
     })
   }
@@ -173,17 +121,4 @@ export default {
     .tab-submit
       width:80%;
       margin:5px auto;
-  .list-wrap
-    width:100%;
-    padding:10px;
-    box-sizing:border-box;      
-  .company-name
-    color:#f00;
-  .exchange-wrap
-    padding:50px 10px;
-    button
-      width:100%;
-    .tips
-      color:orange;
-      text-align:center;
 </style>
