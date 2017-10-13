@@ -9,14 +9,14 @@
           </q-btn>
           <q-toolbar-title v-if="!getSignUp">
             登录
-          </q-toolbar-title v-else>
-          <q-toolbar-title>
+          </q-toolbar-title>
+          <q-toolbar-title v-else>
             账号信息
           </q-toolbar-title>
         </q-toolbar>
         <div class="layout-padding">
           <h1 v-if="!getSignUp" class="login-title">免注册登陆</h1>
-          <h1 v-else class="login-title">您的登录账号为</h1>
+          <h1 v-else class="login-title">当前登录账号为</h1>
           <div v-if="!getSignUp" class="login-wrap">
             <div class="form-wrap">
               <q-field
@@ -47,6 +47,7 @@
 
 <script>
 import {
+  Cookies,
   Toast,
   Ripple,
   QBtn,
@@ -109,6 +110,10 @@ export default {
         console.log(res)
         if (res.data.code === 0) {
           Toast.create('登陆成功！马上去查询试试')
+          Cookies.set('mobile', this.mobile, {
+            expires: 365,
+            path: '/'
+          })
           this.saveAccount({mobile: this.mobile})
           this.isSignUp(true)
           this.loginModal(false)
@@ -118,6 +123,9 @@ export default {
       })
     },
     loginOut () {
+      this.saveAccount({
+        mobile: ''
+      })
       this.isSignUp(false)
       this.loginModal(false)
     }

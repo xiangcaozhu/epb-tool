@@ -1,14 +1,11 @@
 <template>
   <div>
-    <q-gallery-carousel :src="slider" class="responsive"></q-gallery-carousel>
-    <ul class="breadcrumb">
-      <li>
-        <a>首页</a>
-      </li>
-      <li>
-        <a>工商材料列表页</a>
-      </li>
-    </ul>
+    <q-carousel infinite  fullscreen class="text-white" style="min-height:180px;">
+      <div slot="slide" class="bg-grey-2 centered" v-for="(item, index) in slider" style="padding:0;">
+        <img :src="item.src" alt="工商材料" class="responsive">
+      </div>
+    </q-carousel>
+    <!-- <q-gallery-carousel :src="slider" class="responsive"></q-gallery-carousel> -->
     <div class="wrap-title">
       <h2>
         <q-chip  tag color="orange">
@@ -109,12 +106,11 @@ export default {
   data () {
     return {
       slider: [
-        require('assets/parallax2.63cd0bb.jpg'),
-        require('assets/parallax2.63cd0bb.jpg'),
-        require('assets/parallax2.63cd0bb.jpg'),
-        require('assets/parallax2.63cd0bb.jpg'),
-        require('assets/parallax2.63cd0bb.jpg'),
-        require('assets/parallax2.63cd0bb.jpg')
+        { src: require('assets/gswd.jpg') },
+        { src: require('assets/gsfw.jpg') },
+        { src: require('assets/gshm.jpg') },
+        { src: require('assets/gsqm.jpg') },
+        { src: require('assets/gsjz.jpg') }
       ],
       tabsModel: '',
       tabsModel2: '',
@@ -130,11 +126,18 @@ export default {
   created () {
     // 初始化根据query,加载api
     this.getMaterialList()
+    this.setMenuIcon(true)
+    this.headBar({
+      title: '工商材料',
+      subTitle: '下载列表'
+    })
   },
   methods: {
     ...mapMutations([
       'searchCityModal',
-      'searchIndustryModal'
+      'searchIndustryModal',
+      'headBar',
+      'setMenuIcon'
     ]),
     getMaterialList () {
       api.getMaterialAll().then(res => {
@@ -185,4 +188,8 @@ export default {
   h2
     font-size:20px;
     font-weight:bold;
+    margin-top:0;
+  .list
+    a
+      color:#333;
 </style>

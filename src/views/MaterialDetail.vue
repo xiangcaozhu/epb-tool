@@ -1,11 +1,11 @@
 <template>
   <div>
     <div class="wrap-content">
-      <ul>
-        <li>{{detailData.title}}</li>
-        <li>{{detailData.usefor}}</li>
-        <li>{{detailData.description}}</li>
-      </ul>
+      <div class="explain">
+        <p><strong>文件用途：</strong>{{detailData.usefor}}</p>
+        <p><strong>使用解读：</strong></p>
+      </div>
+      <div class="descrip" v-html="detailData.description"></div>
       <div class="">
         <div class="wrap-images" v-for="(item, index) in detailData.picList">
           <img :src="item" :alt="detailData.title">
@@ -13,21 +13,22 @@
       </div>
     </div>
     <div class="row tabs tabs-bottom">
-      <div class="col item"><q-icon color="primary" name="reply" size="20px"/>返回</div>
-      <div class="col item"><q-icon color="primary" name="phone" size="20px"/>电话咨询</div>
-      <div class="col item strong"><q-icon @click="downloadMaterial" color="white" name="file download" size="20px"/>立即下载</div>
+      <div class="col item" @click="$router.go(-1)"><q-icon color="primary" name="reply" size="20px"/>返回</div>
+      <div class="col item"><a href="tel:13328762329" class="text-grey-8"><q-icon color="primary" name="phone" size="20px"/>电话咨询</a></div>
+      <div class="col item strong"  @click="downloadMaterial"><q-icon color="white" name="file download" size="20px"/>立即下载</div>
     </div>
   </div>
 </template>
 
 <script>
 import {
+  Toast,
   QBtn,
   QIcon
 } from 'quasar'
 
 import api from 'api/index'
-// import { mapMutations } from 'vuex'
+import { mapMutations } from 'vuex'
 
 export default {
   name: 'index',
@@ -37,34 +38,37 @@ export default {
   },
   data () {
     return {
-      isMenu: true,
       detailData: {}
     }
   },
   created () {
     this.getMaterialIdDetail()
+    this.setMenuIcon(false)
   },
   methods: {
+    ...mapMutations(['setMenuIcon', 'headBar']),
     getMaterialIdDetail () {
       api.getMaterialIdMsg(this.$route.params.id).then(res => {
         if (res.data.code === 0) {
-          console.log(res.data.data)
           this.detailData = res.data.data
+          this.headBar({
+            title: this.detailData.title,
+            subTitle: '文档下载'
+          })
         }
       })
     },
     downloadMaterial () {
       if (this.$route.params.id) {
-        window.location.href = `http://localhost:8080/qidashi-boot/material/${this.$route.params.id}/down?id=${this.$route.params.id}`
+        window.location.href = `/qidashi-boot/material/${this.$route.params.id}/down?id=${this.$route.params.id}`
+        Toast.create('文档稍后会提示下载！')
       }
     }
   },
   mounted () {
     this.$nextTick(() => {
-
     })
   }
-
 }
 </script>
 
@@ -82,13 +86,27 @@ export default {
   .item
     border-right:1px solid #dedede;
     &:last-child{
-      border-right:0;
+      border-right:none;
     }
   .strong
     background-color:orange;
     color:#fff;
+.explain
+  padding:20px 20px 0;
+.descrip
+  padding:0 20px;
+  ul
+    padding:0 20px 0 50px;
+  li
+    list-style-type:decimal;
+    font-size:14px;
+    color:#666;
+    line-height:1.8;
+    margin-bottom:10px;
 .wrap-images
   width:100%;
+  margin-top:20px;
+  margin-bottom:70px;
   img
     max-width:100%;
     display:block;

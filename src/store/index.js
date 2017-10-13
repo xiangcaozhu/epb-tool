@@ -8,6 +8,7 @@ const state = {
     mobile: ''
   },
   is: {
+    menuIcon: true,
     signUp: false,
     searchCityModal: false,
     searchIndustryModal: false,
@@ -21,7 +22,7 @@ const state = {
     footerTab: true
   },
   headBar: {
-    title: '一品标局',
+    title: '易企名',
     subTitle: '企业起名核名系统'
   }
 }
@@ -33,7 +34,8 @@ const getters = {
   getSignUp: state => state.is.signUp,
   getHeadBar: state => state.headBar,
   getHas: state => state.has,
-  getAccount: state => state.account
+  getAccount: state => state.account,
+  getMenuIcon: state => state.is.menuIcon
 }
 
 const mutations = {
@@ -66,6 +68,9 @@ const mutations = {
   // 当前头部的标题和副标题
   headBar (state, data) {
     state.headBar = data
+  },
+  setMenuIcon (state, status) {
+    state.is.menuIcon = status
   }
 }
 const actions = {}

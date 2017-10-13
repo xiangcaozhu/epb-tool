@@ -60,7 +60,6 @@ export default {
   },
   data () {
     return {
-      isMenu: true,
       formData: {
         city: '',
         industry: ''
@@ -83,7 +82,9 @@ export default {
     ...mapMutations([
       'searchCityModal',
       'searchIndustryModal',
-      'loginModal'
+      'loginModal',
+      'headBar',
+      'setMenuIcon'
     ]),
     getSelectedCity (query) {
       this.formData.city = query.label
@@ -139,6 +140,13 @@ export default {
       }
       this.$router.push({ path: '/manageRangeList', name: 'manageRangeList', query: {city: this.formData.city, industry: this.formData.industry} })
     }
+  },
+  created () {
+    this.setMenuIcon(true)
+    this.headBar({
+      title: '经营范围生成',
+      subTitle: '查询入口'
+    })
   },
   mounted () {
     this.$nextTick(() => {

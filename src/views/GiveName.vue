@@ -85,7 +85,8 @@ export default {
       'searchCityModal',
       'searchIndustryModal',
       'loginModal',
-      'headBar'
+      'headBar',
+      'setMenuIcon'
     ]),
     getSelectedCity (query) {
       this.formData.city = query.label
@@ -143,9 +144,10 @@ export default {
     }
   },
   created () {
+    this.setMenuIcon(true)
     this.headBar({
-      title: '一品标局',
-      subTitle: '公司起名系统'
+      title: '公司起名系统',
+      subTitle: '查询入口'
     })
   },
   mounted () {

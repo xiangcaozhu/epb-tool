@@ -84,6 +84,7 @@ export default {
   created () {
     // 初始化根据query,加载api
     this.giveNameSubmit()
+    this.setMenuIcon(false)
     this.headBar({
       title: '公司起名系统',
       subTitle: '推荐列表'
@@ -96,7 +97,8 @@ export default {
     ...mapMutations([
       'searchCityModal',
       'searchIndustryModal',
-      'headBar'
+      'headBar',
+      'setMenuIcon'
     ]),
     getSelectedCity (query) {
       this.formData.city = query.label

@@ -84,11 +84,18 @@ export default {
   created () {
     // 初始化根据query,加载api
     this.getManageRangeDetail()
+    this.setMenuIcon(false)
+    this.headBar({
+      title: '经营范围生成',
+      subTitle: '参考公司'
+    })
   },
   methods: {
     ...mapMutations([
       'searchCityModal',
-      'searchIndustryModal'
+      'searchIndustryModal',
+      'setMenuIcon',
+      'headBar'
     ]),
     getSelectedCity (query) {
       this.formData.city = query.label

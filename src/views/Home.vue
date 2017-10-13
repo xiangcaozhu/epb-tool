@@ -6,12 +6,17 @@
   >
     <!-- 头部nav start -->
     <q-toolbar v-show="getHas.header" slot="header" color="primary">
-      <q-btn
+      <q-btn v-if="getMenuIcon"
         flat
-        v-if="isMenu"
         @click="$refs.layout.toggleLeft()"
       >
         <q-icon name="menu" />
+      </q-btn>
+      <q-btn v-else
+        flat
+        @click="$router.go(-1)"
+      >
+        <q-icon name="keyboard arrow left" />
       </q-btn>
       <q-toolbar-title>
         {{getHeadBar.title}}
@@ -28,9 +33,9 @@
     </q-toolbar>
     <!-- 头部nav end -->
     <!-- 左侧菜单栏 start-->
-    <div slot="left" v-if="isMenu">
+    <div slot="left">
       <q-list no-border link inset-delimiter>
-        <q-list-header>企大师项目</q-list-header> 
+        <q-list-header>易企名</q-list-header> 
         <q-side-link item to="/homeList">
           <q-item>
             <q-item-side icon="home" />
@@ -77,6 +82,7 @@
 
 <script>
 import {
+  Cookies,
   QLayout,
   QToolbar,
   QToolbarTitle,
@@ -121,17 +127,27 @@ export default {
   },
   data () {
     return {
-      isMenu: true
     }
   },
   computed: {
     ...mapGetters([
       'getHeadBar',
-      'getHas'
+      'getHas',
+      'getSignUp',
+      'getLoading',
+      'getMenuIcon'
     ])
   },
+  created () {
+    if (Cookies.has('m') && Cookies.has('mobile')) {
+      this.saveAccount({
+        mobile: Cookies.get('mobile')
+      })
+      this.isSignUp(true)
+    }
+  },
   methods: {
-    ...mapMutations(['loginModal']),
+    ...mapMutations(['loginModal', 'saveAccount', 'isSignUp']),
     goPage (to) {
       this.$router.push({ path: to, name: to })
       this.$refs.layout.hideLeft()
@@ -142,7 +158,6 @@ export default {
 
     })
   }
-
 }
 </script>
 

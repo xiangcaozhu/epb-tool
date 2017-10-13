@@ -21,14 +21,14 @@
       <div class="rate-wrap">
         <p><span class="text-red">"{{formData.city}}{{formData.name}}{{formData.industry}}"</span>&nbsp;通过率：</p>
         <div class="row rate-item">
-          <div class="col-4 line" :class="{'hight':resultData.content.lastIndexOf('高')!==-1}">高</div>
-          <div class="col-4 line" :class="{'middle':resultData.content.lastIndexOf('中')!==-1}">中</div>
-          <div class="col-4" :class="{'low':resultData.content.lastIndexOf('低')!==-1}">低</div>
+          <div class="col-4 line" :class="{'hight':resultData.passRate>=80}">高</div>
+          <div class="col-4 line" :class="{'middle':resultData.passRate>=60&&resultData.passRate<80}">中</div>
+          <div class="col-4" :class="{'low':resultData.passRate<59}">低</div>
         </div>
         <div class="suggest" v-if="resultData.prohibitWordsResult">
           <q-card>
             <q-card-title>
-              {{resultData.content}},通过概率{{resultData.passRate}}%
+              该名称通过率{{resultData.passRate}}%
               <!-- {{resultData.approximateCompanyFourResult.title}} -->
               <span slot="subtitle">
                 <q-rating
@@ -41,16 +41,16 @@
         </div>
       </div>  
       <div class="detail-wrap" >
-        <q-tabs v-model="tabsModel" inverted>
+        <q-tabs v-model="tabsModel" inverted no-pane-border>
           <q-tab name="prohibitWordsResult" label="敏感词分析" slot="title" />
           <q-tab name="approximateCompanyFourResult" label="相似公司分析" slot="title" />
           <q-tab name="companyTrademarkResultPO" label="相似商标分析" slot="title" />
           <q-tab-pane name="prohibitWordsResult">
-              <div class="yes" v-if="resultData.prohibitWordsResult.hmbSolrWords">
+              <div class="yes" v-if="resultData.prohibitWordsResult.hmbSolrWords.length!==0">
                  <q-card inline v-for="(list, index) in resultData.prohibitWordsResult.hmbSolrWords" class="caption" :key="index">
                     <q-card-title>
                       {{list.title}}
-                      <span slot="subtitle">相似度{{list.similar}}/通过率{{list.passRate}}%</span>
+                      <span slot="subtitle">相似度{{list.similar||0}}/通过率{{list.passRate||0}}%</span>
                       <div slot="right" class="row items-center">
                         <q-chip small square color="secondary" class="shadow-1">
                           {{ index + 1 }}
@@ -69,7 +69,7 @@
               </div>
           </q-tab-pane>
           <q-tab-pane name="approximateCompanyFourResult" >
-              <q-infinite-scroll :handler="loadMore" v-if="approList">
+              <q-infinite-scroll inline ref="apprInfinite" :handler="approListLoadMore" v-if="resultData.approximateCompanyFourResult.list.length!==0">
                 <q-card inline v-for="(list, index) in approList" :key="index">
                   <q-card-title>
                     {{list.companyName}}
@@ -92,8 +92,8 @@
                     <p class="text-faded" v-html="list.detail"></p>
                   </q-card-main>
                 </q-card>
-                <div class="row justify-center" style="margin-bottom: 50px;">
-                  <q-spinner-dots slot="message" :size="40" />
+                <div v-if="hiddenApproSpinner" class="row justify-center" style="margin-bottom: 50px;">
+                  <q-spinner-dots color="primary" slot="message" :size="40" label="加载中……"/>
                 </div>
               </q-infinite-scroll>
               <div v-else class="row justify-center no">
@@ -101,8 +101,8 @@
                 <p class="col-12 filter none text-grey-4" style="text-align:center;">暂无相似公司分析</p>
               </div>
           </q-tab-pane>
-          <q-tab-pane name="companyTrademarkResultPO" >
-              <q-infinite-scroll :handler="loadMore" v-if="resultData.companyTrademarkResultPO">
+          <q-tab-pane name="companyTrademarkResultPO">
+              <q-infinite-scroll inline ref="tradeInfinite" :handler="tradeLoadMore" v-if="resultData.companyTrademarkResultPO.trademarkPOs.length!==0">
                 <q-card inline v-for="(list, index) in resultData.companyTrademarkResultPO.trademarkPOs" class="caption" :key="index">
                   <q-card-title>
                     {{list.title}}
@@ -118,8 +118,8 @@
                     <p class="text-faded" v-html="list.content"></p>
                   </q-card-main>
                 </q-card>
-                <div class="row justify-center" style="margin-bottom: 50px;">
-                  <q-spinner-dots slot="message" :size="40" />
+                <div v-if="hiddenTradeSpinner" class="row justify-center" style="margin-bottom: 50px;">
+                  <q-spinner-dots color="primary" slot="message" :size="40" />
                 </div>
               </q-infinite-scroll> 
               <div v-else class="row justify-center no">
@@ -163,7 +163,7 @@ import localData from 'static/localData'
 import SearchCity from '%/SearchCity'
 import SearchIndustry from '%/SearchIndustry'
 import api from 'api/index'
-import { mapMutations } from 'vuex'
+import { mapGetters, mapMutations } from 'vuex'
 
 export default {
   name: 'checkNameResult',
@@ -219,14 +219,22 @@ export default {
       industrys: localData.industrys,
       start: 0,
       count: 5,
-      index: 0
+      index: 0,
+      hiddenApproSpinner: true,
+      hiddenTradeSpinner: true
     }
   },
   created () {
     // 初始化根据query,加载api
     this.checkNameSubmit()
+    this.setMenuIcon(false)
+    this.headBar({
+      title: '公司核名系统',
+      subTitle: '核名详情'
+    })
   },
   computed: {
+    ...mapGetters(['getLoading']),
     rate () {
       return Math.floor(this.resultData.passRate / 10)
     }
@@ -234,28 +242,39 @@ export default {
   methods: {
     ...mapMutations([
       'searchCityModal',
-      'searchIndustryModal'
+      'searchIndustryModal',
+      'headBar',
+      'setMenuIcon'
     ]),
-    loadMore (index, done) {
-      if (this.resultData.approximateCompanyFourResult.list) {
+    approListLoadMore (index, done) {
+      this.index = 0
+      this.loadMoreData(this.resultData.approximateCompanyFourResult.list, 'approList', 'hiddenApproSpinner', index, done)
+    },
+    tradeLoadMore (index, done) {
+      this.index = 0
+      this.loadMoreData(this.resultData.companyTrademarkResultPO.trademarkPOs, 'trademarkPOs', 'hiddenTradeSpinner', index, done)
+    },
+    loadMoreData (formArray, toString, spinner, index, done) {
+      if (formArray) {
+        let items = []
+        let start = this.count * this.index,
+          end = start + this.count,
+          maxEnd = formArray.length - end < this.count ? formArray.length : end
+        this[spinner] = true
+        if (formArray.length <= this[toString].length) {
+          this[spinner] = false
+          return false
+        }
         setTimeout(() => {
-          let items = []
-          let start = this.count*this.index,
-              end = start+this.count, 
-              maxEnd =this.resultData.approximateCompanyFourResult.list.length-end<this.count?this.resultData.approximateCompanyFourResult.list.length:end
-          console.log(start)
-          console.log(end)
-          console.log( maxEnd)
-          for (; start < maxEnd;start++) {
-            items.push(this.resultData.approximateCompanyFourResult.list[start])
+          for (; start < maxEnd; start++) {
+            items.push(formArray[start])
           }
-          if (this.approList.length >= this.resultData.approximateCompanyFourResult.list.length) {
-            return false
-          }
+          this[toString] = this[toString].concat(items)
           this.index++
-          this.approList = this.approList.concat(items)
-          done()
-        }, 2500)
+          if (done) {
+            done()
+          }
+        }, 1000)
       }
     },
     getSelectedCity (query) {
@@ -314,13 +333,20 @@ export default {
     },
     // 如果没有登录跳转到登陆页，如果已经登录，可以查询数据
     checkNameSubmit () {
+      this.approList = []
+      this.trademarkPOs = []
+      this.index = 0
       api.getCompanyDetail(this.formData.city, this.formData.name, this.formData.industry, this.formData.from)
         .then(res => {
           if (res.data.code === 0) {
+            // 因为后台返回的数据结构不稳定，数组会变成null
             this.resultData = res.data.data
             console.log(res.data.data)
           }
         })
+      // this.$refs.apprInfinite.loadMore()
+      // this.$refs.tradeInfinite.loadMore()
+      console.log(this)
     }
   },
   mounted () {

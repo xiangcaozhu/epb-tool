@@ -99,11 +99,20 @@ export default {
       'getSearchIndustry'
     ])
   },
+  created () {
+    this.setMenuIcon(true)
+    this.headBar({
+      title: '公司核名系统',
+      subTitle: '查询入口'
+    })
+  },
   methods: {
     ...mapMutations([
       'searchCityModal',
       'searchIndustryModal',
-      'loginModal'
+      'loginModal',
+      'headBar',
+      'setMenuIcon'
     ]),
     getSelectedCity (query) {
       this.formData.city = query.label
