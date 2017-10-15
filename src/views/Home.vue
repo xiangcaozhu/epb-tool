@@ -14,7 +14,7 @@
       </q-btn>
       <q-btn v-else
         flat
-        @click="$router.go(-1)"
+        @click="backPage"
       >
         <q-icon name="keyboard arrow left" />
       </q-btn>
@@ -151,6 +151,10 @@ export default {
     goPage (to) {
       this.$router.push({ path: to, name: to })
       this.$refs.layout.hideLeft()
+    },
+    backPage () {
+      console.log(this.$router)
+      this.$router.go(-1)
     }
   },
   mounted () {
