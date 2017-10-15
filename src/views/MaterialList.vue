@@ -19,25 +19,53 @@
       <q-tab slot="title" name="fgs" label="分公司"/>
       <q-tab slot="title" name="grdz" label="个人独资"/>
       <!-- Targets -->
-      <q-tab-pane name="yxgs">
-        <div class="list" v-for="(item, index) in yxgs" :key="index">
-          <router-link :to="{ name: 'materialDetail', params: { id: item.id }}"><p><q-icon color="grey-6" size="20px" name="insert drive file" />&nbsp;{{item.title}}</p></router-link>
-        </div>
+      <q-tab-pane name="yxgs" class="pane-height">
+        <q-transition
+          appear
+          group
+          enter="fadeInRightBig"
+          leave="fadeOutLeftBig"
+        >
+          <div class="list" v-for="(item, index) in yxgs" :key="index">
+            <router-link :to="{ name: 'materialDetail', params: { id: item.id }}"><p><q-icon color="grey-6" size="20px" name="insert drive file" />&nbsp;{{item.title}}</p></router-link>
+          </div>
+        </q-transition>
       </q-tab-pane>
-      <q-tab-pane name="hhqy">
-        <div class="list" v-for="(item,index) in hhqy" :key="index">
-          <router-link :to="{ name: 'materialDetail', params: { id: item.id }}"><p><q-icon color="grey-6" size="20px" name="insert drive file" />&nbsp;{{item.title}}</p></router-link>
-        </div>
+      <q-tab-pane name="hhqy" class="pane-height">
+        <q-transition
+          appear
+          group
+          enter="fadeInRightBig"
+          leave="fadeOutLeftBig"
+        >
+          <div class="list" v-for="(item,index) in hhqy" :key="index">
+            <router-link :to="{ name: 'materialDetail', params: { id: item.id }}"><p><q-icon color="grey-6" size="20px" name="insert drive file" />&nbsp;{{item.title}}</p></router-link>
+          </div>
+        </q-transition>
       </q-tab-pane>
-      <q-tab-pane name="fgs">
-        <div class="list" v-for="(item,index) in fgs">
-          <router-link :to="{ name: 'materialDetail', params: { id: item.id }}"><p><q-icon color="grey-6" size="20px" name="insert drive file" />&nbsp;{{item.title}}</p></router-link>
-        </div>
+      <q-tab-pane name="fgs" class="pane-height">
+        <q-transition
+          appear
+          group
+          enter="fadeInRightBig"
+          leave="fadeOutLeftBig"
+        >
+          <div class="list" v-for="(item,index) in fgs" :key="index">
+            <router-link :to="{ name: 'materialDetail', params: { id: item.id }}"><p><q-icon color="grey-6" size="20px" name="insert drive file" />&nbsp;{{item.title}}</p></router-link>
+          </div>
+        </q-transition>
       </q-tab-pane>
-      <q-tab-pane name="grdz">
-        <div class="list" v-for="(item,index) in grdz">
-          <router-link :to="{ name: 'materialDetail', params: { id: item.id }}"><p><q-icon color="grey-6" size="20px" name="insert drive file" />&nbsp;{{item.title}}</p></router-link>
-        </div>
+      <q-tab-pane name="grdz" class="pane-height">
+        <q-transition
+          appear
+          group
+          enter="fadeInRightBig"
+          leave="fadeOutLeftBig"
+        >
+          <div class="list" v-for="(item,index) in grdz" :key="index">
+            <router-link :to="{ name: 'materialDetail', params: { id: item.id }}"><p><q-icon color="grey-6" size="20px" name="insert drive file" />&nbsp;{{item.title}}</p></router-link>
+          </div>
+        </q-transition>
       </q-tab-pane>
     </q-tabs>
     </div>
@@ -53,21 +81,42 @@
         <q-tab slot="title" name="gqht" label="股权合同"/>
         <q-tab slot="title" name="tzqt" label="投资&amp;其他"/>
         <!-- Targets -->
-        <q-tab-pane name="rsht">
-          <div class="list" v-for="(item,index) in rsht">
-            <router-link :to="{ name: 'materialDetail', params: { id: item.id }}"><p><q-icon color="grey-6" size="20px" name="insert drive file" />&nbsp;{{item.title}}</p></router-link>
-          </div>
-        </q-tab-pane>
-        <q-tab-pane name="gqht">
-          <div class="list" v-for="(item,index) in gqht">
-            <router-link :to="{ name: 'materialDetail', params: { id: item.id }}"><p><q-icon color="grey-6" size="20px" name="insert drive file" />&nbsp;{{item.title}}</p></router-link>
-          </div>
-        </q-tab-pane>
-        <q-tab-pane name="tzqt">
-          <div class="list" v-for="(item,index) in tzqt">
-            <router-link :to="{ name: 'materialDetail', params: { id: item.id }}"><p><q-icon color="grey-6" size="20px" name="insert drive file" />&nbsp;{{item.title}}</p></router-link>
-          </div>
-        </q-tab-pane>
+          <q-tab-pane name="rsht" key="q-tab-pane" class="pane-height">
+            <q-transition
+              appear
+              group
+              enter="fadeInRightBig"
+              leave="fadeOutLeftBig"
+            >
+              <div class="list" v-for="(item,index) in rsht" :key="index">
+                <router-link :to="{ name: 'materialDetail', params: { id: item.id }}"><p><q-icon color="grey-6" size="20px" name="insert drive file" />&nbsp;{{item.title}}</p></router-link>
+              </div>
+            </q-transition>
+          </q-tab-pane>
+          <q-tab-pane name="gqht" class="pane-height">
+            <q-transition
+              appear
+              group
+              enter="fadeInRightBig"
+              leave="fadeOutLeftBig"
+            >
+              <div class="list" v-for="(item,index) in gqht" :key="index">
+                <router-link :to="{ name: 'materialDetail', params: { id: item.id }}"><p><q-icon color="grey-6" size="20px" name="insert drive file" />&nbsp;{{item.title}}</p></router-link>
+              </div>
+            </q-transition>
+          </q-tab-pane>
+          <q-tab-pane name="tzqt" key="q-tab-pane" class="pane-height">
+            <q-transition
+              appear
+              group
+              enter="fadeInRightBig"
+              leave="fadeOutLeftBig"
+            >
+              <div class="list" v-for="(item,index) in tzqt" :key="index">
+                <router-link :to="{ name: 'materialDetail', params: { id: item.id }}"><p><q-icon color="grey-6" size="20px" name="insert drive file" />&nbsp;{{item.title}}</p></router-link>
+              </div>
+            </q-transition>
+          </q-tab-pane>
       </q-tabs>
     </div>
   </div>
@@ -84,11 +133,14 @@ import {
   QTabs,
   QTab,
   QTabPane,
-  QChip
+  QChip,
+  QTransition
 } from 'quasar'
 
 import api from 'api/index'
 import { mapMutations } from 'vuex'
+import 'quasar-extras/animate/fadeInRightBig.css'
+import 'quasar-extras/animate/fadeOutLeftBig.css'
 export default {
   name: 'materialList',
   components: {
@@ -101,7 +153,8 @@ export default {
     QTabs,
     QTab,
     QTabPane,
-    QChip
+    QChip,
+    QTransition
   },
   data () {
     return {
@@ -192,4 +245,9 @@ export default {
   .list
     a
       color:#333;
+.pane-height
+  height:400px;
+  overflow-x:hidden;
+  overflow-y:auto;
+
 </style>

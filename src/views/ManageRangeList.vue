@@ -11,36 +11,44 @@
             <q-btn @click="manageRangeSubmit" class="tab-submit" color="primary" small>一键生成</q-btn>
         </div>
       </div>
-      <div class="list-wrap">
-        <q-card color="" v-for="(item, index) in listData" :key="index" >
-          <q-card-title>
-            <q-chip tag square color="orange">
-              推荐{{index+1}}
-            </q-chip>
-            <q-chip class="btn-copy" :data-clipboard-text="item.scope" slot="right" icon="content copy" color="grey">
-              复制
-            </q-chip>
-            <q-icon  />
-          </q-card-title>
-          <q-card-main>
-            <h6>经验范围：</h6>
-            <p class="text-fade">{{item.scope}}</p>
-          </q-card-main>
-          <q-card-separator />
-          <q-card-main>
-            参考公司：
-            <router-link :to="{ name: 'manageRangeDetail', params: { id: item.id }, query: {city: formData.city, industry: formData.industry}}">{{item.name}}</router-link>
-          </q-card-main>
-        </q-card>
-      </div>
-      <div class="exchange-wrap">
-        <q-btn big icon="autorenew" loader color="orange" v-model="progress" @click="manageRangeNews">
-          换一批
-          <span slot="loading">
-            <q-spinner-mat  class="on-left" slot="loading" color="white" :size="30" />
-            努力加载中...
-          </span>
-        </q-btn>
+      <div class="loading-wrap relative-position">
+        <q-transition
+          appear
+          enter="fadeIn"
+          leave="fadeOut"
+        >
+          <div class="list-wrap" v-show="showReturnData">
+            <q-card color="" v-for="(item, index) in listData" :key="index" >
+              <q-card-title>
+                <q-chip tag square color="orange">
+                  推荐{{index+1}}
+                </q-chip>
+                <q-chip class="btn-copy" :data-clipboard-text="item.scope" slot="right" icon="content copy" color="grey">
+                  复制
+                </q-chip>
+                <q-icon  />
+              </q-card-title>
+              <q-card-main>
+                <h6>经验范围：</h6>
+                <p class="text-fade">{{item.scope}}</p>
+              </q-card-main>
+              <q-card-separator />
+              <q-card-main>
+                参考公司：
+                <router-link :to="{ name: 'manageRangeDetail', params: { id: item.id }, query: {city: formData.city, industry: formData.industry}}">{{item.name}}</router-link>
+              </q-card-main>
+            </q-card>
+            <div class="exchange-wrap">
+              <q-btn big icon="autorenew" loader color="orange" v-model="progress" @click="manageRangeNews">
+                换一批
+                <span slot="loading">
+                  <q-spinner-mat  class="on-left" slot="loading" color="white" :size="30" />
+                  努力加载中...
+                </span>
+              </q-btn>
+            </div>
+          </div>
+        </q-transition>
       </div>
       <search-city @getSelectedCity="getSelectedCity"></search-city>
       <search-industry @getSelectedIndustry="getSelectedIndustry"></search-industry>
@@ -49,6 +57,7 @@
 
 <script>
 import {
+  Loading,
   Toast,
   QInput,
   QBtn,
@@ -62,7 +71,10 @@ import {
   QCardMedia,
   QCardActions,
   QCardSeparator,
-  QCardMain
+  QCardMain,
+  QInnerLoading,
+  QTransition,
+  QSpinnerIos
 } from 'quasar'
 // 导出常用的数据对象
 import localData from 'static/localData'
@@ -71,6 +83,8 @@ import SearchIndustry from '%/SearchIndustry'
 import api from 'api/index'
 import Clipboard from 'clipboard'
 import { mapMutations } from 'vuex'
+import 'quasar-extras/animate/fadeIn.css'
+import 'quasar-extras/animate/fadeOut.css'
 export default {
   name: 'manageRange',
   components: {
@@ -88,12 +102,15 @@ export default {
     QCardMedia,
     QCardActions,
     QCardSeparator,
-    QCardMain
+    QCardMain,
+    QInnerLoading,
+    QTransition,
+    QSpinnerIos
   },
   data () {
     return {
       progress: false,
-      isMenu: true,
+      showReturnData: false,
       formData: {
         city: this.$route.query.city,
         industry: this.$route.query.industry
@@ -127,21 +144,43 @@ export default {
     },
     // 如果没有登录跳转到登陆页，如果已经登录，可以查询数据
     manageRangeSubmit () {
+      this.showReturnData = false
+      Loading.show({
+        spinner: QSpinnerIos,
+        message: '加载中……',
+        messageColor: 'white',
+        spinnerSize: 50,
+        spinnerColor: 'white'
+      })
       api.getCompanyScope(this.formData.city, this.formData.industry)
         .then(res => {
           if (res.data.code === 0) {
             this.listData = res.data.data
+            setTimeout(() => {
+              this.showReturnData = true
+              Loading.hide()
+            }, 1500)
           }
         })
     },
     manageRangeNews () {
+      this.showReturnData = false
+      Loading.show({
+        spinner: QSpinnerIos,
+        message: '加载中……',
+        messageColor: 'white',
+        spinnerSize: 50,
+        spinnerColor: 'white'
+      })
       api.getCompanyScope(this.formData.city, this.formData.industry)
         .then(res => {
           if (res.data.code === 0) {
+            this.listData = res.data.data
             setTimeout(() => {
               this.progress = false
-            }, 500)
-            this.listData = res.data.data
+              this.showReturnData = true
+              Loading.hide()
+            }, 1500)
           }
         })
     }

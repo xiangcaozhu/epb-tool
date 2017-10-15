@@ -11,31 +11,42 @@
             <q-btn @click="giveNameSubmit" class="tab-submit" color="primary" small>推荐名称</q-btn>
         </div>
       </div>
-      <div class="table-wrap">
-        <table class="q-table striped-odd">
-          <thead>
-            <tr>
-              <th class="text-left">推荐公司名字</th>
-              <th class="text-right">通过率</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="(item, index) in tableData" @click="checkNameResult(item.city, item.name, item.industry, item.type)">
-              <td class="text-left">{{item.city}} <span class="company-name">{{item.name}}</span> {{item.industry}} {{item.type}}</td>
-              <td class="text-right"><span class="pass-rate" :class="{'hight':item.rate=='高', 'middle':item.rate=='中', 'low':item.rate=='低'}">{{item.rate}}</span></td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-      <div class="exchange-wrap">
-        <p class="tips">点击公司名称，查看核名结果！</p>
-        <q-btn loader color="orange" v-model="progress" @click="giveNameNews">
-          换一批
-          <span slot="loading">
-            <q-spinner-mat  class="on-left" slot="loading" color="primary" :size="30" />
-            努力加载中...
-          </span>
-        </q-btn>
+      <div class="loading-wrap relative-position">
+        <div class="table-wrap" style="height:300px;">
+          <table class="q-table striped-odd">
+            <thead>
+              <tr>
+                <th class="text-left" style="width:70%">推荐公司名字</th>
+                <th class="text-right">通过率</th>
+              </tr>
+            </thead>
+            <q-transition
+              appear
+              enter="fadeIn"
+              leave="fadeOut"
+            >
+              <tbody v-show="showReturnData">
+                <tr v-for="(item, index) in tableData" @click="checkNameResult(item.city, item.name, item.industry, item.type)">
+                  <td class="text-left">{{item.city}} <span class="company-name">{{item.name}}</span> {{item.industry}} {{item.type}}</td>
+                  <td class="text-right"><span class="pass-rate" :class="{'hight':item.rate=='高', 'middle':item.rate=='中', 'low':item.rate=='低'}">{{item.rate}}</span></td>
+                </tr>
+              </tbody>
+            </q-transition>
+          </table>
+        </div>
+        <q-inner-loading :visible="visible">
+          <q-spinner-ios size="30px" color="primary"></q-spinner-ios>
+        </q-inner-loading>
+        <div class="exchange-wrap" v-show="showReturnData">
+          <p class="tips">点击公司名称，查看核名结果！</p>
+          <q-btn loader color="orange" v-model="progress" @click="giveNameNews">
+            换一批
+            <span slot="loading">
+              <q-spinner-mat  class="on-left" slot="loading" color="primary" :size="30" />
+              努力加载中...
+            </span>
+          </q-btn>
+        </div>
       </div>
       <search-city @getSelectedCity="getSelectedCity"></search-city>
       <search-industry @getSelectedIndustry="getSelectedIndustry"></search-industry>
@@ -49,7 +60,10 @@ import {
   QIcon,
   QSelect,
   QField,
-  QSpinnerMat
+  QSpinnerMat,
+  QInnerLoading,
+  QTransition,
+  QSpinnerIos
 } from 'quasar'
 // 导出常用的数据对象
 import localData from 'static/localData'
@@ -57,6 +71,8 @@ import SearchCity from '%/SearchCity'
 import SearchIndustry from '%/SearchIndustry'
 import api from 'api/index'
 import { mapGetters, mapMutations } from 'vuex'
+import 'quasar-extras/animate/fadeIn.css'
+import 'quasar-extras/animate/fadeOut.css'
 export default {
   name: 'giveNameList',
   components: {
@@ -67,11 +83,16 @@ export default {
     QField,
     QSpinnerMat,
     SearchCity,
-    SearchIndustry
+    SearchIndustry,
+    QInnerLoading,
+    QTransition,
+    QSpinnerIos
   },
   data () {
     return {
       progress: false,
+      visible: false,
+      showReturnData: false,
       formData: {
         city: this.$route.query.city,
         industry: this.$route.query.industry
@@ -108,10 +129,16 @@ export default {
     },
     // 如果没有登录跳转到登陆页，如果已经登录，可以查询数据
     giveNameSubmit () {
+      this.visible = true
+      this.showReturnData = false
       api.getCompanyName(this.formData.city, this.formData.industry)
         .then(res => {
           if (res.data.code === 0) {
             this.tableData = res.data.data
+            setTimeout(() => {
+              this.visible = false
+              this.showReturnData = true
+            }, 1500)
           }
         })
     },
@@ -124,13 +151,17 @@ export default {
       // })
     },
     giveNameNews () {
+      this.visible = true
+      this.showReturnData = false
       api.getCompanyName(this.formData.city, this.formData.industry)
         .then(res => {
           if (res.data.code === 0) {
+            this.tableData = res.data.data
             setTimeout(() => {
               this.progress = false
-            }, 500)
-            this.tableData = res.data.data
+              this.visible = false
+              this.showReturnData = true
+            }, 1500)
           }
         })
     }

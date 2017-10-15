@@ -47,7 +47,7 @@
           <q-tab name="companyTrademarkResultPO" label="相似商标分析" slot="title" />
           <q-tab-pane name="prohibitWordsResult">
               <div class="yes" v-if="resultData.prohibitWordsResult.hmbSolrWords.length!==0">
-                 <q-card inline v-for="(list, index) in resultData.prohibitWordsResult.hmbSolrWords" class="caption" :key="index">
+                 <q-card v-for="(list, index) in resultData.prohibitWordsResult.hmbSolrWords" class="caption" :key="index">
                     <q-card-title>
                       {{list.title}}
                       <span slot="subtitle">相似度{{list.similar||0}}/通过率{{list.passRate||0}}%</span>
@@ -93,7 +93,7 @@
                   </q-card-main>
                 </q-card>
                 <div v-if="hiddenApproSpinner" class="row justify-center" style="margin-bottom: 50px;">
-                  <q-spinner-dots color="primary" slot="message" :size="40" label="加载中……"/>
+                  <q-spinner-ios color="primary" slot="message" :size="40" label="加载中……"/>
                 </div>
               </q-infinite-scroll>
               <div v-else class="row justify-center no">
@@ -119,7 +119,7 @@
                   </q-card-main>
                 </q-card>
                 <div v-if="hiddenTradeSpinner" class="row justify-center" style="margin-bottom: 50px;">
-                  <q-spinner-dots color="primary" slot="message" :size="40" />
+                  <q-spinner-ios color="primary" slot="message" :size="40" />
                 </div>
               </q-infinite-scroll> 
               <div v-else class="row justify-center no">
@@ -148,7 +148,7 @@ import {
   QTab,
   QTabPane,
   QInfiniteScroll,
-  QSpinnerDots,
+  QSpinnerIos,
   QChip,
   QCard,
   QCardTitle,
@@ -181,7 +181,7 @@ export default {
     QTab,
     QTabPane,
     QInfiniteScroll,
-    QSpinnerDots,
+    QSpinnerIos,
     QChip,
     QCard,
     QCardTitle,
@@ -249,6 +249,7 @@ export default {
     approListLoadMore (index, done) {
       this.index = 0
       this.loadMoreData(this.resultData.approximateCompanyFourResult.list, 'approList', 'hiddenApproSpinner', index, done)
+      console.log('appro')
     },
     tradeLoadMore (index, done) {
       this.index = 0
@@ -346,7 +347,6 @@ export default {
         })
       // this.$refs.apprInfinite.loadMore()
       // this.$refs.tradeInfinite.loadMore()
-      console.log(this)
     }
   },
   mounted () {

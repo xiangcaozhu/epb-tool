@@ -31,7 +31,6 @@ import {
   QIcon,
   QSelect,
   QField,
-  Dialog,
   Toast,
   QToolbar,
   QToolbarTitle
@@ -118,26 +117,27 @@ export default {
         return
       }
       if (!this.getSignUp) {
-        let _this = this
-        Dialog.create({
-          title: '提示：',
-          message: '您还未登录，现在去登录？',
-          buttons: [
-            {
-              label: '取消',
-              handler () {
-                Toast.create('取消登录...')
-              }
-            },
-            {
-              label: '去登录',
-              handler () {
-                _this.loginModal(true)
-                // _this.$router.push({ path: '/login', name: 'login' })
-              }
-            }
-          ]
-        })
+        // let _this = this
+        // Dialog.create({
+        //   title: '提示：',
+        //   message: '您还未登录，现在去登录？',
+        //   buttons: [
+        //     {
+        //       label: '取消',
+        //       handler () {
+        //         Toast.create('取消登录...')
+        //       }
+        //     },
+        //     {
+        //       label: '去登录',
+        //       handler () {
+        //         _this.loginModal(true)
+        //         // _this.$router.push({ path: '/login', name: 'login' })
+        //       }
+        //     }
+        //   ]
+        // })
+        this.loginModal(true)
         return
       }
       this.$router.push({ path: '/giveNameList', name: 'giveNameList', query: {city: this.formData.city, industry: this.formData.industry} })

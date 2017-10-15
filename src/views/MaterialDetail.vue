@@ -1,16 +1,23 @@
 <template>
   <div>
     <div class="wrap-content">
-      <div class="explain">
-        <p><strong>文件用途：</strong>{{detailData.usefor}}</p>
-        <p><strong>使用解读：</strong></p>
-      </div>
-      <div class="descrip" v-html="detailData.description"></div>
-      <div class="">
-        <div class="wrap-images" v-for="(item, index) in detailData.picList">
-          <img :src="item" :alt="detailData.title">
+      <q-transition
+        appear
+        group
+        enter="fadeIn"
+        leave="fadeOut"
+      >
+        <div class="explain" key="explain" v-show="showReturnData">
+          <p><strong>文件用途：</strong>{{detailData.usefor}}</p>
+          <p><strong>使用解读：</strong></p>
         </div>
-      </div>
+        <div class="descrip" v-html="detailData.description" key="explain" v-show="showReturnData"></div>
+        <div class="" key="explain" v-show="showReturnData">
+          <div class="wrap-images" v-for="(item, index) in detailData.picList">
+            <img :src="item" :alt="detailData.title">
+          </div>
+        </div>
+      </q-transition>
     </div>
     <div class="row tabs tabs-bottom">
       <div class="col item" @click="$router.go(-1)"><q-icon color="primary" name="reply" size="20px"/>返回</div>
@@ -22,22 +29,29 @@
 
 <script>
 import {
+  Loading,
   Toast,
   QBtn,
-  QIcon
+  QIcon,
+  QSpinnerIos,
+  QTransition
 } from 'quasar'
 
 import api from 'api/index'
 import { mapMutations } from 'vuex'
-
+import 'quasar-extras/animate/fadeIn.css'
+import 'quasar-extras/animate/fadeOut.css'
 export default {
   name: 'index',
   components: {
     QBtn,
-    QIcon
+    QIcon,
+    QSpinnerIos,
+    QTransition
   },
   data () {
     return {
+      showReturnData: false,
       detailData: {}
     }
   },
@@ -48,13 +62,24 @@ export default {
   methods: {
     ...mapMutations(['setMenuIcon', 'headBar']),
     getMaterialIdDetail () {
+      Loading.show({
+        spinner: QSpinnerIos,
+        message: '加载中……',
+        messageColor: 'white',
+        spinnerSize: 50,
+        spinnerColor: 'white'
+      })
       api.getMaterialIdMsg(this.$route.params.id).then(res => {
         if (res.data.code === 0) {
-          this.detailData = res.data.data
           this.headBar({
             title: this.detailData.title,
             subTitle: '文档下载'
           })
+          this.detailData = res.data.data
+          setTimeout(() => {
+            this.showReturnData = true
+            Loading.hide()
+          }, 1500)
         }
       })
     },

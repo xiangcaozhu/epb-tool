@@ -111,11 +111,10 @@ export default {
       }, 1000)
     },
     selectedIndustryItem (item) {
-      console.log(item)
       // 保存选中的值
-      this.searchIndustry = item.industry
+      this.searchIndustry = item.label
       this.queryIndustry.type = item.type
-      this.queryIndustry.industry = item.industry
+      this.queryIndustry.industry = item.label
       // 把获取的数值发给父级
       this.$emit('getSelectedIndustry', this.queryIndustry)
       // 关闭行业选择

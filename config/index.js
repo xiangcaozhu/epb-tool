@@ -50,13 +50,13 @@ module.exports = {
     // https://github.com/chimurai/http-proxy-middleware
     proxyTable: {
        // proxy all requests starting with /api
-      '/qidashi-boot': {
-        target: 'http://10.0.100.119:8080/qidashi-boot',
-        changeOrigin: true,
-        pathRewrite: {
-          '^/qidashi-boot': ''
-        }
-      } 
+      // '/qidashi-boot': {
+      //   target: 'http://10.0.100.119:8080/qidashi-boot',
+      //   changeOrigin: true,
+      //   pathRewrite: {
+      //     '^/qidashi-boot': ''
+      //   }
+      // } 
     }
   }
 }

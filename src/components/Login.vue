@@ -128,6 +128,7 @@ export default {
       })
       this.isSignUp(false)
       this.loginModal(false)
+      this.$router.push({ path: '/homeList', name: 'homeList' })
     }
   }
 }

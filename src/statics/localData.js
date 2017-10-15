@@ -14482,5 +14482,5 @@ export default {
     industry: [{ label: '贸易' }, { label: '实业' }, { label: '制造' }, { label: '服饰' }, { label: '化妆品' }, { label: '工程' }, { label: '农业' }, { label: '餐饮管理' }, { label: '物流' }]
   }
   ],
-  industrysAll: [{ label: '网络科技' }]
+  industrysAll: [{ label: '网络科技' }, { label: '电子商务' }, { label: '信息技术' }, { label: '游戏' }, { label: '电子' }, { label: '软件' }, { label: '新材料' }, { label: '生物科技' }, { label: '教育科技' }, { label: '投资管理' }, { label: '金融' }, { label: '资产' }, { label: '商业保理' }, { label: '融资租赁' }, { label: '医疗器械' }, { label: '人力资源' }, { label: '食品' }, { label: '劳务派遣' }, { label: '广告' }, { label: '文化传播' }, { label: '建筑装潢' }, { label: '设计' }, { label: '美容美发' }, { label: '房地产中介' }, { label: '物业管理' }, { label: '商务咨询' }, { label: '企业管理' }, { label: '贸易' }, { label: '实业' }, { label: '制造' }, { label: '服饰' }, { label: '化妆品' }, { label: '工程' }, { label: '农业' }, { label: '餐饮管理' }, { label: '物流' }]
 }

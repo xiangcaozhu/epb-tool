@@ -26,13 +26,11 @@
 
 <script>
 import {
-  Cookies,
   QInput,
   QBtn,
   QIcon,
   QSelect,
   QField,
-  Dialog,
   Toast,
   QToolbar,
   QToolbarTitle
@@ -75,7 +73,8 @@ export default {
   computed: {
     ...mapGetters([
       'getSearchCity',
-      'getSearchIndustry'
+      'getSearchIndustry',
+      'getSignUp'
     ])
   },
   methods: {
@@ -115,27 +114,28 @@ export default {
         Toast.create('行业是必选项！')
         return
       }
-      if (!Cookies.get('m')) {
-        let _this = this
-        Dialog.create({
-          title: '提示：',
-          message: '您还未登录，现在去登录？',
-          buttons: [
-            {
-              label: '取消',
-              handler () {
-                Toast.create('取消登录...')
-              }
-            },
-            {
-              label: '去登录',
-              handler () {
-                _this.loginModal(true)
-                // _this.$router.push({ path: '/login', name: 'login' })
-              }
-            }
-          ]
-        })
+      if (!this.getSignUp) {
+        // let _this = this
+        // Dialog.create({
+        //   title: '提示：',
+        //   message: '您还未登录，现在去登录？',
+        //   buttons: [
+        //     {
+        //       label: '取消',
+        //       handler () {
+        //         Toast.create('取消登录...')
+        //       }
+        //     },
+        //     {
+        //       label: '去登录',
+        //       handler () {
+        //         _this.loginModal(true)
+        //         // _this.$router.push({ path: '/login', name: 'login' })
+        //       }
+        //     }
+        //   ]
+        // })
+        this.loginModal(true)
         return
       }
       this.$router.push({ path: '/manageRangeList', name: 'manageRangeList', query: {city: this.formData.city, industry: this.formData.industry} })
