@@ -8,7 +8,7 @@ function load (views) {
   return () => import(`@/${views}.vue`)
 }
 
-export default new VueRouter({
+const router = new VueRouter({
   /*
    * NOTE! VueRouter "history" mode DOESN'T works for Cordova builds,
    * it is only to be used only for websites.
@@ -83,4 +83,6 @@ export default new VueRouter({
     path: '*',
     component: load('Error404')
   } // Not found
-  ]})
+  ]
+})
+export default router

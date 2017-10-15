@@ -127,6 +127,7 @@ export default {
   },
   data () {
     return {
+      currentRouter: ''
     }
   },
   computed: {
@@ -153,14 +154,22 @@ export default {
       this.$refs.layout.hideLeft()
     },
     backPage () {
-      console.log(this.$router)
-      this.$router.go(-1)
+      if (this.currentRouter === 'manageRangeList') {
+        this.$router.push({ name: 'manageRange' })
+      } else {
+        this.$router.go(-1)
+      }
     }
   },
   mounted () {
     this.$nextTick(() => {
-
     })
+  },
+  watch: {
+    // 监听路由变化，如果是manageRangeList页面，back始终都是manageRang
+    '$route': function (newroute) {
+      this.currentRouter = newroute.name
+    }
   }
 }
 </script>
