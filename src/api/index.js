@@ -126,7 +126,7 @@ export default {
   },
   // 下载工商材料
   getMaterialIdDown (id) {
-    return axios.get(`${materialIdDownResource}/${id}/down`, {
+    return axios.get(`${materialIdDownResource}/down/${id}`, {
       params: {
         id
       }

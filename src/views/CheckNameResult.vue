@@ -250,7 +250,6 @@ export default {
     approListLoadMore (index, done) {
       this.index = 0
       this.loadMoreData(this.resultData.approximateCompanyFourResult.list, 'approList', 'hiddenApproSpinner', index, done)
-      console.log('appro')
     },
     tradeLoadMore (index, done) {
       this.index = 0

@@ -196,7 +196,6 @@ export default {
       api.getMaterialAll().then(res => {
         // 有限公司,合伙企业,分公司,个人独资,劳动人事合同,股权合同,投资&其他
         if (res.data.code === 0) {
-          console.log(res.data.data)
           res.data.data.forEach((item, index) => {
             switch (item.classify) {
               case '有限公司':
@@ -245,6 +244,9 @@ export default {
   .list
     a
       color:#333;
+      font-size:12px;
+      p
+        font-size:12px;
 .pane-height
   height:400px;
   overflow-x:hidden;

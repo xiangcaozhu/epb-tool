@@ -38,7 +38,7 @@ import {
 } from 'quasar'
 
 import api from 'api/index'
-import { mapMutations } from 'vuex'
+import { mapGetters, mapMutations } from 'vuex'
 import 'quasar-extras/animate/fadeIn.css'
 import 'quasar-extras/animate/fadeOut.css'
 export default {
@@ -59,8 +59,11 @@ export default {
     this.getMaterialIdDetail()
     this.setMenuIcon(false)
   },
+  computed: {
+    ...mapGetters(['getSignUp'])
+  },
   methods: {
-    ...mapMutations(['setMenuIcon', 'headBar']),
+    ...mapMutations(['setMenuIcon', 'headBar', 'loginModal']),
     getMaterialIdDetail () {
       Loading.show({
         spinner: QSpinnerIos,
@@ -72,7 +75,7 @@ export default {
       api.getMaterialIdMsg(this.$route.params.id).then(res => {
         if (res.data.code === 0) {
           this.headBar({
-            title: this.detailData.title,
+            title: res.data.data.title,
             subTitle: '文档下载'
           })
           this.detailData = res.data.data
@@ -84,8 +87,15 @@ export default {
       })
     },
     downloadMaterial () {
+      if (!this.getSignUp) {
+        Toast.create('您还没有登录，请先去登录')
+        setTimeout(() => {
+          this.loginModal(true)
+        }, 1000)
+        return false
+      }
       if (this.$route.params.id) {
-        window.location.href = `/qidashi-boot/material/${this.$route.params.id}/down?id=${this.$route.params.id}`
+        window.location.href = `/qidashi-boot/material/down/${this.$route.params.id}?id=${this.$route.params.id}`
         Toast.create('文档稍后会提示下载！')
       }
     }

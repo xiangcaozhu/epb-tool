@@ -12,7 +12,7 @@
         </div>
       </div>
       <div class="loading-wrap relative-position">
-        <div class="table-wrap" style="height:300px;">
+        <div class="table-wrap" style="height:350px;">
           <table class="q-table striped-odd">
             <thead>
               <tr>
@@ -229,4 +229,5 @@ export default {
     .tips
       color:orange;
       text-align:center;
+      font-size:12px;
 </style>
