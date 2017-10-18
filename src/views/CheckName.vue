@@ -18,7 +18,7 @@
             :options="fromOptions"
           />
         </div>
-        <q-btn big color="orange"  @click="checkNameSubmit" >
+        <q-btn big color="orange"  @click.prevent.native="checkNameSubmit" >
           核一下
         </q-btn>
       </form>
@@ -26,7 +26,7 @@
     <!-- 起名查询 end -->
     <search-city @getSelectedCity="getSelectedCity"></search-city>
     <search-industry @getSelectedIndustry="getSelectedIndustry"></search-industry>
-    <login></login>
+    <login :formData ="formData"></login>
   </div>
 </template>
 
@@ -69,7 +69,8 @@ export default {
         city: '',
         industry: '',
         name: '',
-        from: '有限公司'
+        from: '有限公司',
+        next: 'checkNameResult'
       },
       fromOptions: [
         {

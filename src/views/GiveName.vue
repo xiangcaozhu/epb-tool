@@ -12,7 +12,7 @@
           />
           <q-input v-model="formData.industry" @click.native="searchIndustryInput(true)" float-label="行业" :error="$v.formData.industry.$error" placeholder=" 如：网络科技" readonly/>
         </div>
-        <q-btn big color="orange"  @click="giveNameSubmit" >
+        <q-btn big color="orange"  @click.prevent.native="giveNameSubmit" >
           推荐名字
         </q-btn>
       </form>
@@ -20,7 +20,7 @@
     <!-- 起名查询 end -->
     <search-city @getSelectedCity="getSelectedCity"></search-city>
     <search-industry @getSelectedIndustry="getSelectedIndustry"></search-industry>
-    <login></login>
+    <login :formData="formData" ></login>
   </div>
 </template>
 
@@ -60,7 +60,8 @@ export default {
     return {
       formData: {
         city: '',
-        industry: ''
+        industry: '',
+        next: 'giveNameList'
       }
     }
   },

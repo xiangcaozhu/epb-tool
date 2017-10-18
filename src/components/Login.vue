@@ -82,6 +82,7 @@ export default {
       helper: ''
     }
   },
+  props: ['formData'],
   validations: {
     mobile: {
       required
@@ -107,14 +108,20 @@ export default {
         return
       }
       api.login(this.mobile).then(res => {
-        console.log(res)
         if (res.data.code === 0) {
-          Toast.create('登陆成功！马上去查询试试')
+          Toast.create('登陆成功!')
           Cookies.set('mobile', this.mobile, {
             expires: 365,
             path: '/'
           })
           this.saveAccount({mobile: this.mobile})
+          if (this.formData.next === 'giveNameList') {
+            this.$router.push({ path: this.formData.next, name: this.formData.next, query: {city: this.formData.city, industry: this.formData.industry} })
+          } else if (this.formData.next === 'checkNameResult') {
+            this.$router.push({ path: this.formData.next, name: this.formData.next, query: {city: this.formData.city, name: this.formData.name, industry: this.formData.industry, from: this.formData.from} })
+          } else if (this.formData.next === 'manageRangeList') {
+            this.$router.push({ path: this.formData.next, name: this.formData.next, query: {city: this.formData.city, name: this.formData.name, industry: this.formData.industry, from: this.formData.from} })
+          }
           this.isSignUp(true)
           this.loginModal(false)
         } else {
@@ -128,6 +135,8 @@ export default {
       })
       this.isSignUp(false)
       this.loginModal(false)
+      Cookies.remove('mobile')
+      Cookies.remove('m')
       this.$router.push({ path: '/homeList', name: 'homeList' })
     }
   }

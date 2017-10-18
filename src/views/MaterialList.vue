@@ -246,7 +246,7 @@ export default {
       color:#333;
       font-size:12px;
       p
-        font-size:12px;
+        font-size:14px;
 .pane-height
   height:400px;
   overflow-x:hidden;

@@ -140,7 +140,7 @@ export default {
     ])
   },
   created () {
-    if (Cookies.has('m') || Cookies.has('mobile')) {
+    if (Cookies.has('m') && Cookies.has('mobile')) {
       this.saveAccount({
         mobile: Cookies.get('mobile')
       })

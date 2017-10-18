@@ -223,7 +223,7 @@ export default {
   .company-name
     color:#f00;
   .exchange-wrap
-    padding:10px;
+    padding:0 10px;
     button
       width:100%;
     .tips
