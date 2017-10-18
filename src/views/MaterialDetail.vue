@@ -95,8 +95,13 @@ export default {
         return false
       }
       if (this.$route.params.id) {
-        window.location.href = `/qidashi-boot/material/down/${this.$route.params.id}?id=${this.$route.params.id}`
-        Toast.create('文档稍后会提示下载！')
+        api.getMaterialIdDown().then(res => {
+          if (res.data) {
+            window.location.href = res.data
+            return false
+          }
+          Toast.create('该文档暂时不提供下载！')
+        })
       }
     }
   },

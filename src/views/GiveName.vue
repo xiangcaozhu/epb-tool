@@ -12,7 +12,7 @@
           />
           <q-input v-model="formData.industry" @click.native="searchIndustryInput(true)" float-label="行业" :error="$v.formData.industry.$error" placeholder=" 如：网络科技" readonly/>
         </div>
-        <q-btn big color="orange"  @click.prevent.native="giveNameSubmit" >
+        <q-btn big color="orange" :disable="submitDisable" @click.prevent="giveNameSubmit" >
           推荐名字
         </q-btn>
       </form>
@@ -62,7 +62,8 @@ export default {
         city: '',
         industry: '',
         next: 'giveNameList'
-      }
+      },
+      submitDisable: false
     }
   },
   validations: {
@@ -108,13 +109,20 @@ export default {
     },
     // 如果没有登录跳转到登陆页，如果已经登录，可以查询数据
     giveNameSubmit () {
+      this.submitDisable = true
       this.$v.formData.city.$touch()
       this.$v.formData.industry.$touch()
       if (this.$v.formData.city.$error) {
         Toast.create('城市是必选项！')
+        setTimeout(() => {
+          this.submitDisable = false
+        }, 2000)
         return
       } else if (this.$v.formData.industry.$error) {
         Toast.create('行业是必选项！')
+        setTimeout(() => {
+          this.submitDisable = false
+        }, 2000)
         return
       }
       if (!this.getSignUp) {
@@ -138,9 +146,11 @@ export default {
         //     }
         //   ]
         // })
+        this.submitDisable = false
         this.loginModal(true)
         return
       }
+      this.submitDisable = false
       this.$router.push({ path: '/giveNameList', name: 'giveNameList', query: {city: this.formData.city, industry: this.formData.industry} })
     }
   },

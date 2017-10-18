@@ -3,6 +3,10 @@ import { API_ROOT } from 'api/config'
 
 // 接口请求地址对象
 const apiResource = {
+  // 根据验证码登录
+  codeLogin: '/login/check',
+  // 发送登录短信验证码
+  codeSend: '/login/send',
   // 登录：手机号登陆
   login: '/login',
   // 公司相关接口：公司起名
@@ -26,6 +30,8 @@ const apiResource = {
 }
 
 // 导出相关请求地址
+export const codeLoginResource = API_ROOT.concat(apiResource.codeLogin)
+export const codeSendResource = API_ROOT.concat(apiResource.codeSend)
 export const loginResource = API_ROOT.concat(apiResource.login)
 export const companyNameResource = API_ROOT.concat(apiResource.companyName)
 export const companyDetailResource = API_ROOT.concat(apiResource.companyDetail)

@@ -1,23 +1,18 @@
 <template>
   <div>
     <!-- 行业选择 start-->
-    <q-modal class="modal-bg" v-model="getLogin" ref="loginModal" :content-css="{minWidth: '80vw', minHeight: '80vh'}">
+    <q-modal minimized class="modal-bg" v-model="getLogin" ref="loginModal" :content-css="{minWidth: '80vw', minHeight: '60vh'}">
       <q-modal-layout>
         <q-toolbar slot="header">
+          <q-toolbar-title>
+            提交查询
+          </q-toolbar-title>
           <q-btn flat @click="loginModal(false)">
-            <q-icon name="keyboard_arrow_left" />
+            <q-icon name="highlight off" />
           </q-btn>
-          <q-toolbar-title v-if="!getSignUp">
-            登录
-          </q-toolbar-title>
-          <q-toolbar-title v-else>
-            账号信息
-          </q-toolbar-title>
         </q-toolbar>
-        <div class="layout-padding">
-          <h1 v-if="!getSignUp" class="login-title">免注册登陆</h1>
-          <h1 v-else class="login-title">当前登录账号为</h1>
-          <div v-if="!getSignUp" class="login-wrap">
+        <div>
+          <div class="login-wrap">
             <div class="form-wrap">
               <q-field
                 icon="stay primary portrait"
@@ -27,15 +22,23 @@
               >
                 <q-input type="tel" max-length="11" float-label="请输入手机号码" v-model.number="mobile" @blur="$v.mobile.$touch()" @focus="$v.mobile.$reset()"/>
               </q-field>
+              <div class="row">
+                <div class="col-8">
+                   <q-field
+                      icon="message"
+                      :error="$v.code.$error"
+                      :helper="helperCode"
+                    >
+                      <q-input type="tel" max-length="11" float-label="请输入短信验证码" v-model.number="code" @blur="$v.code.$touch()" @focus="$v.code.$reset()"/>
+                    </q-field>
+                </div>
+                <div class="col-4">
+                  <q-btn :disable="codeDisable" @click="getCode" :color="codeDisable ? 'faded' : 'primary'" small>获取验证码</q-btn>
+                </div>
+              </div>
             </div>
-            <q-btn @click="loginSubmit()" color="primary" big>
-            登录
-            </q-btn>
-          </div>
-          <div v-else class="has-login">
-            <p class="has-mobile">{{getAccount.mobile}}</p>
-            <q-btn @click="loginOut()" color="primary" big>
-            退出
+            <q-btn :disable="submitDisable" :color="codeDisable ? 'faded' : 'primary'" @click="checkCodeLogin()" color="primary" big>
+            立即提交查询
             </q-btn>
           </div>
         </div>
@@ -47,7 +50,6 @@
 
 <script>
 import {
-  Cookies,
   Toast,
   Ripple,
   QBtn,
@@ -79,12 +81,19 @@ export default {
   data () {
     return {
       mobile: '',
-      helper: ''
+      helper: '',
+      code: '',
+      helperCode: '',
+      codeDisable: false,
+      submitDisable: false
     }
   },
   props: ['formData'],
   validations: {
     mobile: {
+      required
+    },
+    code: {
       required
     }
   },
@@ -106,14 +115,16 @@ export default {
       } else if (!/^1[3|5|7|8][0-9]{9}$/.test(this.mobile)) {
         this.helper = '请输入11位有效手机号码！'
         return
+      } else if (!this.$v.code.required) {
+        this.helperCode = '验证码不能为空！'
+        return
+      } else if (!this.$v.code.required) {
+        this.helperCode = '验证码不能为空！'
+        return
       }
-      api.login(this.mobile).then(res => {
+      api.login(this.mobile, this.code).then(res => {
         if (res.data.code === 0) {
-          Toast.create('登陆成功!')
-          Cookies.set('mobile', this.mobile, {
-            expires: 365,
-            path: '/'
-          })
+          Toast.create('提交成功!查询中……')
           this.saveAccount({mobile: this.mobile})
           if (this.formData.next === 'giveNameList') {
             this.$router.push({ path: this.formData.next, name: this.formData.next, query: {city: this.formData.city, industry: this.formData.industry} })
@@ -129,16 +140,75 @@ export default {
         }
       })
     },
-    loginOut () {
-      this.saveAccount({
-        mobile: ''
+    checkCodeLogin () {
+      this.submitDisable = true
+      this.$v.mobile.$touch()
+      if (!this.$v.mobile.required) {
+        this.helper = '手机号码不能为空！'
+        this.submitDisable = false
+        return
+      } else if (!/^1[3|5|7|8][0-9]{9}$/.test(this.mobile)) {
+        this.helper = '请输入11位有效手机号码！'
+        this.submitDisable = false
+        return
+      } else if (!this.$v.code.required) {
+        this.helperCode = '验证码不能为空！'
+        this.submitDisable = false
+        return
+      } else if (!this.$v.code.required) {
+        this.helperCode = '验证码不能为空！'
+        this.submitDisable = false
+        return
+      }
+      api.checkCodeLogin(this.mobile, this.code).then(res => {
+        if (res.data.code === 0) {
+          Toast.create('提交成功!查询中……')
+          this.saveAccount({mobile: this.mobile})
+          this.submitDisable = false
+          if (this.formData.next === 'giveNameList') {
+            this.$router.push({ path: this.formData.next, name: this.formData.next, query: {city: this.formData.city, industry: this.formData.industry} })
+          } else if (this.formData.next === 'checkNameResult') {
+            this.$router.push({ path: this.formData.next, name: this.formData.next, query: {city: this.formData.city, name: this.formData.name, industry: this.formData.industry, from: this.formData.from} })
+          } else if (this.formData.next === 'manageRangeList') {
+            this.$router.push({ path: this.formData.next, name: this.formData.next, query: {city: this.formData.city, name: this.formData.name, industry: this.formData.industry, from: this.formData.from} })
+          }
+          this.isSignUp(true)
+          this.loginModal(false)
+        } else {
+          this.submitDisable = false
+          Toast.create(res.data.data.message)
+        }
       })
-      this.isSignUp(false)
-      this.loginModal(false)
-      Cookies.remove('mobile')
-      Cookies.remove('m')
-      this.$router.push({ path: '/homeList', name: 'homeList' })
+    },
+    getCode () {
+      this.codeDisable = true
+      this.$v.mobile.$touch()
+      if (!this.$v.mobile.required) {
+        this.helper = '手机号码不能为空！'
+        this.codeDisable = false
+        return
+      } else if (!/^1[3|5|7|8][0-9]{9}$/.test(this.mobile)) {
+        this.helper = '请输入11位有效手机号码！'
+        this.codeDisable = false
+        return
+      }
+      api.codeSend(this.mobile).then(res => {
+        if (res.data.code === 0) {
+          Toast.create(res.data.data.message)
+          this.codeDisable = false
+        }
+      })
     }
+    // loginOut () {
+    //   this.saveAccount({
+    //     mobile: ''
+    //   })
+    //   this.isSignUp(false)
+    //   this.loginModal(false)
+    //   Cookies.remove('mobile')
+    //   Cookies.remove('m')
+    //   this.$router.push({ path: '/homeList', name: 'homeList' })
+    // }
   }
 }
 </script>
@@ -154,7 +224,7 @@ export default {
     font-weight:bold;
     margin:40px auto;
   .login-wrap,.has-login
-    margin:10px;
+    // margin:10px;
     padding:10px;
     .form-wrap
       padding:10px 0;

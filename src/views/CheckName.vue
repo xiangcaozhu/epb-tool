@@ -18,7 +18,7 @@
             :options="fromOptions"
           />
         </div>
-        <q-btn big color="orange"  @click.prevent.native="checkNameSubmit" >
+        <q-btn big :disable="submitDisable" color="orange"  @click.prevent="checkNameSubmit" >
           核一下
         </q-btn>
       </form>
@@ -72,6 +72,7 @@ export default {
         from: '有限公司',
         next: 'checkNameResult'
       },
+      submitDisable: false,
       fromOptions: [
         {
           label: '有限公司',
@@ -134,21 +135,34 @@ export default {
     },
     // 如果没有登录跳转到登陆页，如果已经登录，可以查询数据
     checkNameSubmit () {
+      this.submitDisable = true
       this.$v.formData.city.$touch()
       this.$v.formData.industry.$touch()
       this.$v.formData.name.$touch()
       this.$v.formData.from.$touch()
       if (this.$v.formData.city.$error) {
         Toast.create('城市是必选项！')
+        setTimeout(() => {
+          this.submitDisable = false
+        }, 2000)
         return
       } else if (this.$v.formData.name.$error) {
         Toast.create('企业字号是必选项！')
+        setTimeout(() => {
+          this.submitDisable = false
+        }, 2000)
         return
       } else if (this.$v.formData.industry.$error) {
         Toast.create('行业是必选项！')
+        setTimeout(() => {
+          this.submitDisable = false
+        }, 2000)
         return
       } else if (this.$v.formData.from.$error) {
         Toast.create('公司类型是必选项！')
+        setTimeout(() => {
+          this.submitDisable = false
+        }, 2000)
         return
       }
       if (!this.getSignUp) {
@@ -172,9 +186,11 @@ export default {
         //     }
         //   ]
         // })
+        this.submitDisable = false
         this.loginModal(true)
         return
       }
+      this.submitDisable = false
       this.$router.push({ path: '/checkNameResult', name: 'checkNameResult', query: {city: this.formData.city, name: this.formData.name, industry: this.formData.industry, from: this.formData.from} })
     }
   },

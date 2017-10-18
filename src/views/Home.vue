@@ -24,12 +24,12 @@
           {{getHeadBar.subTitle}}
         </span>
       </q-toolbar-title>
-      <q-btn
+      <!-- <q-btn
         flat
         @click="loginModal(true)"
       >
         <q-icon name="account circle"/>
-      </q-btn>
+      </q-btn> -->
     </q-toolbar>
     <!-- 头部nav end -->
     <!-- 左侧菜单栏 start-->

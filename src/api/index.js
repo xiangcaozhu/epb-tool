@@ -2,6 +2,8 @@ import axios from 'axios'
 // import Vue from 'vue'
 import qs from 'qs'
 import {
+  codeLoginResource,
+  codeSendResource,
   loginResource,
   companyNameResource,
   companyDetailResource,
@@ -58,9 +60,23 @@ axios.defaults.timeout = 20000
 
 export default {
   // 手机号登陆
-  login (mobile) {
+  login (mobile, code) {
     return axios.post(loginResource, qs.stringify({
+      mobile,
+      code
+    }))
+  },
+  // 发送验证码
+  codeSend (mobile) {
+    return axios.post(codeSendResource, qs.stringify({
       mobile
+    }))
+  },
+  // 核验短信的正确性
+  checkCodeLogin (mobile, variCode) {
+    return axios.post(codeLoginResource, qs.stringify({
+      mobile,
+      variCode
     }))
   },
   // 公司起名
