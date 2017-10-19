@@ -33,7 +33,7 @@
                     </q-field>
                 </div>
                 <div class="col-4">
-                  <q-btn :disable="codeDisable" @click="getCode" :color="codeDisable ? 'faded' : 'primary'" small>获取验证码</q-btn>
+                  <q-btn :disable="codeDisable" @click="getCode" :color="codeDisable ? 'faded' : 'primary'" small>{{time}}</q-btn>
                 </div>
               </div>
             </div>
@@ -85,7 +85,8 @@ export default {
       code: '',
       helperCode: '',
       codeDisable: false,
-      submitDisable: false
+      submitDisable: false,
+      time: '获取验证码'
     }
   },
   props: ['formData'],
@@ -145,19 +146,27 @@ export default {
       this.$v.mobile.$touch()
       if (!this.$v.mobile.required) {
         this.helper = '手机号码不能为空！'
-        this.submitDisable = false
+        setTimeout(() => {
+          this.submitDisable = false
+        }, 2000)
         return
       } else if (!/^1[3|5|7|8][0-9]{9}$/.test(this.mobile)) {
         this.helper = '请输入11位有效手机号码！'
-        this.submitDisable = false
+        setTimeout(() => {
+          this.submitDisable = false
+        }, 2000)
         return
       } else if (!this.$v.code.required) {
         this.helperCode = '验证码不能为空！'
-        this.submitDisable = false
+        setTimeout(() => {
+          this.submitDisable = false
+        }, 2000)
         return
       } else if (!this.$v.code.required) {
         this.helperCode = '验证码不能为空！'
-        this.submitDisable = false
+        setTimeout(() => {
+          this.submitDisable = false
+        }, 2000)
         return
       }
       api.checkCodeLogin(this.mobile, this.code).then(res => {
@@ -195,9 +204,44 @@ export default {
       api.codeSend(this.mobile).then(res => {
         if (res.data.code === 0) {
           Toast.create(res.data.data.message)
-          this.codeDisable = false
+          this.countDown(res.data.data.interval)
         }
       })
+    },
+    // 倒计时
+    countDown (second, callback) {
+      // 使用闭包封装一个内部倒计时变量
+      var timer = second
+      // 保存传进了的dom元素
+      let _this = this
+      return (function countDownInside () {
+        // 自减
+        --timer
+        // 假如倒计时还没有结束那么继续执行该判断
+        if (timer > 0 && timer < second) {
+          // 设置倒计时字符串
+          _this.time = (timer + 's')
+          _this.codeDisable = true
+          // 递归调用
+          setTimeout(function () {
+            // 继续调用闭包
+            countDownInside()
+          }, 1000)
+          // 实时返回时间，供外面判断倒计时是否结束
+          callback(timer, second)
+          return false
+        } else {
+          // 重新设置时间
+          timer = second
+          // 字符串变为重新发送
+          _this.time = ('重新获取')
+          // 允许按钮点击
+          _this.codeDisable = false
+          // 实时返回时间，供外面判断倒计时是否结束
+          callback(timer, second)
+          return false
+        }
+      })()
     }
     // loginOut () {
     //   this.saveAccount({

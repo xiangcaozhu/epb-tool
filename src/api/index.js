@@ -16,47 +16,37 @@ import {
   materialIdDownResource
 } from 'api/resource'
 
-// import { Cookies } from 'quasar'
+import { Cookies, Loading, Toast } from 'quasar'
 
 // axios.defaults.withCredentials = true
-axios.defaults.timeout = 20000
+axios.defaults.timeout = 10000
 
 // request拦截器
-// axios.interceptors.request.use(
-//   config => {
-//     const token = Cookies.get('m')
-//     config.data = JSON.stringify(config.data)
-//     config.headers = {
-//       'Content-Type': 'application/x-www-form-urlencoded'
-//     }
-//     if (token) {
-//       config.headers = {
-//         'Content-Type': 'application/x-www-form-urlencoded',
-//         'Authorization': token
-//       }
-//     }
-//     return config
-//   },
-//   err => {
-//     return Promise.reject(err)
-//   }
-// )
+axios.interceptors.request.use(
+  config => {
+    if (!Cookies.get('m')) {
+      window.location.href = '/'
+    }
+    return config
+  },
+  err => {
+    Loading.hide()
+    Toast.create.warning({html: '数据请求失败，请稍后再试！'})
+    return Promise.reject(err)
+  }
+)
 
 // response拦截器
-// axios.interceptors.response.use(
-//   response => {
-//     if (response.data.errCode === 2) {
-//       Vue.$router.push({
-//         path: '/login',
-//         query: { redirect: Vue.$router.currentRoute.fullPath }
-//       })
-//       return response
-//     }
-//   },
-//   err => {
-//     return Promise.reject(err)
-//   }
-// )
+axios.interceptors.response.use(
+  response => {
+    return response
+  },
+  err => {
+    Loading.hide()
+    Toast.create.warning({html: '数据没有响应，请稍后再试！'})
+    return Promise.reject(err)
+  }
+)
 
 export default {
   // 手机号登陆
