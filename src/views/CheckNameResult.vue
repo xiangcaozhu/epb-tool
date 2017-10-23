@@ -41,87 +41,77 @@
       </div>
     </div>  
     <div class="detail-wrap" >
-      <q-tabs v-model="tabsModel" inverted no-pane-border>
-        <q-tab name="prohibitWordsResult" label="敏感词分析" slot="title" />
-        <q-tab name="approximateCompanyFourResult" label="相似公司分析" slot="title" />
-        <q-tab name="companyTrademarkResultPO" label="相似商标分析" slot="title" />
-        <q-tab-pane name="prohibitWordsResult">
-            <div class="yes" v-if="resultData.prohibitWordsResult.hmbSolrWords.length!==0">
-               <q-card v-for="(list, index) in resultData.prohibitWordsResult.hmbSolrWords" class="caption" :key="index">
-                  <q-card-title>
-                    <q-icon color="warning" name="warning" />{{list.title}}
-                    <p slot="subtitle" class="text-faded" style="font-size:12px;margin-bottom:0;"><span style="float:right;">通过率{{list.passRate||0}}%/相似度{{list.similar||0}}%</span></p>
-                  </q-card-title>
-                  <q-card-separator />
-                  <q-card-main>
-                    <p class="text-faded" v-html="list.content"></p>
-                  </q-card-main>
-                </q-card>
-            </div>
-            <div v-else class="row justify-center no">
-              <p class="col-12 text-grey-4" style="text-align:center;"><q-icon name="filter none" size="50px"/></p>
-              <p class="col-12 filter none text-grey-4" style="text-align:center;">恭喜您，暂无敏感词分析,请查阅其他分析</p>
-            </div>
-        </q-tab-pane>
-        <q-tab-pane name="approximateCompanyFourResult" >
-            <q-infinite-scroll ref="apprInfinite" :handler="approLoadMore" >
-              <div v-if="resultData.approximateCompanyFourResult.list.length!==0">
-                <q-card v-for="(list, index) in approList" :key="index">
-                  <q-card-title>
-                    <q-chip small color="orange" class="shadow-1">
-                      {{ index + 1 }}
-                    </q-chip>
-                    {{list.companyName}}
-                    <p slot="subtitle" class="text-faded" style="font-size:12px;margin-bottom:0;">{{list.searchType}} <span style="float:right;">相似度{{list.similar}}%</span></p>
-                  </q-card-title>
-                  <q-card-separator />
-                  <q-card-main>
-                  <p>{{list.passRate}}</p>
-                    <p class="text-faded" v-html="list.detail"></p>
-                  </q-card-main>
-                </q-card>
-                <div v-if="hiddenApproSpinner" class="row justify-center" style="margin-bottom: 50px;">
-                  <q-spinner-ios color="primary" slot="message" :size="40" label="加载中……"/>
-                </div>
-              </div>
-              <div v-else class="row justify-center no">
-                <p class="col-12 text-grey-4" style="text-align:center;"><q-icon name="filter none" size="50px"/></p>
-                <p class="col-12 filter none text-grey-4" style="text-align:center;">暂无相似公司分析</p>
-              </div>
-            </q-infinite-scroll>
-        </q-tab-pane>
-        <q-tab-pane name="companyTrademarkResultPO">
-            <q-infinite-scroll ref="tradeInfinite" :handler="tradeLoadMore" >
-              <div v-if="resultData.companyTrademarkResultPO.trademarkPOs.length!==0">
-                <q-card v-for="(list, index) in trademarkPOs" class="caption" :key="index">
-                  <q-card-title>
-                    <q-chip small color="primary" class="shadow-1">
-                      {{ index + 1 }}
-                    </q-chip>
-                    {{list.title}}
-                    <p slot="subtitle" class="text-faded" style="font-size:12px;margin-bottom:0;"><span style="float:right;">通过率{{list.passRate}}%/相似度{{list.similar}}%</span></p>
-                  </q-card-title>
-                  <q-card-separator />
-                  <q-card-main>
-                    <p class="text-faded" v-html="list.content"></p>
-                  </q-card-main>
-                </q-card>
-                <div v-if="hiddenTradeSpinner" class="row justify-center" style="margin-bottom: 50px;">
-                  <q-spinner-ios color="primary" slot="message" :size="40" />
-                </div>
-              </div>
-              <div v-else class="row justify-center no">
-                <p class="col-12 text-grey-4" style="text-align:center;"><q-icon name="filter none" size="50px"/></p>
-                <p class="col-12 filter none text-grey-4" style="text-align:center;">暂无相似品牌商标分析</p>
-              </div>   
-            </q-infinite-scroll>  
-        </q-tab-pane>
-      </q-tabs>
+      <div class="yes" v-if="resultData.prohibitWordsResult.hmbSolrWords.length!==0">
+        <h2 class="detail-type">敏感词分析</h2>
+        <q-card v-for="(list, index) in resultData.prohibitWordsResult.hmbSolrWords" class="caption" :key="index">
+          <q-card-title>
+            <q-icon color="warning" name="warning" />{{list.title}}
+            <p slot="subtitle" class="text-faded" style="font-size:12px;margin-bottom:0;"><span style="float:right;">通过率{{list.passRate||0}}%/相似度{{list.similar||0}}%</span></p>
+          </q-card-title>
+          <q-card-separator />
+          <q-card-main>
+            <p class="text-faded" v-html="list.content"></p>
+          </q-card-main>
+        </q-card>
+      </div>
+      <div ref="apprInfinite">
+        <div v-if="resultData.approximateCompanyFourResult.list.length!==0">
+          <h2 class="detail-type">相似公司分析</h2>
+          <q-card v-for="(list, index) in approList" :key="index">
+            <q-card-title>
+              <q-chip small color="orange" class="shadow-1">
+                {{ index + 1 }}
+              </q-chip>
+              {{list.companyName}}
+              <p slot="subtitle" class="text-faded" style="font-size:12px;margin-bottom:0;">{{list.searchType}} <span style="float:right;">相似度{{list.similar}}%</span></p>
+            </q-card-title>
+            <q-card-separator />
+            <q-card-main>
+            <p>{{list.passRate}}</p>
+              <p class="text-faded" v-html="list.detail"></p>
+            </q-card-main>
+          </q-card>
+          <div v-if="hiddenApproSpinner" class="row justify-center" style="margin-top:20px;margin-bottom: 50px;">
+            <q-spinner-ios color="primary" slot="message" :size="30" label="加载中……"/>
+          </div>
+          <div class="more" v-show="!hiddenApproSpinner">
+             <q-btn @click="approLoadMore" class="tab-submit" color="orange" style="width:100%;">{{approTips}}</q-btn>
+          </div>
+        </div>
+      </div>
+      <div ref="tradeInfinite" >
+        <div v-if="resultData.companyTrademarkResultPO.trademarkPOs.length!==0">
+          <h2 class="detail-type">相似品牌商标分析</h2>
+          <q-card v-for="(list, index) in trademarkPOs" class="caption" :key="index">
+            <q-card-title>
+              <q-chip small color="primary" class="shadow-1">
+                {{ index + 1 }}
+              </q-chip>
+              {{list.title}}
+              <p slot="subtitle" class="text-faded" style="font-size:12px;margin-bottom:0;"><span style="float:right;">通过率{{list.passRate}}%/相似度{{list.similar}}%</span></p>
+            </q-card-title>
+            <q-card-separator />
+            <q-card-main>
+              <p class="text-faded" v-html="list.content"></p>
+            </q-card-main>
+          </q-card>
+          <div v-if="hiddenTradeSpinner" class="row justify-center" style="margin-top:20px;margin-bottom: 50px;">
+            <q-spinner-ios color="primary" slot="message" :size="30" />
+          </div>
+          <div class="more" v-show="!hiddenTradeSpinner">
+             <q-btn @click="tradeLoadMore" class="tab-submit" color="orange" style="width:100%;">{{tradeTips}}</q-btn>
+          </div>
+        </div> 
+      </div>
+      <div v-show="resultData.prohibitWordsResult.hmbSolrWords.length===0&&resultData.approximateCompanyFourResult.list.length===0&&resultData.companyTrademarkResultPO.trademarkPOs.length===0" class="row justify-center no">
+        <p class="col-12 text-grey-4" style="text-align:center;"><q-icon name="filter none" size="50px"/></p>
+        <p class="col-12 filter none text-grey-4" style="text-align:center;">抱歉，暂无分析内容可展示</p>
+      </div>
     </div>
     <search-city @getSelectedCity="getSelectedCity"></search-city>
     <search-industry @getSelectedIndustry="getSelectedIndustry"></search-industry>
   </div>
-</template>
+</template> 
 
 <script>
 import {
@@ -208,9 +198,12 @@ export default {
       industrys: localData.industrys,
       start: 0,
       count: 5,
-      index: 0,
-      hiddenApproSpinner: true,
-      hiddenTradeSpinner: true
+      approIndex: 0,
+      approTips: '加载更多',
+      tradeIndex: 0,
+      tradeTips: '加载更多',
+      hiddenApproSpinner: false,
+      hiddenTradeSpinner: false
     }
   },
   created () {
@@ -236,33 +229,33 @@ export default {
       'setMenuIcon'
     ]),
     approLoadMore (index, done) {
-      this.index = 0
-      this.loadMoreData(this.resultData.approximateCompanyFourResult.list, 'approList', 'hiddenApproSpinner', index, done)
+      this.loadMoreData(this.resultData.approximateCompanyFourResult.list, 'approList', 'hiddenApproSpinner', 'approIndex', () => {
+        this.approTips = '没有更多'
+      })
     },
     tradeLoadMore (index, done) {
-      this.index = 0
-      this.loadMoreData(this.resultData.companyTrademarkResultPO.trademarkPOs, 'trademarkPOs', 'hiddenTradeSpinner', index, done)
+      this.loadMoreData(this.resultData.companyTrademarkResultPO.trademarkPOs, 'trademarkPOs', 'hiddenTradeSpinner', 'tradeIndex', () => {
+        this.tradeTips = '没有更多'
+      })
     },
-    loadMoreData (formArray, toString, spinner, index, done) {
-      if (formArray) {
+    loadMoreData (formArray, toString, spinner, index, callback) {
+      if (formArray.length !== 0) {
         setTimeout(() => {
           let items = []
-          let start = this.count * this.index,
+          let start = this.count * this[index],
             end = start + this.count,
             maxEnd = formArray.length - end < this.count ? formArray.length : end
-          this[spinner] = true
           if (formArray.length <= this[toString].length) {
             this[spinner] = false
+            callback()
             return false
           }
           for (; start < maxEnd; start++) {
             items.push(formArray[start])
           }
           this[toString] = this[toString].concat(items)
-          this.index++
-          if (done) {
-            done()
-          }
+          this[index]++
+          this[spinner] = false
         }, 1000)
       }
     },
@@ -324,7 +317,10 @@ export default {
     checkNameSubmit () {
       this.approList = []
       this.trademarkPOs = []
-      this.index = 0
+      this.approIndex = 0
+      this.tradeIndex = 0
+      this.hiddenApproSpinner = true
+      this.hiddenTradeSpinner = true
       // Loading.show({
       //   spinner: QSpinnerIos,
       //   message: '加载中……',
@@ -337,12 +333,11 @@ export default {
           if (res.data.code === 0) {
             // 因为后台返回的数据结构不稳定，数组会变成null
             this.resultData = res.data.data
-            if (this.$refs.apprInfinite) {
-              this.$refs.apprInfinite.loadMore()
-            }
-            if (this.$refs.tradeInfinite) {
-              this.$refs.tradeInfinite.loadMore()
-            }
+            // 初始化加载5条
+            setTimeout(() => {
+              this.approLoadMore()
+              this.tradeLoadMore()
+            }, 200)
           }
         })
     }
@@ -398,5 +393,23 @@ export default {
     .low
       background-color:#f00!important;
       color:#fff!important;
-
+  .detail-type
+    font-size:18px;
+    height:50px;
+    line-height:50px;
+    color:#666;
+    padding:0 20px;
+    font-family:'微软雅黑';
+    margin:0;
+    font-weight:bold;
+    border-bottom:2px solid #027be3;
+  .more
+    height:40px;
+    line-height:40px;
+    text-align:center;
+    padding:0 10px;
+    margin-bottom:20px;
+    p
+      color:#888;
+      font-size:20px;
 </style>
