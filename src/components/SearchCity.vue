@@ -15,9 +15,16 @@
         <!-- 搜索头部 end -->
         <!-- 搜索栏 start -->
         <q-toolbar slot="header">
-          <q-search inverted color="none" v-model="searchCity" placeholder="请输入您要选择的城市">
-            <q-autocomplete @search="queryCityItem" @selected="selectedCityItem" />
-          </q-search>
+            <div class="col-10">
+              <q-search inverted color="none" v-model="searchCity" placeholder="请输入您要选择的城市">
+                <q-autocomplete @search="queryCityItem" @selected="selectedCityItem" />
+              </q-search>
+            </div>
+            <div class="col-2">
+              <q-btn inverted color="none" @click.stop="diySelectCity" style="font-size:12px;box-shadow:none;">
+                确定
+              </q-btn>
+            </div>
         </q-toolbar>
         <!-- 搜索栏 end -->
         <div class="layout-padding">
@@ -101,6 +108,8 @@ export default {
       this.searchCityModal(false)
     },
     queryCityItem (items, done) {
+      this.queryCity.label = items
+      this.queryCity.code = ''
       setTimeout(() => {
         done(filter(items, {field: 'label', list: this.cityAll}))
       }, 1000)
@@ -116,6 +125,13 @@ export default {
       this.searchCityModal(false)
       // 提示选择的选项
       Toast.create(`你选择了"${item.label}-${item.code}"`)
+    },
+    diySelectCity () {
+      this.$emit('getSelectedCity', this.queryCity)
+      // 关闭城市选择
+      this.searchCityModal(false)
+      // 提示选择的选项
+      Toast.create(`你选择了"${this.searchCity}"`)
     }
   }
 }

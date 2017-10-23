@@ -149,11 +149,11 @@ export default {
   },
   {
     code: '130100',
-    label: '石家'
+    label: '石家庄'
   },
   {
     code: '230100',
-    label: '哈尔'
+    label: '哈尔滨'
   }
   ],
   cityAll: [{

@@ -16,7 +16,7 @@ import {
   materialIdDownResource
 } from 'api/resource'
 
-import { Cookies, Loading, Toast } from 'quasar'
+import { Loading, Toast } from 'quasar'
 
 // axios.defaults.withCredentials = true
 axios.defaults.timeout = 10000
@@ -24,9 +24,6 @@ axios.defaults.timeout = 10000
 // request拦截器
 axios.interceptors.request.use(
   config => {
-    if (!Cookies.get('m')) {
-      window.location.href = '/'
-    }
     return config
   },
   err => {

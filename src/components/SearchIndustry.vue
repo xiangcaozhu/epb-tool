@@ -15,9 +15,16 @@
         <!-- 搜索头部 end -->
         <!-- 搜索栏 start -->
         <q-toolbar slot="header">
-          <q-search inverted color="none" v-model="searchIndustry" placeholder="请输入您要选择的行业">
-            <q-autocomplete @search="queryIndustryItem" @selected="selectedIndustryItem" />
-          </q-search>
+          <div class="col-10">
+            <q-search inverted color="none" v-model="searchIndustry" placeholder="请输入您要选择的行业">
+              <q-autocomplete @search="queryIndustryItem" @selected="selectedIndustryItem" />
+            </q-search>
+          </div>
+          <div class="col-2">
+            <q-btn inverted color="none" @click.stop="diySelectIndustry" style="font-size:12px;box-shadow:none;">
+              确定
+            </q-btn>
+          </div>
         </q-toolbar>
         <!-- 搜索栏 end -->
         <div class="layout-padding">
@@ -106,6 +113,7 @@ export default {
       this.searchIndustryModal(false)
     },
     queryIndustryItem (items, done) {
+      this.queryIndustry.industry = items
       setTimeout(() => {
         done(filter(items, {field: 'label', list: this.industrysAll}))
       }, 1000)
@@ -121,6 +129,14 @@ export default {
       this.searchIndustryModal(false)
       // 提示选择的选项
       Toast.create(`你选择了"${item.label}"`)
+    },
+    diySelectIndustry () {
+      // 把获取的数值发给父级
+      this.$emit('getSelectedIndustry', this.queryIndustry)
+      // 关闭行业选择
+      this.searchIndustryModal(false)
+      // 提示选择的选项
+      Toast.create(`你选择了"${this.queryIndustry.industry}"`)
     }
   }
 }

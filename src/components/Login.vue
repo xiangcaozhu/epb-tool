@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- 行业选择 start-->
-    <q-modal minimized class="modal-bg" v-model="getLogin" ref="loginModal" :content-css="{minWidth: '80vw', minHeight: '60vh'}">
+    <q-modal class="modal-bg" v-model="getLogin" ref="loginModal" :content-css="{minWidth: '80vw', minHeight: '80vh'}">
       <q-modal-layout>
         <q-toolbar slot="header">
           <q-toolbar-title>
@@ -211,7 +211,7 @@ export default {
     // 倒计时
     countDown (second, callback) {
       // 使用闭包封装一个内部倒计时变量
-      var timer = second
+      let timer = second
       // 保存传进了的dom元素
       let _this = this
       return (function countDownInside () {
@@ -228,7 +228,9 @@ export default {
             countDownInside()
           }, 1000)
           // 实时返回时间，供外面判断倒计时是否结束
-          callback(timer, second)
+          if (callback) {
+            callback(timer, second)
+          }
           return false
         } else {
           // 重新设置时间
@@ -238,7 +240,9 @@ export default {
           // 允许按钮点击
           _this.codeDisable = false
           // 实时返回时间，供外面判断倒计时是否结束
-          callback(timer, second)
+          if (callback) {
+            callback(timer, second)
+          }
           return false
         }
       })()

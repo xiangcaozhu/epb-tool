@@ -49,13 +49,8 @@
             <div class="yes" v-if="resultData.prohibitWordsResult.hmbSolrWords.length!==0">
                <q-card v-for="(list, index) in resultData.prohibitWordsResult.hmbSolrWords" class="caption" :key="index">
                   <q-card-title>
-                    {{list.title}}
-                    <span slot="subtitle">相似度{{list.similar||0}}/通过率{{list.passRate||0}}%</span>
-                    <div slot="right" class="row items-center">
-                      <q-chip small square color="secondary" class="shadow-1">
-                        {{ index + 1 }}
-                      </q-chip>
-                    </div>
+                    <q-icon color="warning" name="warning" />{{list.title}}
+                    <p slot="subtitle" class="text-faded" style="font-size:12px;margin-bottom:0;"><span style="float:right;">通过率{{list.passRate||0}}%/相似度{{list.similar||0}}%</span></p>
                   </q-card-title>
                   <q-card-separator />
                   <q-card-main>
@@ -73,23 +68,15 @@
               <div v-if="resultData.approximateCompanyFourResult.list.length!==0">
                 <q-card v-for="(list, index) in approList" :key="index">
                   <q-card-title>
+                    <q-chip small color="orange" class="shadow-1">
+                      {{ index + 1 }}
+                    </q-chip>
                     {{list.companyName}}
-                    <span slot="subtitle">{{list.searchType}}</span>
-                    <div slot="right" class="row items-center">
-                      <q-chip small square color="secondary" class="shadow-1">
-                        {{ index + 1 }}
-                      </q-chip>
-                      <!-- {{list.similar}} -->
-                      <!-- {{list.warnWords}} -->
-                    </div>
+                    <p slot="subtitle" class="text-faded" style="font-size:12px;margin-bottom:0;">{{list.searchType}} <span style="float:right;">相似度{{list.similar}}%</span></p>
                   </q-card-title>
                   <q-card-separator />
                   <q-card-main>
                   <p>{{list.passRate}}</p>
-                    <div class="row">
-                      <p class="col-8 text-faded" style="font-size:12px;text-align:left;">{{list.title}}</p>
-                      <p class="col-4 text-faded" style="font-size:12px;text-align:right;">相似度{{list.similar}}%</p>
-                    </div>
                     <p class="text-faded" v-html="list.detail"></p>
                   </q-card-main>
                 </q-card>
@@ -108,13 +95,11 @@
               <div v-if="resultData.companyTrademarkResultPO.trademarkPOs.length!==0">
                 <q-card v-for="(list, index) in trademarkPOs" class="caption" :key="index">
                   <q-card-title>
+                    <q-chip small color="primary" class="shadow-1">
+                      {{ index + 1 }}
+                    </q-chip>
                     {{list.title}}
-                    <span slot="subtitle">相似度{{list.similar}}/通过率{{list.passRate}}%</span>
-                    <div slot="right" class="row items-center">
-                      <q-chip small square color="secondary" class="shadow-1">
-                        {{ index + 1 }}
-                      </q-chip>
-                    </div>
+                    <p slot="subtitle" class="text-faded" style="font-size:12px;margin-bottom:0;"><span style="float:right;">通过率{{list.passRate}}%/相似度{{list.similar}}%</span></p>
                   </q-card-title>
                   <q-card-separator />
                   <q-card-main>
@@ -256,7 +241,6 @@ export default {
     },
     tradeLoadMore (index, done) {
       this.index = 0
-      console.log(2)
       this.loadMoreData(this.resultData.companyTrademarkResultPO.trademarkPOs, 'trademarkPOs', 'hiddenTradeSpinner', index, done)
     },
     loadMoreData (formArray, toString, spinner, index, done) {
