@@ -86,7 +86,7 @@ export default {
     this.getManageRangeDetail()
     this.setMenuIcon(false)
     this.headBar({
-      title: '经营范围生成',
+      title: '经营范围查询',
       subTitle: '参考公司'
     })
   },

@@ -3,8 +3,8 @@
     <!-- 起名查询 start -->
     <div class="query-warp bg-light-blue-9">
       <div class="query-header">
-        <h2 class="title">经营范围生成器</h2>
-        <p class="des">经营范围不知道怎么填？智能生成！</p>
+        <h2 class="title">经营范围查询</h2>
+        <p class="des">查询注册行业的经营范围</p>
       </div>
       <form class="query-form">
         <div class="form-wrap">
@@ -13,7 +13,7 @@
           <q-input v-model="formData.industry" @click.native="searchIndustryInput(true)" float-label="行业" :error="$v.formData.industry.$error" placeholder=" 如：网络科技" readonly/>
         </div>
         <q-btn big :disable="submitDisable" color="orange"  @click.prevent="manageRangeSubmit" >
-          一键生成
+          马上查询
         </q-btn>
       </form>
     </div>
@@ -155,7 +155,7 @@ export default {
   created () {
     this.setMenuIcon(true)
     this.headBar({
-      title: '经营范围生成',
+      title: '经营范围查询',
       subTitle: '查询入口'
     })
   },

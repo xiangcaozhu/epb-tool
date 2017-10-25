@@ -8,7 +8,7 @@
             <q-btn @click="searchIndustryModal(true)" flat >{{formData.industry}}<q-icon size="14px" class="text-grey-6" name="arrow drop down"/></q-btn>
         </div>
         <div class="col-4 item">
-            <q-btn @click="giveNameSubmit" class="tab-submit" color="primary" small>推荐名称</q-btn>
+            <q-btn @click="giveNameSubmit" class="tab-submit" color="primary" small>生成</q-btn>
         </div>
       </div>
       <div class="loading-wrap relative-position">
@@ -16,7 +16,7 @@
           <table class="q-table striped-odd">
             <thead>
               <tr>
-                <th class="text-left" style="width:70%">推荐公司名字</th>
+                <th class="text-left" style="width:70%">公司名字</th>
                 <th class="text-right">通过率</th>
               </tr>
             </thead>
@@ -38,7 +38,7 @@
           <q-spinner-ios size="30px" color="primary"></q-spinner-ios>
         </q-inner-loading>
         <div class="exchange-wrap" v-show="showReturnData">
-          <p class="tips">点击公司名称，查看核名结果！</p>
+          <p class="tips">点击公司名字，查看核名结果！</p>
           <q-btn loader color="orange" v-model="progress" @click="giveNameNews">
             换一批
             <span slot="loading">
@@ -107,7 +107,7 @@ export default {
     this.giveNameSubmit()
     this.setMenuIcon(false)
     this.headBar({
-      title: '公司起名系统',
+      title: '公司起名',
       subTitle: '推荐列表'
     })
   },

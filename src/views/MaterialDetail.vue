@@ -95,9 +95,9 @@ export default {
         return false
       }
       if (this.$route.params.id) {
-        api.getMaterialIdDown().then(res => {
-          if (res.data) {
-            window.location.href = res.data
+        api.getMaterialIdDown(this.$route.params.id).then(res => {
+          if (res.data.data) {
+            window.location.href = res.data.data
             return false
           }
           Toast.create('该文档暂时不提供下载！')

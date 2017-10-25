@@ -50,10 +50,10 @@ export default {
   data () {
     return {
       list: [
-        {name: '公司起名系统', subName: '名字取得好，不怕巷子深', src: require('assets/gsqm.jpg'), count: 2345, color: 'primary', link: '我要起名', to: 'giveName'},
-        {name: '公司核名系统', subName: '公司名字工商查名 3秒出结果', src: require('assets/gshm.jpg'), count: 10238385, color: 'secondary', link: '我要核名', to: 'checkName'},
-        {name: '经营范围智能生成', subName: '经营范围智能生成', src: require('assets/gsfw.jpg'), count: 2345, color: 'info', link: '我要生成', to: 'manageRange'},
-        {name: '工商材料下载', subName: '注册公司、常用合同、协议等工商材料下载', src: require('assets/gswd.jpg'), count: 233445, color: 'positive', link: '我要下载', to: 'materialList'}
+        {name: '公司起名', subName: '智能生成，工商通过率高的名字', src: require('assets/gsqm.jpg'), count: 5848931, color: 'primary', link: '我要起名', to: 'giveName'},
+        {name: '公司核名', subName: '输入名字，测试工商通过率', src: require('assets/gshm.jpg'), count: 6905132, color: 'secondary', link: '我要核名', to: 'checkName'},
+        {name: '经营范围查询', subName: '查询注册行业的经营范围', src: require('assets/gsfw.jpg'), count: 1422079, color: 'info', link: '我要生成', to: 'manageRange'},
+        {name: '工商材料', subName: '注册公司、常用合同、协议等工商材料下载', src: require('assets/gswd.jpg'), count: 1086542, color: 'positive', link: '我要下载', to: 'materialList'}
       ]
     }
   },

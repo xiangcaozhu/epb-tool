@@ -3,13 +3,13 @@
     <!-- 起名查询 start -->
     <div class="query-warp bg-light-blue-9">
       <div class="query-header">
-        <h2 class="title">公司核名系统</h2>
-        <p class="des">公司名字预查名，提升工商注册通过率</p>
+        <h2 class="title">公司核名</h2>
+        <p class="des">输入名字，测试工商通过率</p>
       </div>
       <form class="query-form">
         <div class="form-wrap">
           <q-input v-model="formData.city" @click="searchCityInput(true)" float-label="城市" :error="$v.formData.city.$error" placeholder=" 如：厦门" readonly/>
-          <q-input v-model="formData.name" float-label="字号" :error="$v.formData.name.$error" placeholder=" 如：酷泰"/>
+          <q-input v-model="formData.name" float-label="字号" :error="$v.formData.name.$error" placeholder=" 如：恒安"/>
           <q-input v-model="formData.industry" @click.native="searchIndustryInput(true)" float-label="行业" :error="$v.formData.industry.$error" placeholder=" 如：网络科技" readonly/>
           <q-select
             radio
@@ -19,7 +19,7 @@
           />
         </div>
         <q-btn big :disable="submitDisable" color="orange"  @click.prevent="checkNameSubmit" >
-          核一下
+          马上测试
         </q-btn>
       </form>
     </div>
@@ -103,7 +103,7 @@ export default {
   created () {
     this.setMenuIcon(true)
     this.headBar({
-      title: '公司核名系统',
+      title: '公司核名',
       subTitle: '查询入口'
     })
   },

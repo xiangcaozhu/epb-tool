@@ -59,7 +59,7 @@
           <h2 class="detail-type">相似公司分析</h2>
           <q-card v-for="(list, index) in approList" :key="index">
             <q-card-title>
-              <q-chip small color="orange" class="shadow-1">
+              <q-chip small square color="orange" class="shadow-1">
                 {{ index + 1 }}
               </q-chip>
               {{list.companyName}}
@@ -84,7 +84,7 @@
           <h2 class="detail-type">相似品牌商标分析</h2>
           <q-card v-for="(list, index) in trademarkPOs" class="caption" :key="index">
             <q-card-title>
-              <q-chip small color="primary" class="shadow-1">
+              <q-chip small square color="primary" class="shadow-1">
                 {{ index + 1 }}
               </q-chip>
               {{list.title}}
@@ -211,7 +211,7 @@ export default {
     this.checkNameSubmit()
     this.setMenuIcon(false)
     this.headBar({
-      title: '公司核名系统',
+      title: '公司核名',
       subTitle: '核名详情'
     })
   },

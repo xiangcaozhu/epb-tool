@@ -3,8 +3,8 @@
     <!-- 起名查询 start -->
     <div class="query-warp bg-light-blue-9">
       <div class="query-header">
-        <h2 class="title">公司起名系统</h2>
-        <p class="des">只推荐工商通过率高的好名字</p>
+        <h2 class="title">公司起名</h2>
+        <p class="des">智能生成，工商通过率高的名字</p>
       </div>
       <form class="query-form">
         <div class="form-wrap">
@@ -13,7 +13,7 @@
           <q-input v-model="formData.industry" @click.native="searchIndustryInput(true)" float-label="行业" :error="$v.formData.industry.$error" placeholder=" 如：网络科技" readonly/>
         </div>
         <q-btn big color="orange" :disable="submitDisable" @click.prevent="giveNameSubmit" >
-          推荐名字
+          生成名字
         </q-btn>
       </form>
     </div>
@@ -157,7 +157,7 @@ export default {
   created () {
     this.setMenuIcon(true)
     this.headBar({
-      title: '公司起名系统',
+      title: '公司起名',
       subTitle: '查询入口'
     })
   },

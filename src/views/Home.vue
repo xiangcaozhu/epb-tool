@@ -20,9 +20,10 @@
       </q-btn>
       <q-toolbar-title>
         {{getHeadBar.title}}
-        <span v-if="getHeadBar.subTitle" slot="subtitle">
+        <!-- 面包屑导航注销 -->
+        <!-- <span v-if="getHeadBar.subTitle" slot="subtitle">
           {{getHeadBar.subTitle}}
-        </span>
+        </span> -->
       </q-toolbar-title>
       <!-- <q-btn
         flat
@@ -39,31 +40,31 @@
         <q-side-link item to="/homeList">
           <q-item>
             <q-item-side icon="home" />
-            <q-item-main label="首页" sublabel="企大师为你智能推荐名字" />
+            <q-item-main label="首页" sublabel="起名核名，快速查询" />
           </q-item>
         </q-side-link>
         <q-side-link item to="/giveName">
           <q-item>
             <q-item-side icon="supervisor account" />
-            <q-item-main label="公司起名系统" sublabel="企大师为你智能推荐名字" />
+            <q-item-main label="公司起名" sublabel="智能生成，工商通过率高的名字" />
           </q-item>
         </q-side-link>
         <q-side-link item to="/checkName">
           <q-item>
             <q-item-side icon="playlist add check" />
-            <q-item-main label="公司核名系统" sublabel="公司名字工商查名 3秒出结果" />
+            <q-item-main label="公司核名" sublabel="输入名字，测试工商通过率" />
           </q-item>
         </q-side-link>
         <q-side-link item to="/manageRange">
           <q-item>
             <q-item-side icon="settings input component" />
-            <q-item-main label="经营范围智能生成！" sublabel="经营范围智能生成！" />
+            <q-item-main label="查询经营范围" sublabel="查询注册行业的经营范围" />
           </q-item>
         </q-side-link>
         <q-side-link item to="/materialList">
           <q-item>
             <q-item-side icon="file download" />
-            <q-item-main label="工商材料下载" sublabel="工商材料下载" />
+            <q-item-main label="工商材料" sublabel="注册公司，常用合同，协议等工商材料下载" />
           </q-item>
         </q-side-link>
       </q-list>
