@@ -18,12 +18,13 @@
           leave="fadeOut"
         >
           <div class="list-wrap" v-show="showReturnData">
-            <q-card color="" v-for="(item, index) in listData" :key="index" >
+            <q-card color="" v-for="(item, index) in listData" :key="index" style="margin-bottom:20px;">
               <q-card-title>
                 <q-chip tag square color="orange">
                   推荐{{index+1}}
                 </q-chip>
-                <q-chip class="btn-copy" :data-clipboard-text="item.scope" slot="right" icon="content copy" color="grey">
+                <q-chip class="btn-copy chip-right" :data-clipboard-text="item.scope" slot="right"  color="primary">
+                  <q-icon name="content copy" size="18px"/>
                   复制
                 </q-chip>
                 <q-icon  />
@@ -232,7 +233,7 @@ export default {
   .company-name
     color:#f00;
   .exchange-wrap
-    padding:50px 10px;
+    padding:20px 10px 50px 10px;
     button
       width:100%;
     .tips

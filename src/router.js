@@ -20,16 +20,18 @@ const router = new VueRouter({
    * If switching back to default "hash" mode, don't forget to set the
    * build publicPath back to '' so Cordova builds work again.
    */
+  mode: 'history',
   routes: [{
     path: '/',
     component: load('Home'),
     children: [{
       path: '/',
-      redirect: '/homeList'
+      name: 'home',
+      component: load('HomeList')
     },
     {
-      path: '/homeList',
-      name: 'homeList',
+      path: 'home',
+      name: 'home',
       component: load('HomeList')
     },
     {

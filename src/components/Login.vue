@@ -255,7 +255,7 @@ export default {
     //   this.loginModal(false)
     //   Cookies.remove('mobile')
     //   Cookies.remove('m')
-    //   this.$router.push({ path: '/homeList', name: 'homeList' })
+    //   this.$router.push({ path: '/', name: 'home' })
     // }
   }
 }

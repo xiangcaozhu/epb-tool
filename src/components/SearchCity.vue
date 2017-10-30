@@ -29,8 +29,8 @@
         <!-- 搜索栏 end -->
         <div class="layout-padding">
           <h1 class="hot-title">热门城市</h1>
-          <div class="row xs-gutter">
-            <div class="col-4 hot" v-for="(item, index) in hotCity" :key="index"><q-btn @click="getHotCityVal(item.label,item.code)" outline color="primary">{{item.label}}</q-btn></div>
+          <div class="row xs-gutter" >
+            <div class="col-4 hot" v-for="(item, index) in hotCity" :key="index"><q-btn @click="getHotCityVal(item.label,item.code)" outline  class="city-btn border border-radius" style="border:none;">{{item.label}}</q-btn></div>
           </div>
         </div>
       </q-modal-layout>
@@ -143,6 +143,9 @@ export default {
   color:#666;
   margin:0 0 20px 0;
 .hot .q-btn
-  width: 100%;
+  width: 99.9%;
+.city-btn
+  color:#7d7d7d!important;
+
 </style>
 

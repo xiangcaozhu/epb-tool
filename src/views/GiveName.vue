@@ -175,7 +175,7 @@ export default {
     .query-header
       text-align:center;
     .title
-      margin-top:40px;
+      margin-top:30px;
       font-size:30px;
       font-weight:bold;
       font-family:'微软雅黑';

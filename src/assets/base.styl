@@ -1,0 +1,54 @@
+//全局设置
+body,.q-toolbar-title
+  font-family: "Arial","Microsoft YaHei","黑体","宋体",sans-serif;
+
+/*边框样式*/
+.border-t,
+.border-b,
+.border-l,
+.border-r,
+.border-tb,
+.border
+  position: relative;
+.border-t:after,
+.border-b:after,
+.border-l:after,
+.border-r:after,
+.border-tb:after,
+.border:after
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  display: block;
+  content: '';
+  box-sizing:border-box;
+  -webkit-transform-origin: 0 0;
+  -webkit-transform: scale(1);
+  pointer-events: none;
+.border-l:after
+  border-left: 1px solid #ebebeb;
+.border-r:after
+  border-right: 1px solid #ebebeb;
+.border-t:after
+  border-top: 1px solid #ebebeb;
+.border-b:after
+  border-bottom: 1px solid #ebebeb;
+.border-tb:after
+  border-top: 1px solid #ebebeb;
+  border-bottom: 1px solid #ebebeb;
+.border:after
+  border: 1px solid #ebebeb;
+.border.border-radius:after
+  border-radius: 5px;
+@media screen and (-webkit-min-device-pixel-ratio: 1.5)
+  .border-t:after,
+  .border-b:after,
+  .border-l:after,
+  .border-r:after,
+  .border-tb:after,
+  .border:after
+    right: -100%;
+    bottom: -100%;
+    -webkit-transform: scale(0.5);

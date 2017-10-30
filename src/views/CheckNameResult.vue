@@ -19,31 +19,33 @@
       </div>
     </div>
     <div class="rate-wrap">
-      <p><span class="text-red">"{{formData.city}}{{formData.name}}{{formData.industry}}"</span>&nbsp;通过率：</p>
-      <div class="row rate-item">
+      <!-- <div class="row rate-item">
         <div class="col-4 line" :class="{'hight':resultData.passRate>=80}">高</div>
         <div class="col-4 line" :class="{'middle':resultData.passRate>=60&&resultData.passRate<80}">中</div>
         <div class="col-4" :class="{'low':resultData.passRate<59}">低</div>
-      </div>
+      </div> -->
       <div class="suggest" v-if="resultData.prohibitWordsResult">
         <q-card>
           <q-card-title>
-            该名称通过率{{resultData.passRate}}%
+            <p class="text-grey-8 margin-b"><strong class="text-red">"{{formData.city}}{{formData.name}}{{formData.industry}}"</strong>&nbsp;通过率{{resultData.passRate}}% <span v-show="resultData.passRate>=80" class="rate-stage" :class="{'hight':resultData.passRate>=80}">高</span><span v-show="resultData.passRate>=50&&resultData.passRate<80" class="rate-stage" :class="{'middle':resultData.passRate>=50&&resultData.passRate<80}">中</span><span v-show="resultData.passRate<49" class="rate-stage" :class="{'low':resultData.passRate<49}">低</span></p>
             <!-- {{resultData.approximateCompanyFourResult.title}} -->
-            <span slot="subtitle">
+            <p class="margin-b"><span slot="subtitle">
               <q-rating
                 v-model="rate"
                 :max="10"
+                size="24px"
+                :color="rateColor"
               />
             </span>
+            </p>
           </q-card-title>
         </q-card>
       </div>
-    </div>  
+    </div>
     <div class="detail-wrap" >
       <div class="yes" v-if="resultData.prohibitWordsResult.hmbSolrWords.length!==0">
         <h2 class="detail-type">敏感词分析</h2>
-        <q-card v-for="(list, index) in resultData.prohibitWordsResult.hmbSolrWords" class="caption" :key="index">
+        <q-card v-for="(list, index) in resultData.prohibitWordsResult.hmbSolrWords" class="caption card-padding" :key="index">
           <q-card-title>
             <q-icon color="warning" name="warning" />{{list.title}}
             <p slot="subtitle" class="text-faded" style="font-size:12px;margin-bottom:0;"><span style="float:right;">通过率{{list.passRate||0}}%/相似度{{list.similar||0}}%</span></p>
@@ -57,11 +59,9 @@
       <div ref="apprInfinite">
         <div v-if="resultData.approximateCompanyFourResult.list.length!==0">
           <h2 class="detail-type">相似公司分析</h2>
-          <q-card v-for="(list, index) in approList" :key="index">
+          <q-card v-for="(list, index) in approList" :key="index" class="card-padding">
             <q-card-title>
-              <q-chip small square color="orange" class="shadow-1">
-                {{ index + 1 }}
-              </q-chip>
+              <span class="list-index">{{ index + 1 }}</span>
               {{list.companyName}}
               <p slot="subtitle" class="text-faded" style="font-size:12px;margin-bottom:0;">{{list.searchType}} <span style="float:right;">相似度{{list.similar}}%</span></p>
             </q-card-title>
@@ -82,7 +82,7 @@
       <div ref="tradeInfinite" >
         <div v-if="resultData.companyTrademarkResultPO.trademarkPOs.length!==0">
           <h2 class="detail-type">相似品牌商标分析</h2>
-          <q-card v-for="(list, index) in trademarkPOs" class="caption" :key="index">
+          <q-card v-for="(list, index) in trademarkPOs" class="caption card-padding" :key="index">
             <q-card-title>
               <q-chip small square color="primary" class="shadow-1">
                 {{ index + 1 }}
@@ -219,6 +219,15 @@ export default {
     ...mapGetters(['getLoading']),
     rate () {
       return Math.floor(this.resultData.passRate / 10)
+    },
+    rateColor () {
+      if (Math.floor(this.resultData.passRate / 10) >= 8) {
+        return 'green'
+      } else if (Math.floor(this.resultData.passRate / 10) < 8 && Math.floor(this.resultData.passRate / 10) >= 5) {
+        return 'amber-8'
+      } else if (Math.floor(this.resultData.passRate / 10) < 5) {
+        return 'red'
+      }
     }
   },
   methods: {
@@ -372,6 +381,8 @@ export default {
     .tab-submit
       width:80%;
       margin:5px auto;
+  .margin-b
+    margin-bottom:0;
   .rate-wrap
     width:100%;
     padding:10px;
@@ -393,6 +404,29 @@ export default {
     .low
       background-color:#f00!important;
       color:#fff!important;
+  .rate-stage
+    line-height:1;
+    width:30px;
+    height:20px;
+    text-align:center;
+    line-height:20px;
+    display:inline-block;
+    float:right;
+    font-size:12px;
+    color:#fff;
+    background-color:#ff6600;
+  .list-index
+    margin-top:6px;
+    float:left;
+    height:20px;
+    line-height:20px;
+    text-align:center;
+    width:20px;
+    margin-right:10px;
+    background-color:#ff9800;
+    color:#fff;
+    font-size:12px;
+    display:inline-block;
   .detail-type
     font-size:18px;
     height:50px;
@@ -403,6 +437,10 @@ export default {
     margin:0;
     font-weight:bold;
     border-bottom:2px solid #027be3;
+  .card-padding
+    margin-bottom:20px;
+    .q-card-container
+      padding: 5px 16px;
   .more
     height:40px;
     line-height:40px;

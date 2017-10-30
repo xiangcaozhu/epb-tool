@@ -23,7 +23,10 @@ const state = {
   },
   headBar: {
     title: '易企名',
-    subTitle: '企业起名核名系统'
+    subTitle: '企业起名核名系统',
+    bgColor: 'grey-3',
+    iconColor: 'grey-6',
+    titleClass: 'text-center text-dark'
   }
 }
 const getters = {

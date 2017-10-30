@@ -3,14 +3,15 @@
     ref="layout"
     view="lHh Lpr fFf"
     :left-class="{'bg-grey-2': true}"
+    :header-class="getHeadBar.titleAlign"
   >
     <!-- 头部nav start -->
-    <q-toolbar v-show="getHas.header" slot="header" color="primary">
+    <q-toolbar v-show="getHas.header" slot="header" :color="getHeadBar.bgColor" >
       <q-btn v-if="getMenuIcon"
         flat
         @click="$refs.layout.toggleLeft()"
       >
-        <q-icon name="menu" />
+        <q-icon name="menu" :color="getHeadBar.iconColor"/>
       </q-btn>
       <q-btn v-else
         flat
@@ -18,7 +19,7 @@
       >
         <q-icon name="keyboard arrow left" />
       </q-btn>
-      <q-toolbar-title>
+      <q-toolbar-title :class="getHeadBar.titleClass" style="padding-right:42px;">
         {{getHeadBar.title}}
         <!-- 面包屑导航注销 -->
         <!-- <span v-if="getHeadBar.subTitle" slot="subtitle">
@@ -37,7 +38,7 @@
     <div slot="left">
       <q-list no-border link inset-delimiter>
         <q-list-header>易企名</q-list-header> 
-        <q-side-link item to="/homeList">
+        <q-side-link item to="/home">
           <q-item>
             <q-item-side icon="home" />
             <q-item-main label="首页" sublabel="起名核名，快速查询" />
@@ -61,12 +62,12 @@
             <q-item-main label="查询经营范围" sublabel="查询注册行业的经营范围" />
           </q-item>
         </q-side-link>
-        <q-side-link item to="/materialList">
+        <!-- <q-side-link item to="/materialList">
           <q-item>
             <q-item-side icon="file download" />
             <q-item-main label="工商材料" sublabel="注册公司，常用合同，协议等工商材料下载" />
           </q-item>
-        </q-side-link>
+        </q-side-link> -->
       </q-list>
     </div>
     <q-toolbar v-show="getHas.footer" slot="footer">

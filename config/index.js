@@ -23,7 +23,7 @@ module.exports = {
 
   build: {
     env: require('./prod.env'),
-    publicPath: '',
+    publicPath: '/',
     productionSourceMap: false,
 
     // Remove unused CSS

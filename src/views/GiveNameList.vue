@@ -12,7 +12,7 @@
         </div>
       </div>
       <div class="loading-wrap relative-position">
-        <div class="table-wrap" style="height:350px;">
+        <div class="table-wrap" style="height:330px;">
           <table class="q-table striped-odd">
             <thead>
               <tr>
@@ -27,7 +27,7 @@
             >
               <tbody v-show="showReturnData">
                 <tr v-for="(item, index) in tableData" @click="checkNameResult(item.city, item.name, item.industry, item.type)">
-                  <td class="text-left">{{item.city}} <span class="company-name">{{item.name}}</span> {{item.industry}} {{item.type}}</td>
+                  <td class="text-left text-size">{{item.city}} <span class="company-name">{{item.name}}</span> {{item.industry}} {{item.type}}</td>
                   <td class="text-right"><span class="pass-rate" :class="{'hight':item.rate=='高', 'middle':item.rate=='中', 'low':item.rate=='低'}">{{item.rate}}</span></td>
                 </tr>
               </tbody>
@@ -214,14 +214,18 @@ export default {
         padding:5px 8px;
         border-radius:5px;
         color:#fff;
+        font-size:14px;
       .hight
         background-color:green;
       .middle
         background-color:#f39800;
       .low
-        background-color:#f00;    
+        background-color:#f00;  
+  .text-size
+    font-size:14px;  
   .company-name
     color:#f00;
+    font-size:14px;
   .exchange-wrap
     padding:0 10px;
     button

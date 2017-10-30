@@ -30,10 +30,10 @@
         <div class="layout-padding">
           <h1 class="industry-title">常见行业</h1>
           <div class="row xs-gutter industry-container" v-for="(item, index) in industrys" :key="index">
-            <div class="col-2">{{item.type}}</div>
+            <div class="col-2 industry-type">{{item.type}}</div>
             <div class="col-10">
               <div class="row xs-gutter">
-                <div class="col-4 hot" v-for="(list, index) in item.industry" :key="index"><q-btn @click="getIndustrysVal(item.type, list.label)" outline small color="primary">{{list.label}}</q-btn></div>
+                <div class="col-4 hot" v-for="(list, index) in item.industry" :key="index"><q-btn @click="getIndustrysVal(item.type, list.label)" outline small class="city-btn border border-radius" style="border:none;">{{list.label}}</q-btn></div>
               </div>
             </div>
           </div>
@@ -150,6 +150,10 @@ export default {
 .industry-container
   margin-bottom:20px;
 .hot .q-btn
-  width: 100%;
+  width: 99%;
+.city-btn
+  color:#7d7d7d!important;
+.industry-type
+  color:#7f7f7f;
 </style>
 
