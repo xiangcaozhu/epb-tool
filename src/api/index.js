@@ -19,7 +19,7 @@ import {
 import { Loading, Toast } from 'quasar'
 
 // axios.defaults.withCredentials = true
-axios.defaults.timeout = 10000
+axios.defaults.timeout = 30000
 
 // request拦截器
 axios.interceptors.request.use(

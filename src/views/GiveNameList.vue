@@ -39,7 +39,7 @@
         </q-inner-loading>
         <div class="exchange-wrap" v-show="showReturnData">
           <p class="tips">点击公司名字，查看核名结果！</p>
-          <q-btn loader color="orange" v-model="progress" @click="giveNameNews">
+          <q-btn big loader color="orange" v-model="progress" @click="giveNameNews">
             换一批
             <span slot="loading">
               <q-spinner-mat  class="on-left" slot="loading" color="primary" :size="30" />
@@ -55,6 +55,7 @@
 
 <script>
 import {
+  LocalStorage,
   QInput,
   QBtn,
   QIcon,
@@ -103,13 +104,20 @@ export default {
     }
   },
   created () {
-    // 初始化根据query,加载api
-    this.giveNameSubmit()
     this.setMenuIcon(false)
     this.headBar({
       title: '公司起名',
       subTitle: '推荐列表'
     })
+  },
+  beforeRouteLeave (to, from, next) {
+    // 缓存数据到storage
+    if (to.name === 'checkNameResult') {
+      LocalStorage.set('giveNameList', this.tableData)
+    } else {
+      LocalStorage.remove('giveNameList')
+    }
+    next()
   },
   computed: {
     ...mapGetters(['isLoading'])
@@ -127,6 +135,21 @@ export default {
     getSelectedIndustry (query) {
       this.formData.industry = query.industry
     },
+    getLocalGiveName () {
+      this.showReturnData = false
+      // 保证再获取本地数据后再进行渲染
+      new Promise((resolve, reject) => {
+        let localGiveNameList = LocalStorage.get.item('giveNameList')
+        resolve(localGiveNameList)
+      }).then(list => {
+        if (list) {
+          this.tableData = list
+          this.showReturnData = true
+        } else {
+          this.giveNameSubmit()
+        }
+      })
+    },
     // 如果没有登录跳转到登陆页，如果已经登录，可以查询数据
     giveNameSubmit () {
       this.visible = true
@@ -138,17 +161,12 @@ export default {
             setTimeout(() => {
               this.visible = false
               this.showReturnData = true
-            }, 1500)
+            }, 500)
           }
         })
     },
     checkNameResult (city, name, industry, type) {
       this.$router.push({path: '/checkNameResult', name: 'checkNameResult', query: { city: city, name: name, industry: industry, from: type }})
-      // api.getCompanyDetail(city, name, industry, type).then(res => {
-      //   if (res.data.code === 0) {
-      //     console.log(res.data.data)
-      //   }
-      // })
     },
     giveNameNews () {
       this.visible = true
@@ -161,13 +179,14 @@ export default {
               this.progress = false
               this.visible = false
               this.showReturnData = true
-            }, 1500)
+            }, 500)
           }
         })
     }
   },
   mounted () {
     this.$nextTick(() => {
+      this.getLocalGiveName()
     })
   }
 

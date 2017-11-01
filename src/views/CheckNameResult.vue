@@ -27,16 +27,17 @@
       <div class="suggest" v-if="resultData.prohibitWordsResult">
         <q-card>
           <q-card-title>
-            <p class="text-grey-8 margin-b"><strong class="text-red">"{{formData.city}}{{formData.name}}{{formData.industry}}"</strong>&nbsp;通过率{{resultData.passRate}}% <span v-show="resultData.passRate>=80" class="rate-stage" :class="{'hight':resultData.passRate>=80}">高</span><span v-show="resultData.passRate>=50&&resultData.passRate<80" class="rate-stage" :class="{'middle':resultData.passRate>=50&&resultData.passRate<80}">中</span><span v-show="resultData.passRate<49" class="rate-stage" :class="{'low':resultData.passRate<49}">低</span></p>
+            <p class="text-grey-8 margin-b"><strong class="text-red">"{{formData.city}}{{formData.name}}{{formData.industry}}"</strong>&nbsp;通过率{{resultData.passRate}}% 
             <!-- {{resultData.approximateCompanyFourResult.title}} -->
             <p class="margin-b"><span slot="subtitle">
               <q-rating
                 v-model="rate"
                 :max="10"
-                size="24px"
+                size="16px"
                 :color="rateColor"
               />
             </span>
+            <span v-show="resultData.passRate>=80" class="rate-stage" :class="{'hight':resultData.passRate>=80}">高</span><span v-show="resultData.passRate>=50&&resultData.passRate<80" class="rate-stage" :class="{'middle':resultData.passRate>=50&&resultData.passRate<80}">中</span><span v-show="resultData.passRate<49" class="rate-stage" :class="{'low':resultData.passRate<49}">低</span></p>
             </p>
           </q-card-title>
         </q-card>
@@ -84,9 +85,7 @@
           <h2 class="detail-type">相似品牌商标分析</h2>
           <q-card v-for="(list, index) in trademarkPOs" class="caption card-padding" :key="index">
             <q-card-title>
-              <q-chip small square color="primary" class="shadow-1">
-                {{ index + 1 }}
-              </q-chip>
+              <span class="list-index bg-primary">{{ index + 1 }}</span>
               {{list.title}}
               <p slot="subtitle" class="text-faded" style="font-size:12px;margin-bottom:0;"><span style="float:right;">通过率{{list.passRate}}%/相似度{{list.similar}}%</span></p>
             </q-card-title>
@@ -103,9 +102,9 @@
           </div>
         </div> 
       </div>
-      <div v-show="resultData.prohibitWordsResult.hmbSolrWords.length===0&&resultData.approximateCompanyFourResult.list.length===0&&resultData.companyTrademarkResultPO.trademarkPOs.length===0" class="row justify-center no">
+      <div v-show="unDisplay" class="row justify-center no" style="margin-top:50px;">
         <p class="col-12 text-grey-4" style="text-align:center;"><q-icon name="filter none" size="50px"/></p>
-        <p class="col-12 filter none text-grey-4" style="text-align:center;">抱歉，暂无分析内容可展示</p>
+        <p class="col-12 filter none text-grey-4" style="text-align:center;">暂无分析数据可展示！</p>
       </div>
     </div>
     <search-city @getSelectedCity="getSelectedCity"></search-city>
@@ -203,7 +202,8 @@ export default {
       tradeIndex: 0,
       tradeTips: '加载更多',
       hiddenApproSpinner: false,
-      hiddenTradeSpinner: false
+      hiddenTradeSpinner: false,
+      unDisplay: false
     }
   },
   created () {
@@ -330,6 +330,7 @@ export default {
       this.tradeIndex = 0
       this.hiddenApproSpinner = true
       this.hiddenTradeSpinner = true
+      this.unDisplay = false
       // Loading.show({
       //   spinner: QSpinnerIos,
       //   message: '加载中……',
@@ -342,6 +343,9 @@ export default {
           if (res.data.code === 0) {
             // 因为后台返回的数据结构不稳定，数组会变成null
             this.resultData = res.data.data
+            if (res.data.data.prohibitWordsResult.hmbSolrWords.length === 0 && res.data.data.approximateCompanyFourResult.list.length === 0 && res.data.data.companyTrademarkResultPO.trademarkPOs.length === 0) {
+              this.unDisplay = true
+            }
             // 初始化加载5条
             setTimeout(() => {
               this.approLoadMore()
@@ -407,9 +411,9 @@ export default {
   .rate-stage
     line-height:1;
     width:30px;
-    height:20px;
+    height:24px;
     text-align:center;
-    line-height:20px;
+    line-height:24px;
     display:inline-block;
     float:right;
     font-size:12px;
@@ -418,10 +422,10 @@ export default {
   .list-index
     margin-top:6px;
     float:left;
-    height:20px;
-    line-height:20px;
+    height:22px;
+    line-height:22px;
     text-align:center;
-    width:20px;
+    width:22px;
     margin-right:10px;
     background-color:#ff9800;
     color:#fff;

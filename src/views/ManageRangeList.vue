@@ -17,36 +17,42 @@
           enter="fadeIn"
           leave="fadeOut"
         >
-          <div class="list-wrap" v-show="showReturnData">
-            <q-card color="" v-for="(item, index) in listData" :key="index" style="margin-bottom:20px;">
-              <q-card-title>
-                <q-chip tag square color="orange">
-                  推荐{{index+1}}
-                </q-chip>
-                <q-chip class="btn-copy chip-right" :data-clipboard-text="item.scope" slot="right"  color="primary">
-                  <q-icon name="content copy" size="18px"/>
-                  复制
-                </q-chip>
-                <q-icon  />
-              </q-card-title>
-              <q-card-main>
-                <h6>经验范围：</h6>
-                <p class="text-fade">{{item.scope}}</p>
-              </q-card-main>
-              <q-card-separator />
-              <q-card-main>
-                参考公司：
-                <router-link :to="{ name: 'manageRangeDetail', params: { id: item.id }, query: {city: formData.city, industry: formData.industry}}">{{item.name}}</router-link>
-              </q-card-main>
-            </q-card>
-            <div class="exchange-wrap">
-              <q-btn big icon="autorenew" loader color="orange" v-model="progress" @click="manageRangeNews">
-                换一批
-                <span slot="loading">
-                  <q-spinner-mat  class="on-left" slot="loading" color="white" :size="30" />
-                  努力加载中...
-                </span>
-              </q-btn>
+          <div>
+            <div v-show="unDisplay" class="row justify-center no" style="margin-top:50px;">
+              <p class="col-12 text-grey-4" style="text-align:center;"><q-icon name="filter none" size="50px"/></p>
+              <p class="col-12 filter none text-grey-4" style="text-align:center;">暂无数据可展示！</p>
+            </div>
+            <div class="list-wrap" v-show="showReturnData">
+              <q-card color="" v-for="(item, index) in listData" :key="index" style="margin-bottom:20px;">
+                <q-card-title>
+                  <q-chip tag square color="orange">
+                    推荐{{index+1}}
+                  </q-chip>
+                  <q-chip class="btn-copy chip-right" :data-clipboard-text="item.scope" slot="right"  color="primary">
+                    <q-icon name="content copy" size="18px"/>
+                    复制
+                  </q-chip>
+                  <q-icon  />
+                </q-card-title>
+                <q-card-main>
+                  <h6>经验范围：</h6>
+                  <p class="text-fade">{{item.scope}}</p>
+                </q-card-main>
+                <q-card-separator />
+                <q-card-main>
+                  参考公司：
+                  <router-link :to="{ name: 'manageRangeDetail', params: { id: item.id }, query: {city: formData.city, industry: formData.industry}}">{{item.name}}</router-link>
+                </q-card-main>
+              </q-card>
+              <div class="exchange-wrap">
+                <q-btn big icon="autorenew" loader color="orange" v-model="progress" @click="manageRangeNews">
+                  换一批
+                  <span slot="loading">
+                    <q-spinner-mat  class="on-left" slot="loading" color="white" :size="30" />
+                    努力加载中...
+                  </span>
+                </q-btn>
+              </div>
             </div>
           </div>
         </q-transition>
@@ -58,6 +64,7 @@
 
 <script>
 import {
+  LocalStorage,
   Loading,
   Toast,
   QInput,
@@ -112,6 +119,7 @@ export default {
     return {
       progress: false,
       showReturnData: false,
+      unDisplay: false,
       formData: {
         city: this.$route.query.city,
         industry: this.$route.query.industry
@@ -123,12 +131,21 @@ export default {
   },
   created () {
     // 初始化根据query,加载api
-    this.manageRangeSubmit()
     this.setMenuIcon(false)
     this.headBar({
       title: '经营范围查询',
       subTitle: '范围列表'
     })
+    this.getLocalManageRange()
+  },
+  beforeRouteLeave (to, from, next) {
+    // 缓存数据到storage
+    if (to.name === 'manageRangeDetail') {
+      LocalStorage.set('manageRangeList', this.listData)
+    } else {
+      LocalStorage.remove('manageRangeList')
+    }
+    next()
   },
   methods: {
     ...mapMutations([
@@ -143,9 +160,25 @@ export default {
     getSelectedIndustry (query) {
       this.formData.industry = query.industry
     },
+    getLocalManageRange () {
+      this.showReturnData = false
+      // 保证再获取本地数据后再进行渲染
+      new Promise((resolve, reject) => {
+        let localManageRangeList = LocalStorage.get.item('manageRangeList')
+        resolve(localManageRangeList)
+      }).then(list => {
+        if (list) {
+          this.listData = list
+          this.showReturnData = true
+        } else {
+          this.manageRangeSubmit()
+        }
+      })
+    },
     // 如果没有登录跳转到登陆页，如果已经登录，可以查询数据
     manageRangeSubmit () {
       this.showReturnData = false
+      this.unDisplay = false
       Loading.show({
         spinner: QSpinnerIos,
         message: '加载中……',
@@ -157,15 +190,22 @@ export default {
         .then(res => {
           if (res.data.code === 0) {
             this.listData = res.data.data
+            if (res.data.data.length === 0) {
+              this.unDisplay = true
+            }
             setTimeout(() => {
               this.showReturnData = true
               Loading.hide()
             }, 1500)
           }
         })
+        .catch(e => {
+          this.unDisplay = true
+        })
     },
     manageRangeNews () {
       this.showReturnData = false
+      this.unDisplay = false
       Loading.show({
         spinner: QSpinnerIos,
         message: '加载中……',
@@ -177,12 +217,18 @@ export default {
         .then(res => {
           if (res.data.code === 0) {
             this.listData = res.data.data
+            if (res.data.data.length === 0) {
+              this.unDisplay = true
+            }
             setTimeout(() => {
               this.progress = false
               this.showReturnData = true
               Loading.hide()
             }, 1500)
           }
+        })
+        .catch(e => {
+          this.unDisplay = true
         })
     }
   },
