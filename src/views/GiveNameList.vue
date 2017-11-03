@@ -1,6 +1,6 @@
 <template>
   <div class="has-tabs">
-      <div class="row tab ">
+      <div class="row tab fixed-top">
         <div class="col-4 item">
             <q-btn @click="searchCityModal(true)" flat>{{formData.city}}<q-icon size="14px" class="text-grey-6" name="arrow drop down"/></q-btn>
         </div>
@@ -33,7 +33,7 @@
               </tbody>
             </q-transition>
           </table>
-        </div>
+        </div> 
         <q-inner-loading :visible="visible">
           <q-spinner-ios size="30px" color="primary"></q-spinner-ios>
         </q-inner-loading>
@@ -197,12 +197,13 @@ export default {
   .has-tabs
     padding-top:40px;
   .tab
-    position:fixed;
+    // position:fixed;
     z-index:10;
     top:50px;
-    width:100%;
+    // width:100%;
     background-color #f5f5f5;
     .item
+      flex:1;
       border-right:1px solid #dedede;
     .item:last-child
       border-right:none;

@@ -97,7 +97,8 @@ export default {
     ...mapGetters([
       'getSearchCity',
       'getSearchIndustry',
-      'getSignUp'
+      'getSignUp',
+      'getLogin'
     ])
   },
   created () {

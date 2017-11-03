@@ -48,10 +48,10 @@ export default {
   data () {
     return {
       list: [
-        {name: '公司起名', subName: '智能生成，工商通过率高的名字', src: require('assets/gsqm.jpg'), type: '已起名', count: 5848931, color: 'amber-9', link: '我要起名', to: 'giveName'},
-        {name: '公司核名', subName: '输入名字，测试工商通过率', src: require('assets/gshm.jpg'), type: '已核名', count: 6905132, color: 'cyan-4', link: '我要核名', to: 'checkName'},
-        {name: '经营范围查询', subName: '查询注册行业的经营范围', src: require('assets/gsfw.jpg'), type: '已查询', count: 1422079, color: 'light-blue', link: '我要生成', to: 'manageRange'}
-        // {name: '工商材料', subName: '注册公司、常用合同、协议等工商材料下载', src: require('assets/gswd.jpg'), type: '已下载', count: 1086542, color: 'positive', link: '我要下载', to: 'materialList'}
+        {name: '公司起名', subName: '智能生成，工商通过率高的名字', src: require('assets/gsqm.jpg'), type: '已起名', count: 5848931, color: 'amber-9', link: '马上起名', to: 'giveName'},
+        {name: '公司核名', subName: '输入名字，测试工商通过率', src: require('assets/gshm.jpg'), type: '已核名', count: 6905132, color: 'cyan-4', link: '马上核名', to: 'checkName'},
+        {name: '经营范围查询', subName: '查询注册行业的经营范围', src: require('assets/gsfw.jpg'), type: '已查询', count: 1422079, color: 'light-blue', link: '马上查询', to: 'manageRange'}
+        // {name: '工商材料', subName: '注册公司、常用合同、协议等工商材料下载', src: require('assets/gswd.jpg'), type: '已下载', count: 1086542, color: 'positive', link: '马上下载', to: 'materialList'}
       ]
     }
   },
@@ -83,38 +83,28 @@ export default {
 </script>
 
 <style lang="stylus">
-  .layout-aside-left{
-    width:260px;
-  }
-  .q-item-side{
+  .q-item-side
     width:20px;
-  }
-  .index-page{
+  .index-page
     padding:0;
     margin:0 0 10px 0;
     box-shadow:none;
-  }
-  .index-page .q-card-media-overlay{
+  .index-page .q-card-media-overlay
     background-color:transparent;
-  }
-  .index-page .q-card-title{
+  .index-page .q-card-title
     font-size:24px;
     font-family:'微软雅黑';
     margin-bottom:6px;
-  }
-  .index-page .q-card-subtitle{
+  .index-page .q-card-subtitle
     font-family:'微软雅黑';
-  }
-  .fr{
+  .fr
     float:right;
     font-size:16px;
-  }
-  .card-btn{
+  .card-btn
     position:absolute;
     width:115px;
     bottom:20px;
     left:50%;
     margin-left:-57px;
     font-family:'微软雅黑';
-  }
 </style>

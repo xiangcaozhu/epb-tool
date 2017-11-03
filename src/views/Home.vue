@@ -3,10 +3,10 @@
     ref="layout"
     view="lHh Lpr fFf"
     :left-class="{'bg-grey-2': true}"
-    :header-class="getHeadBar.titleAlign"
+    :header-class="{'shadow-4': true}"
   >
     <!-- 头部nav start -->
-    <q-toolbar v-show="getHas.header" slot="header" :color="getHeadBar.bgColor" >
+    <q-toolbar v-show="getHas.header" slot="header" :color="getHeadBar.bgColor">
       <q-btn v-if="getMenuIcon"
         flat
         @click="$refs.layout.toggleLeft()"

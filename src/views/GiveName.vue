@@ -78,7 +78,8 @@ export default {
       'getSearchIndustry',
       'getSignUp',
       'getHas',
-      'getLoading'
+      'getLoading',
+      'getLogin'
     ])
   },
   methods: {

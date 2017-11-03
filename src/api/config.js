@@ -1,10 +1,8 @@
 
 // 配置api请求地址
 const API_CONFIG = {
-  // host: '/qidashi-boot',
-  // host: 'http://rapapi.org/mockjsdata/26848',
-  host: 'http://tool.epbiao.com/api',
-  // host: '',
+  host: DEV ? '/qidashi-boot' : 'http://tool.epbiao.com/api',
+  // host: 'http://tool.epbiao.com/api',
   IP: ''
 }
 

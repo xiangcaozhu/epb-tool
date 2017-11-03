@@ -1,6 +1,6 @@
 <template>
   <div class="has-tabs">
-    <div class="row tab">
+    <div class="row tab fixed-top">
       <div class="col item">
           <q-btn @click="searchCityModal(true)" flat >{{formData.city}}<q-icon size="14px" class="text-grey-6" name="arrow drop down"/></q-btn>
 
@@ -366,10 +366,8 @@ export default {
   .has-tabs
     padding-top:40px;
   .tab
-    position:fixed;
     z-index:10;
     top:50px;
-    width:100%;
     background-color #f5f5f5;
     .item
       border-right:1px solid #dedede;

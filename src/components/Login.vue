@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- 行业选择 start-->
-    <q-modal class="modal-bg" v-model="getLogin" ref="loginModal" :content-css="{minWidth: '80vw', minHeight: '80vh'}">
+    <q-modal class="modal-bg" v-model="getLogin" ref="loginModal" :content-css="{minWidth: '80vw', minHeight: '80vh', boxShadow: 'none'}">
       <q-modal-layout>
         <q-toolbar slot="header">
           <q-toolbar-title>
@@ -17,10 +17,10 @@
               <q-field
                 icon="stay primary portrait"
                 :count="11"
-                :error="$v.mobile.$error"
                 :helper="helper"
+                :error="$v.mobile.$error"
               >
-                <q-input type="tel" max-length="11" float-label="请输入手机号码" v-model.number="mobile" @blur="$v.mobile.$touch()" @focus="$v.mobile.$reset()"/>
+                <q-input type="tel" :error="$v.mobile.$error" max-length="11" float-label="请输入手机号码" v-model.number="mobile" @blur="$v.mobile.$touch()" @focus="$v.mobile.$reset()"/>
               </q-field>
               <div class="row">
                 <div class="col-8">
@@ -29,15 +29,15 @@
                       :error="$v.code.$error"
                       :helper="helperCode"
                     >
-                      <q-input type="tel" max-length="11" float-label="请输入短信验证码" v-model.number="code" @blur="$v.code.$touch()" @focus="$v.code.$reset()"/>
+                      <q-input type="tel" :error="$v.code.$error" max-length="11" float-label="请输入短信验证码" v-model.number="code" @blur="$v.code.$touch()" @focus="$v.code.$reset()"/>
                     </q-field>
                 </div>
                 <div class="col-4">
-                  <q-btn :disable="codeDisable" @click="getCode" :color="codeDisable ? 'faded' : 'primary'" small>{{time}}</q-btn>
+                  <q-btn :disable="codeDisable" @click.prevent="getCode" :color="codeDisable ? 'faded' : 'primary'" small>{{time}}</q-btn>
                 </div>
               </div>
             </div>
-            <q-btn :disable="submitDisable" :color="codeDisable ? 'faded' : 'primary'" @click="checkCodeLogin()" color="primary" big>
+            <q-btn :disable="submitDisable" :color="codeDisable ? 'faded' : 'primary'" @click.prevent="checkCodeLogin()" color="primary" big>
             立即提交查询
             </q-btn>
           </div>
@@ -110,6 +110,7 @@ export default {
     ...mapMutations(['loginModal', 'isSignUp', 'saveAccount']),
     loginSubmit () {
       this.$v.mobile.$touch()
+      document.activeElement.blur()
       if (!this.$v.mobile.required) {
         this.helper = '手机号码不能为空！'
         return
@@ -127,6 +128,8 @@ export default {
         if (res.data.code === 0) {
           Toast.create('提交成功!查询中……')
           this.saveAccount({mobile: this.mobile})
+          this.isSignUp(true)
+          this.loginModal(false)
           if (this.formData.next === 'giveNameList') {
             this.$router.push({ path: this.formData.next, name: this.formData.next, query: {city: this.formData.city, industry: this.formData.industry} })
           } else if (this.formData.next === 'checkNameResult') {
@@ -134,8 +137,6 @@ export default {
           } else if (this.formData.next === 'manageRangeList') {
             this.$router.push({ path: this.formData.next, name: this.formData.next, query: {city: this.formData.city, name: this.formData.name, industry: this.formData.industry, from: this.formData.from} })
           }
-          this.isSignUp(true)
-          this.loginModal(false)
         } else {
           Toast.create('登陆失败！')
         }
@@ -144,6 +145,7 @@ export default {
     checkCodeLogin () {
       this.submitDisable = true
       this.$v.mobile.$touch()
+      document.activeElement.blur()
       if (!this.$v.mobile.required) {
         this.helper = '手机号码不能为空！'
         setTimeout(() => {
@@ -174,6 +176,8 @@ export default {
           Toast.create('提交成功!查询中……')
           this.saveAccount({mobile: this.mobile})
           this.submitDisable = false
+          this.isSignUp(true)
+          this.loginModal(false)
           if (this.formData.next === 'giveNameList') {
             this.$router.push({ path: this.formData.next, name: this.formData.next, query: {city: this.formData.city, industry: this.formData.industry} })
           } else if (this.formData.next === 'checkNameResult') {
@@ -181,8 +185,6 @@ export default {
           } else if (this.formData.next === 'manageRangeList') {
             this.$router.push({ path: this.formData.next, name: this.formData.next, query: {city: this.formData.city, name: this.formData.name, industry: this.formData.industry, from: this.formData.from} })
           }
-          this.isSignUp(true)
-          this.loginModal(false)
         } else {
           this.submitDisable = false
           Toast.create(res.data.data.message)
