@@ -21,6 +21,13 @@ const state = {
     footer: false,
     footerTab: true
   },
+  formData: {
+    city: '',
+    industry: '',
+    name: '',
+    from: '',
+    next: ''
+  },
   headBar: {
     title: '易企名',
     subTitle: '企业起名核名系统',
@@ -38,7 +45,8 @@ const getters = {
   getHeadBar: state => state.headBar,
   getHas: state => state.has,
   getAccount: state => state.account,
-  getMenuIcon: state => state.is.menuIcon
+  getMenuIcon: state => state.is.menuIcon,
+  getFormData: state => state.formData
 }
 
 const mutations = {
@@ -46,6 +54,7 @@ const mutations = {
   has (state, has) {
     state.has = has
   },
+  // 保存当前账号信息
   saveAccount (state, data) {
     state.account = data
   },
@@ -65,6 +74,7 @@ const mutations = {
   isLoading (state, status) {
     state.is.isLoading = status
   },
+  // 设置当前是否已经登陆
   isSignUp (state, status) {
     state.is.signUp = status
   },
@@ -72,8 +82,13 @@ const mutations = {
   headBar (state, data) {
     state.headBar = data
   },
+  // 设置头部菜单按钮的显示隐藏
   setMenuIcon (state, status) {
     state.is.menuIcon = status
+  },
+  // 未登录情况下把form对象传递到登陆组件中，然后再发出数据请求
+  setFormData (state, formData) {
+    state.formData = formData
   }
 }
 const actions = {}

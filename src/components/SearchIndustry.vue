@@ -65,6 +65,7 @@ import {
 import localData from 'static/localData'
 import { mapMutations, mapGetters } from 'vuex'
 export default {
+  name: 'searchIndustry',
   components: {
     Toast,
     Ripple,

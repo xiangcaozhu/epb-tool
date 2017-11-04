@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- 行业选择 start-->
-    <q-modal class="modal-bg" v-model="getLogin" ref="loginModal" :content-css="{minWidth: '80vw', minHeight: '80vh', boxShadow: 'none'}">
+    <q-modal class="modal-bg" v-model="getLogin" :content-css="{minWidth: '80vw', minHeight: '80vh', boxShadow: 'none'}">
       <q-modal-layout>
         <q-toolbar slot="header">
           <q-toolbar-title>
@@ -89,7 +89,6 @@ export default {
       time: '获取验证码'
     }
   },
-  props: ['formData'],
   validations: {
     mobile: {
       required
@@ -103,7 +102,8 @@ export default {
       'getLogin',
       'getAccount',
       'isLoading',
-      'getSignUp'
+      'getSignUp',
+      'getgetFormData'
     ])
   },
   methods: {
@@ -130,12 +130,12 @@ export default {
           this.saveAccount({mobile: this.mobile})
           this.isSignUp(true)
           this.loginModal(false)
-          if (this.formData.next === 'giveNameList') {
-            this.$router.push({ path: this.formData.next, name: this.formData.next, query: {city: this.formData.city, industry: this.formData.industry} })
-          } else if (this.formData.next === 'checkNameResult') {
-            this.$router.push({ path: this.formData.next, name: this.formData.next, query: {city: this.formData.city, name: this.formData.name, industry: this.formData.industry, from: this.formData.from} })
-          } else if (this.formData.next === 'manageRangeList') {
-            this.$router.push({ path: this.formData.next, name: this.formData.next, query: {city: this.formData.city, name: this.formData.name, industry: this.formData.industry, from: this.formData.from} })
+          if (this.getFormData.next === 'giveNameList') {
+            this.$router.push({ path: this.getFormData.next, name: this.getFormData.next, query: {city: this.getFormData.city, industry: this.getFormData.industry} })
+          } else if (this.getFormData.next === 'checkNameResult') {
+            this.$router.push({ path: this.getFormData.next, name: this.getFormData.next, query: {city: this.getFormData.city, name: this.getFormData.name, industry: this.getFormData.industry, from: this.getFormData.from} })
+          } else if (this.getFormData.next === 'manageRangeList') {
+            this.$router.push({ path: this.getFormData.next, name: this.getFormData.next, query: {city: this.getFormData.city, name: this.getFormData.name, industry: this.getFormData.industry, from: this.getFormData.from} })
           }
         } else {
           Toast.create('登陆失败！')
@@ -178,12 +178,12 @@ export default {
           this.submitDisable = false
           this.isSignUp(true)
           this.loginModal(false)
-          if (this.formData.next === 'giveNameList') {
-            this.$router.push({ path: this.formData.next, name: this.formData.next, query: {city: this.formData.city, industry: this.formData.industry} })
-          } else if (this.formData.next === 'checkNameResult') {
-            this.$router.push({ path: this.formData.next, name: this.formData.next, query: {city: this.formData.city, name: this.formData.name, industry: this.formData.industry, from: this.formData.from} })
-          } else if (this.formData.next === 'manageRangeList') {
-            this.$router.push({ path: this.formData.next, name: this.formData.next, query: {city: this.formData.city, name: this.formData.name, industry: this.formData.industry, from: this.formData.from} })
+          if (this.getFormData.next === 'giveNameList') {
+            this.$router.push({ path: this.getFormData.next, name: this.getFormData.next, query: {city: this.getFormData.city, industry: this.getFormData.industry} })
+          } else if (this.getFormData.next === 'checkNameResult') {
+            this.$router.push({ path: this.getFormData.next, name: this.getFormData.next, query: {city: this.getFormData.city, name: this.getFormData.name, industry: this.getFormData.industry, from: this.getFormData.from} })
+          } else if (this.getFormData.next === 'manageRangeList') {
+            this.$router.push({ path: this.getFormData.next, name: this.getFormData.next, query: {city: this.getFormData.city, name: this.getFormData.name, industry: this.getFormData.industry, from: this.getFormData.from} })
           }
         } else {
           this.submitDisable = false
@@ -208,6 +208,8 @@ export default {
           Toast.create(res.data.data.message)
           this.countDown(res.data.data.interval)
         }
+      }).catch(e => {
+        this.codeDisable = false
       })
     },
     // 倒计时

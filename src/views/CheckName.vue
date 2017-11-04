@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- 起名查询 start -->
-    <div class="query-warp bg-light-blue-9">
+    <div class="query-warp bg-light-blue-9" v-show="!getLogin">
       <div class="query-header">
         <h2 class="title">公司核名</h2>
         <p class="des">输入名字，测试工商通过率</p>
@@ -26,7 +26,6 @@
     <!-- 起名查询 end -->
     <search-city @getSelectedCity="getSelectedCity"></search-city>
     <search-industry @getSelectedIndustry="getSelectedIndustry"></search-industry>
-    <login :formData ="formData"></login>
   </div>
 </template>
 
@@ -44,7 +43,6 @@ import {
 // 导出常用的数据对象
 import SearchCity from '%/SearchCity'
 import SearchIndustry from '%/SearchIndustry'
-import Login from '%/Login'
 import { mapMutations, mapGetters } from 'vuex'
 import { required } from 'vuelidate/lib/validators'
 
@@ -59,8 +57,7 @@ export default {
     QToolbar,
     QToolbarTitle,
     SearchCity,
-    SearchIndustry,
-    Login
+    SearchIndustry
   },
   data () {
     return {
@@ -114,7 +111,8 @@ export default {
       'searchIndustryModal',
       'loginModal',
       'headBar',
-      'setMenuIcon'
+      'setMenuIcon',
+      'setFormData'
     ]),
     getSelectedCity (query) {
       this.formData.city = query.label
@@ -189,6 +187,7 @@ export default {
         // })
         this.submitDisable = false
         this.loginModal(true)
+        this.setFormData(this.formData)
         return
       }
       this.submitDisable = false
