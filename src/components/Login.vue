@@ -103,7 +103,7 @@ export default {
       'getAccount',
       'isLoading',
       'getSignUp',
-      'getgetFormData'
+      'getFormData'
     ])
   },
   methods: {
@@ -173,11 +173,12 @@ export default {
       }
       api.checkCodeLogin(this.mobile, this.code).then(res => {
         if (res.data.code === 0) {
-          Toast.create('提交成功!查询中……')
           this.saveAccount({mobile: this.mobile})
           this.submitDisable = false
           this.isSignUp(true)
           this.loginModal(false)
+          Toast.create('提交成功!查询中……')
+          console.log(this.getFormData.next)
           if (this.getFormData.next === 'giveNameList') {
             this.$router.push({ path: this.getFormData.next, name: this.getFormData.next, query: {city: this.getFormData.city, industry: this.getFormData.industry} })
           } else if (this.getFormData.next === 'checkNameResult') {

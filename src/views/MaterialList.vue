@@ -23,8 +23,8 @@
         <q-transition
           appear
           group
-          enter="fadeInRightBig"
-          leave="fadeOutLeftBig"
+          enter="fadeIn"
+          leave="fadeOut"
         >
           <div class="list" v-for="(item, index) in yxgs" :key="index">
             <router-link :to="{ name: 'materialDetail', params: { id: item.id }}"><p><q-icon color="grey-6" size="20px" name="insert drive file" />&nbsp;{{item.title}}</p></router-link>
@@ -35,8 +35,8 @@
         <q-transition
           appear
           group
-          enter="fadeInRightBig"
-          leave="fadeOutLeftBig"
+          enter="fadeIn"
+          leave="fadeOut"
         >
           <div class="list" v-for="(item,index) in hhqy" :key="index">
             <router-link :to="{ name: 'materialDetail', params: { id: item.id }}"><p><q-icon color="grey-6" size="20px" name="insert drive file" />&nbsp;{{item.title}}</p></router-link>
@@ -47,8 +47,8 @@
         <q-transition
           appear
           group
-          enter="fadeInRightBig"
-          leave="fadeOutLeftBig"
+          enter="fadeIn"
+          leave="fadeOut"
         >
           <div class="list" v-for="(item,index) in fgs" :key="index">
             <router-link :to="{ name: 'materialDetail', params: { id: item.id }}"><p><q-icon color="grey-6" size="20px" name="insert drive file" />&nbsp;{{item.title}}</p></router-link>
@@ -59,8 +59,8 @@
         <q-transition
           appear
           group
-          enter="fadeInRightBig"
-          leave="fadeOutLeftBig"
+          enter="fadeIn"
+          leave="fadeOut"
         >
           <div class="list" v-for="(item,index) in grdz" :key="index">
             <router-link :to="{ name: 'materialDetail', params: { id: item.id }}"><p><q-icon color="grey-6" size="20px" name="insert drive file" />&nbsp;{{item.title}}</p></router-link>
@@ -85,8 +85,8 @@
             <q-transition
               appear
               group
-              enter="fadeInRightBig"
-              leave="fadeOutLeftBig"
+              enter="fadeIn"
+              leave="fadeOut"
             >
               <div class="list" v-for="(item,index) in rsht" :key="index">
                 <router-link :to="{ name: 'materialDetail', params: { id: item.id }}"><p><q-icon color="grey-6" size="20px" name="insert drive file" />&nbsp;{{item.title}}</p></router-link>
@@ -97,8 +97,8 @@
             <q-transition
               appear
               group
-              enter="fadeInRightBig"
-              leave="fadeOutLeftBig"
+              enter="fadeIn"
+              leave="fadeOut"
             >
               <div class="list" v-for="(item,index) in gqht" :key="index">
                 <router-link :to="{ name: 'materialDetail', params: { id: item.id }}"><p><q-icon color="grey-6" size="20px" name="insert drive file" />&nbsp;{{item.title}}</p></router-link>
@@ -109,8 +109,8 @@
             <q-transition
               appear
               group
-              enter="fadeInRightBig"
-              leave="fadeOutLeftBig"
+              enter="fadeIn"
+              leave="fadeOut"
             >
               <div class="list" v-for="(item,index) in tzqt" :key="index">
                 <router-link :to="{ name: 'materialDetail', params: { id: item.id }}"><p><q-icon color="grey-6" size="20px" name="insert drive file" />&nbsp;{{item.title}}</p></router-link>
@@ -139,8 +139,8 @@ import {
 
 import api from 'api/index'
 import { mapMutations } from 'vuex'
-import 'quasar-extras/animate/fadeInRightBig.css'
-import 'quasar-extras/animate/fadeOutLeftBig.css'
+import 'quasar-extras/animate/fadeIn.css'
+import 'quasar-extras/animate/fadeOut.css'
 export default {
   name: 'materialList',
   components: {
